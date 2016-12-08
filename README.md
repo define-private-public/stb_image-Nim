@@ -7,7 +7,7 @@ work in progress, so all functions/features might not be fully exposed yet; do
 hold tight.
 
 Official repo page can be found here:
-https://gitlab.com/define-private-public/stb_image-nim
+https://gitlab.com/define-private-public/stb_image-Nim
 
 All other sites should be considered mirrors.
 
