@@ -41,7 +41,7 @@ Other Notes
 
 TODO:
  - [ ] wrap `stb_image.h`
-   - [ ] Make a list of functions/exposables
+   - [x] Make a list of functions/exposables
  - [ ] wrap `stb_image_write.h`
    - [ ] Make a list of functions/exposables
  - [ ] wrap `stb_image_resize.h`
