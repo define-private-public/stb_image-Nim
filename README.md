@@ -35,6 +35,10 @@ domain, so is this code.  Specifically it falls under the "Unlicense."  Please
 check the file `LICENSE` for details.
 
 
+
+Other Notes
+-----------
+
 TODO:
  - [ ] wrap `stb_image.h`
    - [ ] Make a list of functions/exposables
