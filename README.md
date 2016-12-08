@@ -14,7 +14,9 @@ All other sites should be considered mirrors.
 The used header files are included in this repo buy you may provide your own.
 The versions that are used are:
 
- - `stb_image.h`: 
+ - `stb_image.h`: v2.13
+ - `stb_image_write.h`: v1.02
+ - `stb_image_resize.h`: v0.91
 
 They can be found here: https://github.com/nothings/stb
 
