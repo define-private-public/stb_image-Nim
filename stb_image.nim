@@ -1,3 +1,8 @@
+# File:         stb_image.nim
+# Author:       Benjamin N. Summerton (define-private-public)
+# License:      Unlicense (Public Domain)
+# Description:  A nim wrapper for stb_image.h.
+
 
 # Required
 {.emit: """
@@ -6,24 +11,37 @@
 """.}
 
 
-#void stbi_image_free(void *retval_from_stbi_load)
-# TODO note it's here for completeness, but not necessary
-proc stbi_image_free(retval_from_stbi_load: ptr) {.importc: "stbi_image_free", noDecl.}
+
+# Components
+const
+  Default* = 0           # Used for req_comp
+  Grey* = 1
+  GreyAlpha* = 2
+  RGB* = 3
+  RGBA* = 4
+
+
+# NOTE: this function is here for completness, but it's not exposed in the
+#       nim-friendly API, since seq[uint8] are GC'd
+proc stbi_image_free(retval_from_stbi_load: ptr)
+  {.importc: "stbi_image_free", noDecl.}
 
 
 # ==================
 # 8 bits per channel
 # ==================
 
-
-#stbi_uc *stbi_load(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
+# Internal function
 proc stbi_load(filename: cstring; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
   {.importc: "stbi_load", noDecl.}
 
 
-# TODO Document
-# TODO Test
-# RGBA return format
+## This takes in a filename and will return a sequence (of unsigned bytes) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
 proc stbiLoad*(filename: string, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
   var
     width: cint

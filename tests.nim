@@ -16,11 +16,11 @@ suite "Unit Tests for stb_image wrapper.":
       pixels: seq[uint8]
 
     # Load the image
-    pixels = stbiLoad(testImage1, width, height, channels, 0)
+    pixels = stbiLoad(testImage1, width, height, channels, Default)
 
     check(width == 2)
     check(height == 2)
-    check(channels == 4)
+    check(channels == RGBA)
     check(pixels.len == (2 * 2 * 4))
 
     # Test the pixel data
