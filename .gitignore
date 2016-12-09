@@ -1,3 +1,5 @@
 *.sw*
-nimache/
-tester
+
+# Binaries and Nim stuff
+nimcache/
+tests
