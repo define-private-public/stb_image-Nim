@@ -6,6 +6,11 @@
 """.}
 
 
+#void stbi_image_free(void *retval_from_stbi_load)
+# TODO note it's here for completeness, but not necessary
+proc stbi_image_free(retval_from_stbi_load: ptr) {.importc: "stbi_image_free", noDecl.}
+
+
 # ==================
 # 8 bits per channel
 # ==================
@@ -18,7 +23,8 @@ proc stbi_load(filename: cstring; x, y, channels_in_file: var cint; desired_chan
 
 # TODO Document
 # TODO Test
-proc stbiLoad(filename: string, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
+# RGBA return format
+proc stbiLoad*(filename: string, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
   var
     width: cint
     height: cint
@@ -34,7 +40,7 @@ proc stbiLoad(filename: string, x, y, channels_in_file: var int, desired_channel
 
   # Copy pixel data
   var pixelData: seq[uint8]
-  newSeq(pixelData, x * y)
+  newSeq(pixelData, x * y * channels_in_file)
   copyMem(pixelData[0].addr, data, pixelData.len)
 
   # Free loaded image data
@@ -95,11 +101,6 @@ proc stbi_load_from_file(f: File; x, y, channels_in_file: var cint; desired_chan
 ## NOT THREADSAFE
 #const char *stbi_failure_reason(void);
 #
-
-
-#void stbi_image_free(void *retval_from_stbi_load)
-# TODO note it's here for completeness, but not necessary
-proc stbi_image_free(retval_from_stbi_load: ptr) {.importc: "stbi_image_free", noDecl.}
 
 
 #
