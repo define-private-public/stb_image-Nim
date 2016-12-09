@@ -16,6 +16,8 @@ proc stbi_load(filename: cstring; x, y, channels_in_file: var cint; desired_chan
   {.importc: "stbi_load", noDecl.}
 
 
+# TODO Document
+# TODO Test
 proc stbiLoad(filename: string, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
   var
     width: cint
@@ -38,12 +40,34 @@ proc stbiLoad(filename: string, x, y, channels_in_file: var int, desired_channel
   # Free loaded image data
   stbi_image_free(data)
 
+  # TODO ask about memory lifetime for the returned data
   return pixelData
 
+
+# TODO this needs a nim friendly version
+# TODO Document
+# TODO Test
 #stbi_uc *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
+proc stbi_load_from_memory(buffer: ptr cuchar; len: cint; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
+  {.importc: "stbi_load_from_memory", noDecl.}
+
+
+# TODO figure out how this works, and if it's worth it to add
 #stbi_uc *stbi_load_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
+
+
+# TODO this needs a nim friendly version
+# TODO Document
+# TODO Test
 #stbi_uc *stbi_load_from_file(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
-#
+proc stbi_load_from_file(f: File; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
+  {.importc: "stbi_load_from_file", noDecl.}
+
+
+
+
+
+
 ## 16  bits per channel
 #stbi_us *stbi_load_16(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
 #stbi_us *stbi_load_from_file_16(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
@@ -74,6 +98,7 @@ proc stbiLoad(filename: string, x, y, channels_in_file: var int, desired_channel
 
 
 #void stbi_image_free(void *retval_from_stbi_load)
+# TODO note it's here for completeness, but not necessary
 proc stbi_image_free(retval_from_stbi_load: ptr) {.importc: "stbi_image_free", noDecl.}
 
 
