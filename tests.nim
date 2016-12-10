@@ -5,6 +5,15 @@ import stb_image
 const
   testImage1 = "testdata/image1.png"
   testImage2 = "testdata/image2.bmp"
+  testImage3: seq[uint8] = @[
+    0x50'u8, 0x35'u8, 0x0a'u8, 0x23'u8, 0x20'u8, 0x43'u8, 0x52'u8, 0x45'u8, 0x41'u8, 0x54'u8, 0x4f'u8, 0x52'u8, 0x3a'u8, 0x20'u8, 0x47'u8, 0x49'u8,
+    0x4d'u8, 0x50'u8, 0x20'u8, 0x50'u8, 0x4e'u8, 0x4d'u8, 0x20'u8, 0x46'u8, 0x69'u8, 0x6c'u8, 0x74'u8, 0x65'u8, 0x72'u8, 0x20'u8, 0x56'u8, 0x65'u8,
+    0x72'u8, 0x73'u8, 0x69'u8, 0x6f'u8, 0x6e'u8, 0x20'u8, 0x31'u8, 0x2e'u8, 0x31'u8, 0x0a'u8, 0x31'u8, 0x20'u8, 0x32'u8, 0x0a'u8, 0x32'u8, 0x35'u8,
+    0x35'u8, 0x0a'u8, 0x54'u8, 0xa8'u8
+  ]
+
+
+
 
 
 suite "Unit Tests for stb_image wrapper.":
@@ -78,6 +87,34 @@ suite "Unit Tests for stb_image wrapper.":
 
     # 2 == Black
     check(pixels[3 + 0] == 0x00)
+    check(pixels[3 + 1] == 0x00)
+    check(pixels[3 + 2] == 0x00)
+
+
+  test "stbiLoadFromMemory":
+    # Data
+    var
+      width: int
+      height: int
+      channels: int
+      pixels: seq[uint8]
+
+    # Load the image
+    pixels = stbiLoadFromMemory(testImage3, width, height, channels, Grey)
+
+    check(width == 1)
+    check(height == 2)
+    check(channels == Grey)
+    check(pixels.len == (width * height * Grey))
+
+    # Test the pixel data
+    # 1 == white
+    check(pixels[0 + 0] == 84)
+    check(pixels[0 + 1] == 0xFF)
+    check(pixels[0 + 2] == 0xFF)
+
+    # 2 == Black
+    check(pixels[3 + 0] == 168)
     check(pixels[3 + 1] == 0x00)
     check(pixels[3 + 2] == 0x00)
 

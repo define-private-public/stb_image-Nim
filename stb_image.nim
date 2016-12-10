@@ -26,6 +26,20 @@ proc stbi_image_free(retval_from_stbi_load: ptr)
   {.importc: "stbi_image_free", noDecl.}
 
 
+proc stbi_failure_reason(): cstring
+  {.importc: "stbi_failure_reason", noDecl.}
+
+
+## TODO document
+## TODO make this work!
+#proc stbiFailureReason*(): string =
+#  var
+#    reason:cstring = stbi_failure_reason
+#    str: string = $reason
+#  return str
+
+
+
 # ==================
 # 8 bits per channel
 # ==================
@@ -75,6 +89,7 @@ proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channe
 # TODO Document
 # TODO Test
 #stbi_uc *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
+# TODO should there be an overload that has a string instead?
 proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
   var
     # Cast the buffer to another data type
@@ -92,6 +107,11 @@ proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; de
   x = width.int
   y = height.int
   channels_in_file = components.int
+
+  echo x
+  echo y
+  echo channels_in_file
+  echo $stbi_failure_reason()
 
   # Copy pixel data
   var pixelData: seq[uint8]
