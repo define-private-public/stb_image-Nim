@@ -88,41 +88,42 @@ proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channe
 
 # TODO Document
 # TODO Test
-#stbi_uc *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
 # TODO should there be an overload that has a string instead?
-proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
-  var
-    # Cast the buffer to another data type
-    castedBuffer = cast[ptr cuchar](buffer)
-
-    # Return values
-    width: cint
-    height: cint
-    components: cint
-
-  # Read
-  let data = stbi_load_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
-
-  # Set the returns
-  x = width.int
-  y = height.int
-  channels_in_file = components.int
-
-  echo x
-  echo y
-  echo channels_in_file
-  echo $stbi_failure_reason()
-
-  # Copy pixel data
-  var pixelData: seq[uint8]
-  newSeq(pixelData, x * y * channels_in_file)
-  copyMem(pixelData[0].addr, data, pixelData.len)
-
-  # Free loaded image data
-  stbi_image_free(data)
-
-  # TODO ask about memory lifetime for the returned data
-  return pixelData
+# TODO this function isn't working...
+#stbi_uc *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
+#proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
+#  var
+#    # Cast the buffer to another data type
+#    castedBuffer = cast[ptr cuchar](buffer)
+#
+#    # Return values
+#    width: cint
+#    height: cint
+#    components: cint
+#
+#  # Read
+#  let data = stbi_load_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
+#
+#  # Set the returns
+#  x = width.int
+#  y = height.int
+#  channels_in_file = components.int
+#
+#  echo x
+#  echo y
+#  echo channels_in_file
+#  echo $stbi_failure_reason()
+#
+#  # Copy pixel data
+#  var pixelData: seq[uint8]
+#  newSeq(pixelData, x * y * channels_in_file)
+#  copyMem(pixelData[0].addr, data, pixelData.len)
+#
+#  # Free loaded image data
+#  stbi_image_free(data)
+#
+#  # TODO ask about memory lifetime for the returned data
+#  return pixelData
 
 
 # TODO figure out how this works, and if it's worth it to add
