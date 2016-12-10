@@ -30,9 +30,15 @@ proc stbi_image_free(retval_from_stbi_load: ptr)
 # 8 bits per channel
 # ==================
 
-# Internal function
+# Internal functions
 proc stbi_load(filename: cstring; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
   {.importc: "stbi_load", noDecl.}
+
+proc stbi_load_from_memory(buffer: ptr cuchar; len: cint; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
+  {.importc: "stbi_load_from_memory", noDecl.}
+
+proc stbi_load_from_file(f: File; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
+  {.importc: "stbi_load_from_file", noDecl.}
 
 ## This takes in a filename and will return a sequence (of unsigned bytes) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -40,7 +46,7 @@ proc stbi_load(filename: cstring; x, y, channels_in_file: var cint; desired_chan
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc stbiLoad*(filename: string, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
+proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
   var
     width: cint
     height: cint
@@ -66,22 +72,43 @@ proc stbiLoad*(filename: string, x, y, channels_in_file: var int, desired_channe
   return pixelData
 
 
-# TODO this needs a nim friendly version
 # TODO Document
 # TODO Test
 #stbi_uc *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
-proc stbi_load_from_memory(buffer: ptr cuchar; len: cint; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
-  {.importc: "stbi_load_from_memory", noDecl.}
+proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
+  var
+    # Cast the buffer to another data type
+    castedBuffer = cast[ptr cuchar](buffer)
+
+    # Return values
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_load_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[uint8]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  # TODO ask about memory lifetime for the returned data
+  return pixelData
 
 
 # TODO figure out how this works, and if it's worth it to add
 #stbi_uc *stbi_load_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
 
 
-# TODO Test
-#stbi_uc *stbi_load_from_file(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
-proc stbi_load_from_file(f: File; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
-  {.importc: "stbi_load_from_file", noDecl.}
 
 ## This takes in a File and will return a sequence (of unsigned bytes) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -148,7 +175,6 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
 ## NOT THREADSAFE
 #const char *stbi_failure_reason(void);
 #
-
 
 #
 ## get image dimensions & components without fully decoding
