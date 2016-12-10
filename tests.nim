@@ -4,6 +4,7 @@ import stb_image
 
 const
   testImage1 = "testdata/image1.png"
+  testImage2 = "testdata/image2.bmp"
 
 
 suite "Unit Tests for stb_image wrapper.":
@@ -21,7 +22,7 @@ suite "Unit Tests for stb_image wrapper.":
     check(width == 2)
     check(height == 2)
     check(channels == RGBA)
-    check(pixels.len == (2 * 2 * 4))
+    check(pixels.len == (width * height * RGBA))
 
     # Test the pixel data
     # 1 == 25% white
@@ -47,5 +48,37 @@ suite "Unit Tests for stb_image wrapper.":
     check(pixels[12 + 1] == 0xFF) # G
     check(pixels[12 + 2] == 0xFF) # B
     check(pixels[12 + 3] == 0xFF) # A
+
+
+  test "stbiLoadFromFile":
+    # Data
+    var
+      fileObj: File
+      width: int
+      height: int
+      channels: int
+      pixels: seq[uint8]
+
+    # Open the file object
+    check(open(fileObj, testImage2))
+
+    # Load the image
+    pixels = stbiLoadFromFile(fileObj, width, height, channels, Default)
+
+    check(width == 2)
+    check(height == 1)
+    check(channels == RGB)
+    check(pixels.len == (width * height * RGB))
+
+    # Test the pixel data
+    # 1 == white
+    check(pixels[0 + 0] == 0xFF)
+    check(pixels[0 + 1] == 0xFF)
+    check(pixels[0 + 2] == 0xFF)
+
+    # 2 == Black
+    check(pixels[3 + 0] == 0x00)
+    check(pixels[3 + 1] == 0x00)
+    check(pixels[3 + 2] == 0x00)
 
 

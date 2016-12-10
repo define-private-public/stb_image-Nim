@@ -11,7 +11,6 @@
 """.}
 
 
-
 # Components
 const
   Default* = 0           # Used for req_comp
@@ -34,7 +33,6 @@ proc stbi_image_free(retval_from_stbi_load: ptr)
 # Internal function
 proc stbi_load(filename: cstring; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
   {.importc: "stbi_load", noDecl.}
-
 
 ## This takes in a filename and will return a sequence (of unsigned bytes) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -80,19 +78,50 @@ proc stbi_load_from_memory(buffer: ptr cuchar; len: cint; x, y, channels_in_file
 #stbi_uc *stbi_load_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
 
 
-# TODO this needs a nim friendly version
-# TODO Document
 # TODO Test
 #stbi_uc *stbi_load_from_file(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
 proc stbi_load_from_file(f: File; x, y, channels_in_file: var cint; desired_channels: cint): ptr cuchar
   {.importc: "stbi_load_from_file", noDecl.}
 
+## This takes in a File and will return a sequence (of unsigned bytes) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+##
+## This should also close the file handle too.
+proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
+  var
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_load_from_file(f, width, height, components, desired_channels.cint)
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[uint8]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  # TODO ask about memory lifetime for the returned data
+  return pixelData
 
 
 
+# ===================
+# 16 bits per channel
+# ===================
 
-
-## 16  bits per channel
 #stbi_us *stbi_load_16(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
 #stbi_us *stbi_load_from_file_16(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
 #
