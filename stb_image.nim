@@ -26,6 +26,7 @@ proc stbi_image_free(retval_from_stbi_load: ptr)
   {.importc: "stbi_image_free", noDecl.}
 
 
+# TODO note it's not threadsafe
 proc stbi_failure_reason(): cstring
   {.importc: "stbi_failure_reason", noDecl.}
 
@@ -191,12 +192,6 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
 #int stbi_is_hdr(char const *filename);
 #int stbi_is_hdr_from_file(FILE *f);
 #
-#
-## get a VERY brief reason for failure
-## NOT THREADSAFE
-#const char *stbi_failure_reason(void);
-#
-
 #
 ## get image dimensions & components without fully decoding
 #int stbi_info_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp);
