@@ -14,7 +14,7 @@ https://gitlab.com/define-private-public/stb_image-Nim
 
 All other sites should be considered mirrors.
 
-The used header files are included in this repo buy you may provide your own.
+The used header files are included in this repo but you may provide your own.
 The versions that are used are:
 
  - `stb_image.h`: v2.13
