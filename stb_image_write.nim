@@ -24,7 +24,7 @@ export stb_image_components.RGBA
 proc stbi_write_bmp(
   filename: cstring;
   w, h, comp: cint;
-  data: ptr void
+  data: pointer
 ): cint
   {.importc: "stbi_write_bmp", noDecl.}
 
@@ -35,7 +35,8 @@ proc stbi_write_bmp(
 ## TODO documenmt (read over the header file)
 ## TODO test
 proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
-  discard
+#  var pixelData = cast[ptr void](data[0].unsafeAddr)
+  return stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 
 # For the moment being, the callback write functions are going to be skipped
