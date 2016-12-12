@@ -1,4 +1,5 @@
 import unittest
+import os
 import stb_image
 import stb_image_write
 
@@ -12,6 +13,8 @@ const
     0x72'u8, 0x73'u8, 0x69'u8, 0x6f'u8, 0x6e'u8, 0x20'u8, 0x31'u8, 0x2e'u8, 0x31'u8, 0x0a'u8, 0x31'u8, 0x20'u8, 0x32'u8, 0x0a'u8, 0x32'u8, 0x35'u8,
     0x35'u8, 0x0a'u8, 0x54'u8, 0xa8'u8
   ]
+
+  testSave1 = "testdata/save1.bmp"
 
 
 # This is a little handy proc so I don't have to type so much
@@ -141,6 +144,16 @@ suite "Unit tests for stbi_image_write wrapper":
     # Non-zero is returned on success
     check(stbiWriteBMP(filename, width, height, channels, pixels) != 0)
 
+    # Verify the image with the one in "testdata/"
+    var
+      testPixels = readFile(testSave1)
+      ourPixels = readFile(filename)
+
+    # check for equivilancy
+    check(testPixels == ourPixels)
+
     # remove the image
+    removeFile(filename)
+
 
 

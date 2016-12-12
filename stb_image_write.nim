@@ -33,7 +33,6 @@ proc stbi_write_bmp(
 
 
 ## TODO documenmt (read over the header file)
-## TODO test
 proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
 #  var pixelData = cast[ptr void](data[0].unsafeAddr)
   return stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
