@@ -4,20 +4,19 @@
 # Description:  A nim wrapper for stb_image.h.
 
 
+import stb_image_components
+export stb_image_components.Default
+export stb_image_components.Grey
+export stb_image_components.GreyAlpha
+export stb_image_components.RGB
+export stb_image_components.RGBA
+
+
 # Required
 {.emit: """
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 """.}
-
-
-# Components
-const
-  Default* = 0           # Used for req_comp
-  Grey* = 1
-  GreyAlpha* = 2
-  RGB* = 3
-  RGBA* = 4
 
 
 # NOTE: this function is here for completness, but it's not exposed in the
@@ -97,7 +96,6 @@ proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channe
   # Free loaded image data
   stbi_image_free(data)
 
-  # TODO ask about memory lifetime for the returned data
   return pixelData
 
 
@@ -135,7 +133,6 @@ proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; de
   # Free loaded image data
   stbi_image_free(data)
 
-  # TODO ask about memory lifetime for the returned data
   return pixelData
 
 
@@ -174,7 +171,6 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
   # Free loaded image data
   stbi_image_free(data)
 
-  # TODO ask about memory lifetime for the returned data
   return pixelData
 
 

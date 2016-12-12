@@ -1,5 +1,6 @@
 import unittest
 import stb_image
+import stb_image_write
 
 
 const

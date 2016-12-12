@@ -45,8 +45,10 @@ Other Notes
 TODO:
  - [ ] wrap `stb_image.h`
    - [x] Make a list of functions/exposables
+   - [ ] mark callback functions (in the source as skipped)
  - [ ] wrap `stb_image_write.h`
-   - [ ] Make a list of functions/exposables
+   - [X] Make a list of functions/exposables
+   - [ ] mark callback functions (in the source as skipped)
  - [ ] wrap `stb_image_resize.h`
    - [ ] Make a list of functions/exposables
  - [ ] Provide some examples of each
