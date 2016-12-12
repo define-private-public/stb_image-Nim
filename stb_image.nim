@@ -221,13 +221,15 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
 #
 ##flip the image vertically, so the first pixel in the output array is the bottom left
 #void stbi_set_flip_vertically_on_load(int flag_true_if_should_flip);
-#
+
+
+# TODO this should have very low priority.  Make sure the other header files and
+#      functions are bound first.
 ## ZLIB client - used by PNG, available for other purposes
 #char *stbi_zlib_decode_malloc_guesssize(const char *buffer, int len, int initial_size, int *outlen);
 #char *stbi_zlib_decode_malloc_guesssize_headerflag(const char *buffer, int len, int initial_size, int *outlen, int parse_header);
 #char *stbi_zlib_decode_malloc(const char *buffer, int len, int *outlen);
 #int   stbi_zlib_decode_buffer(char *obuffer, int olen, const char *ibuffer, int ilen);
-#
 #char *stbi_zlib_decode_noheader_malloc(const char *buffer, int len, int *outlen);
 #int   stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char *ibuffer, int ilen);
 #
