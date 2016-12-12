@@ -1,6 +1,9 @@
 Nim stb_image Wrapper
 =====================
 
+Please note before using this wrapper is that it is still in development.
+Though eventually it should be complete.
+
 This is a Nim wrapper of the stb_image single header file libraries
 (`stb_image.h`,`stb_image_write.h`, and `stb_image_resize.h`).  It is still a
 work in progress, so all functions/features might not be fully exposed yet; do
@@ -50,4 +53,7 @@ TODO:
    - [ ] Image read example
    - [ ] Image write example
    - [ ] Image resize example
+ - [ ] Figure out how to handle including the header files
+   - Embedd the source in the .nim files?
+   - Tell the user they need to do a `--cincludes:.`?
 

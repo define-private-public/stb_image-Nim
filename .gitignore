@@ -2,4 +2,5 @@
 
 # Binaries and Nim stuff
 nimcache/
+nakefile
 tests
