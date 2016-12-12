@@ -14,6 +14,12 @@ const
   ]
 
 
+# This is a little handy proc so I don't have to type so much
+proc addRGB(pixelData: var seq[uint8]; r, g, b: uint8) =
+  pixelData.add(r)
+  pixelData.add(g)
+  pixelData.add(b)
+
 
 
 
@@ -114,5 +120,27 @@ suite "Unit Tests for stb_image wrapper.":
 
     # 2 == lighter grey
     check(pixels[1] == 168)
+
+
+suite "Unit tests for stbi_image_write wrapper":
+  test "stbiWriteBMP":
+    # data
+    var
+      width = 2
+      height = 2
+      channels = RGB
+      pixels: seq[uint8] = @[]
+      filename = "save1.bmp"
+
+    # Set the pixel data
+    pixels.addRGB(0xFF, 0x00, 0x00)   # Red
+    pixels.addRGB(0x00, 0xFF, 0x00)   # Green
+    pixels.addRGB(0x00, 0x00, 0xFF)   # Blue
+    pixels.addRGB(0x00, 0x00, 0x00)   # Black
+
+    # Non-zero is returned on success
+    check(stbiWriteBMP(filename, width, height, channels, pixels) != 0)
+
+    # remove the image
 
 
