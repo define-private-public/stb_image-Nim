@@ -268,3 +268,7 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
+#  test "stbiWriteHDR":
+#    # TODO this needs to be implemented
+#    check(false)
+
