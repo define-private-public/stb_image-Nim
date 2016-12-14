@@ -16,6 +16,8 @@ const
 
   testSave1 = "testdata/save1.bmp"
   testSave2 = "testdata/save2.png"
+  testSave3 = "testdata/save3.tga"
+  testSave4 = "testdata/save4.tga"
 
 
 # This is a little handy proc so I don't have to type so much
@@ -24,7 +26,16 @@ proc addRGB(pixelData: var seq[uint8]; r, g, b: uint8) =
   pixelData.add(g)
   pixelData.add(b)
 
+
 # Another handy proc for less typing
+proc addRGBA(pixelData: var seq[uint8]; r, g, b, a: uint8) =
+  pixelData.add(r)
+  pixelData.add(g)
+  pixelData.add(b)
+  pixelData.add(a)
+
+
+# Yet another handy proc for even less typing
 proc addYA(pixelData: var seq[uint8]; mono, alpha: uint8) =
   pixelData.add(mono)
   pixelData.add(alpha)
@@ -193,7 +204,58 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
-  test "stbiWriteTGA":
-    discard
 
+  test "stbiWriteTGA [RLE]":
+    # TODO mark with RLE
+    var
+      width = 5
+      height = 2
+      channels = RGBA
+      pixels: seq[uint8] = @[]
+      filename = "save3.tga"
+
+    # Set the pixel data
+    for i in countup(1, 5):
+      pixels.addRGBA(0x00, 0x00, 0x00, 0x80)
+    for i in countup(1, 5):
+      pixels.addRGBA(0xFF, 0xFF, 0xFF, 0x80)
+
+    # Non-zero is returned on success
+    check(stbiWriteTGA(filename, width, height, channels, pixels) != 0)
+
+    # Verify image is the same in testdata/
+    var
+      testPixels = readFile(testSave3)
+      ourPixels = readFile(filename)
+
+    # Check for sameness
+    check(testPixels == ourPixels)
+
+    # Remove the image
+    removeFile(filename)
+
+
+  test "stbiWriteTGA [non-RLE]":
+    require(false)
+    # TODO mark without RLE
+    # Data
+    var
+      width = 2
+      height = 3
+      channels = RGBA
+      pixels: seq[uint8] = @[]
+      filename = "save4.tga"
+
+    # Set the pixel data
+    pixels.addRGBA(0xFF, 0x66, 0x00, 0x80)
+    pixels.addRGBA(0xFF, 0x99, 0x00, 0xFF)
+
+    pixels.addRGBA(0x66, 0x00, 0xFF, 0x80)
+    pixels.addRGBA(0x99, 0x00, 0xFF, 0xFF)
+
+    pixels.addRGBA(0x00, 0x66, 0xFF, 0x80)
+    pixels.addRGBA(0x00, 0x99, 0xFF, 0xFF)
+
+    # Non-zero is returned on success
+    check(stbiWriteTGA(filename, width, height, channels, pixels) != 0)
 
