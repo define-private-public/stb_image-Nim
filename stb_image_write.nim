@@ -20,6 +20,13 @@ export stb_image_components.RGBA
 
 # Internal functions
 #int stbi_write_png(char const *filename, int w, int h, int comp, const void  *data, int stride_in_bytes);
+proc stbi_write_png(
+  filename: cstring;
+  w, h, comp: cint;
+  data: pointer,
+  stride_in_bytes: int
+): cint
+  {.importc: "stbi_write_png", noDecl.}
 
 proc stbi_write_bmp(
   filename: cstring;
@@ -32,9 +39,14 @@ proc stbi_write_bmp(
 #int stbi_write_hdr(char const *filename, int w, int h, int comp, const float *data);
 
 
+## TODO document (read over the header file)
+# TODO mention default
+proc stbiWritePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): int =
+  return stbi_write_png(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes).int
+
+
 ## TODO documenmt (read over the header file)
 proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
-#  var pixelData = cast[ptr void](data[0].unsafeAddr)
   return stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 
@@ -45,3 +57,4 @@ proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
 #int stbi_write_bmp_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data);
 #int stbi_write_tga_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data);
 #int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const float *data);
+

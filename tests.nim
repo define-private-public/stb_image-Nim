@@ -15,6 +15,7 @@ const
   ]
 
   testSave1 = "testdata/save1.bmp"
+  testSave2 = "testdata/save2.png"
 
 
 # This is a little handy proc so I don't have to type so much
@@ -22,6 +23,11 @@ proc addRGB(pixelData: var seq[uint8]; r, g, b: uint8) =
   pixelData.add(r)
   pixelData.add(g)
   pixelData.add(b)
+
+# Another handy proc for less typing
+proc addYA(pixelData: var seq[uint8]; mono, alpha: uint8) =
+  pixelData.add(mono)
+  pixelData.add(alpha)
 
 
 
@@ -155,5 +161,36 @@ suite "Unit tests for stbi_image_write wrapper":
     # remove the image
     removeFile(filename)
 
+  test "stbiWritePNG":
+    # data
+    var
+      width = 3
+      height = 2
+      channels = YA
+      pixels: seq[uint8] = @[]
+      filename = "save2.png"
+
+    # Set the pixel data
+    pixels.addYA(0xFF, 0x33)    # White
+    pixels.addYA(0xFF, 0x66)
+    pixels.addYA(0xFF, 0x99)
+
+    pixels.addYA(0x00, 0x99)    # Black
+    pixels.addYA(0x00, 0x66)
+    pixels.addYA(0x00, 0x33)
+
+    # Non-zero is returned on success
+    check(stbiWritePNG(filename, width, height, channels, pixels) != 0)
+
+    # Verify image is the same in testdata/
+    var
+      testPixels = readFile(testSave2)
+      ourPixels = readFile(filename)
+
+    # Check for sameness
+    check(testPixels == ourPixels)
+
+    # Remove the image
+    removeFile(filename)
 
 
