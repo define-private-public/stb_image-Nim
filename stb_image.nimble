@@ -2,7 +2,7 @@
 name        = "stb_image"
 version     = "0.4"
 author      = "Benjamin N. Summerton <define-private-public>"
-description = "A wrapper for stb_image (including stb_image_write and stb_image_resize)."
+description = "A wrapper for stb_image (including stb_image_write)."
 license     = "Unlicense (Public Domain)"
 
 [Deps]

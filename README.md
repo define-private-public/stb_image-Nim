@@ -5,9 +5,9 @@ Please note before using this wrapper is that it is still in development.
 Though eventually it should be complete.
 
 This is a Nim wrapper of the stb_image single header file libraries
-(`stb_image.h`,`stb_image_write.h`, and `stb_image_resize.h`).  It is still a
-work in progress, so all functions/features might not be fully exposed yet; do
-hold tight.
+(`stb_image.h` and `stb_image_write.h`).  It is still a work in progress, so
+all functions/features might not be fully exposed yet; do hold tight.
+
 
 Official repo page can be found here:
 https://gitlab.com/define-private-public/stb_image-Nim
@@ -19,7 +19,6 @@ The versions that are used are:
 
  - `stb_image.h`: v2.13
  - `stb_image_write.h`: v1.02
- - `stb_image_resize.h`: v0.91
 
 They can be found here: https://github.com/nothings/stb
 
@@ -28,6 +27,17 @@ tracker so I can fix it.  Though if something like a header file is out of date,
 you should be able to simply exchange it out (unless something was changed in
 the API).
 
+
+Callback Functions & stbi_image_resize
+--------------------------------------
+
+Originally I was going to include these in the wrapper, but I decided to drop
+support for them.  I wasn't sure how to go about wrapping the callback
+functions.  As for `stbi_image_resize`, I felt that the scope of this wrapper
+should be focused on image loading and saving, not processing.
+
+Though if someone would like these included in the wrapper I am open to pull
+requests.
 
 
 License
@@ -48,9 +58,7 @@ TODO:
    - [ ] mark callback functions (in the source as skipped)
  - [ ] wrap `stb_image_write.h`
    - [X] Make a list of functions/exposables
-   - [ ] mark callback functions (in the source as skipped)
- - [ ] wrap `stb_image_resize.h`
-   - [ ] Make a list of functions/exposables
+   - [X] mark callback functions (in the source as skipped)
  - [ ] Provide some examples of each
    - [ ] Image read example
    - [ ] Image write example
