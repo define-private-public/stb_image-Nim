@@ -193,4 +193,7 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
+  test "stbiWriteTGA":
+    discard
+
 

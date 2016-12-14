@@ -10,6 +10,8 @@ export stb_image_components.YA
 export stb_image_components.RGB
 export stb_image_components.RGBA
 
+# TODO figure how to set stbi_write_tga_with_rle
+
 
 # Required
 {.emit: """
@@ -19,7 +21,6 @@ export stb_image_components.RGBA
 
 
 # Internal functions
-#int stbi_write_png(char const *filename, int w, int h, int comp, const void  *data, int stride_in_bytes);
 proc stbi_write_png(
   filename: cstring;
   w, h, comp: cint;
@@ -35,7 +36,13 @@ proc stbi_write_bmp(
 ): cint
   {.importc: "stbi_write_bmp", noDecl.}
 
-#int stbi_write_tga(char const *filename, int w, int h, int comp, const void  *data);
+proc stbi_write_tga(
+  filename: cstring;
+  w, h, comp: cint;
+  data: pointer
+): cint
+  {.importc: "stbi_write_tga", noDecl.}
+
 #int stbi_write_hdr(char const *filename, int w, int h, int comp, const float *data);
 
 
@@ -48,6 +55,12 @@ proc stbiWritePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_i
 ## TODO documenmt (read over the header file)
 proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
   return stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
+
+
+## TODO document
+# TODO figure out the rle thing up top
+proc stbiWriteTGA*(filename: string; w, h, comp: int; data: seq[uint8]): int =
+  return stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 
 # For the moment being, the callback write functions are going to be skipped
