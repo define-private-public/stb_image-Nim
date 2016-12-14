@@ -10,14 +10,16 @@ export stb_image_components.YA
 export stb_image_components.RGB
 export stb_image_components.RGBA
 
-# TODO figure how to set stbi_write_tga_with_rle
-
 
 # Required
 {.emit: """
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 """.}
+
+
+# Used for set if the TGA function should use run length encoding
+var stbi_write_tga_with_rle {.importc: "stbi_write_tga_with_rle".}: cint
 
 
 # Internal functions
@@ -58,8 +60,9 @@ proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
 
 
 ## TODO document
-# TODO figure out the rle thing up top
-proc stbiWriteTGA*(filename: string; w, h, comp: int; data: seq[uint8]): int =
+proc stbiWriteTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool = true): int =
+  # Set RLE option
+  stbi_write_tga_with_rle = if useRLE: 1 else: 0
   return stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 

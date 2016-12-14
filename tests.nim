@@ -206,7 +206,6 @@ suite "Unit tests for stbi_image_write wrapper":
 
 
   test "stbiWriteTGA [RLE]":
-    # TODO mark with RLE
     var
       width = 5
       height = 2
@@ -221,6 +220,7 @@ suite "Unit tests for stbi_image_write wrapper":
       pixels.addRGBA(0xFF, 0xFF, 0xFF, 0x80)
 
     # Non-zero is returned on success
+    # Writing with RLE by default
     check(stbiWriteTGA(filename, width, height, channels, pixels) != 0)
 
     # Verify image is the same in testdata/
@@ -236,8 +236,6 @@ suite "Unit tests for stbi_image_write wrapper":
 
 
   test "stbiWriteTGA [non-RLE]":
-    require(false)
-    # TODO mark without RLE
     # Data
     var
       width = 2
@@ -257,5 +255,16 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGBA(0x00, 0x99, 0xFF, 0xFF)
 
     # Non-zero is returned on success
-    check(stbiWriteTGA(filename, width, height, channels, pixels) != 0)
+    check(stbiWriteTGA(filename, width, height, channels, pixels, false) != 0)
+
+    # Verify image is the same in testdata/
+    var
+      testPixels = readFile(testSave4)
+      ourPixels = readFile(filename)
+
+    # Check for sameness
+    check(testPixels == ourPixels)
+
+    # Remove the image
+    removeFile(filename)
 
