@@ -96,6 +96,7 @@ proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channe
   return pixelData
 
 
+# TODO should there be an overload that has a string instead?
 ## This takes in a sequences of bytes (of an image file)
 ## and will return a sequence (of unsigned bytes) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -103,7 +104,6 @@ proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channe
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-# TODO should there be an overload that has a string instead?
 proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
   var
     # Cast the buffer to another data type
@@ -133,7 +133,8 @@ proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; de
   return pixelData
 
 
-# TODO figure out how this works, and if it's worth it to add
+# Right now I'm not planning on using the callback functions, but if someone
+# requests it (or provides a pull request), I'll consider adding them in.
 #stbi_uc *stbi_load_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
 
 
@@ -216,9 +217,9 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
 #void stbi_set_flip_vertically_on_load(int flag_true_if_should_flip);
 
 
-# TODO this should have very low priority.  Make sure the other header files and
-#      functions are bound first.
-## ZLIB client - used by PNG, available for other purposes
+# The ZLIB client functions are out of the scope of this wrapper, but if someone
+# wants them added in (or provides a pull request).  I'll consider adding it.
+#
 #char *stbi_zlib_decode_malloc_guesssize(const char *buffer, int len, int initial_size, int *outlen);
 #char *stbi_zlib_decode_malloc_guesssize_headerflag(const char *buffer, int len, int initial_size, int *outlen, int parse_header);
 #char *stbi_zlib_decode_malloc(const char *buffer, int len, int *outlen);
