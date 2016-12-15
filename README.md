@@ -48,7 +48,6 @@ domain, so is this code.  Specifically it falls under the "Unlicense."  Please
 check the file `LICENSE` for details.
 
 
-
 Other Notes
 -----------
 
@@ -64,7 +63,7 @@ TODO:
    - [ ] hdr functions
  - [ ] Provide some examples of each
    - [ ] Image read example
-   - [ ] Image write example
+   - [X] Image write example
  - [ ] Figure out how to handle including the header files
    - Embedd the source in the .nim files?
    - Tell the user they need to do a `--cincludes:.`?

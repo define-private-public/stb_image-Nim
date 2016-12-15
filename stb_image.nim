@@ -178,15 +178,53 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
 # ===================
 
 #stbi_us *stbi_load_16(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
+proc stbi_load_16(
+  filename: cstring;
+  x, y, channels_in_file: var cint,
+  desired_channels: cint
+): ptr cushort
+  {.importc: "stbi_load_16", noDecl.}
+
+
 #stbi_us *stbi_load_from_file_16(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
-#
-## float channel interface
+
+
+# TODO document
+# TODO test
+proc stbiLoad16(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
+  var
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_load_16(filename.cstring, width, height, components, desired_channels.cint)
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[uint16]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  return pixelData
+
+
+
+# =======================
+# Float channel interface
+# =======================
 #float *stbi_loadf(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
 #float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
 
 # The callback functions are going to be skipped (see the README.md)
 #float *stbi_loadf_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
-
 
 #float *stbi_loadf_from_file(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
 
