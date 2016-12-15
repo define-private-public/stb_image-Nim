@@ -28,8 +28,8 @@ you should be able to simply exchange it out (unless something was changed in
 the API).
 
 
-Callback Functions & stbi_image_resize
---------------------------------------
+Callback Functions, ZLIB client, & stbi_image_resize
+----------------------------------------------------
 
 Originally I was going to include these in the wrapper, but I decided to drop
 support for them.  I wasn't sure how to go about wrapping the callback
@@ -55,10 +55,15 @@ Other Notes
 TODO:
  - [ ] wrap `stb_image.h`
    - [x] Make a list of functions/exposables
-   - [ ] mark callback functions (in the source as skipped)
+   - [ ] info functions
+   - [ ] premultiply function
+   - [ ] iphone function
+   - [ ] flip function
+   - [ ] 16 bit functions
+   - [ ] float functions
+   - [ ] hdr functions
  - [ ] wrap `stb_image_write.h`
-   - [X] Make a list of functions/exposables
-   - [X] mark callback functions (in the source as skipped)
+   - [ ] wrap the hdr/float function & test it
  - [ ] Provide some examples of each
    - [ ] Image read example
    - [ ] Image write example

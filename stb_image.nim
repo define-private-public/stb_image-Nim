@@ -198,21 +198,25 @@ proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channel
 #int stbi_is_hdr(char const *filename);
 #int stbi_is_hdr_from_file(FILE *f);
 #
-#
+
+# TODO the info functions
 ## get image dimensions & components without fully decoding
 #int stbi_info_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp);
 #int stbi_info_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *comp);
 #
 #int stbi_info(char const *filename, int *x, int *y, int *comp);
 #int stbi_info_from_fileFILE *f, int *x, int *y, int *comp);
-#
-#
-#
+
+
+
+# TODO premultiply functions
 #void stbi_set_unpremultiply_on_load(int flag_true_if_should_unpremultiply);
-#
+
+# TODO iphone
 ## indicate whether we should process iphone images back to canonical format,
 #void stbi_convert_iphone_png_to_rgb(int flag_true_if_should_convert);
-#
+
+# TODO flip
 ##flip the image vertically, so the first pixel in the output array is the bottom left
 #void stbi_set_flip_vertically_on_load(int flag_true_if_should_flip);
 
