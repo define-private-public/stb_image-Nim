@@ -145,12 +145,46 @@ suite "Unit Tests for stb_image wrapper.":
 #  NOTE: not able to find a suitable 16 bit image to test against
 #  test "stbiLoad16":
 #    check(false)
-
-
+#
+#
 #  NOTE: not able to find a suitable 16 bit image to test against
 #  test "stbiLoadFromFile16":
 #    check(false)
-
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiHDRToLDRGamma":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiHDRToLDRScale":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiLDRToHDRGamma":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiLDRToHDRScale":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiIsHDRFromMemory":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiIsHDR":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  test "stbiIsHDRFromFile":
+#    check(false)
 
 
 
