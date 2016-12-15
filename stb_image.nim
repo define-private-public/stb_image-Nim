@@ -25,18 +25,16 @@ proc stbi_image_free(retval_from_stbi_load: ptr)
   {.importc: "stbi_image_free", noDecl.}
 
 
-# TODO note it's not threadsafe
-proc stbi_failure_reason(): cstring
+# NOTE: because of identifiers work in Nim, I need to add that extra "_internal"
+#       there.
+proc stbi_failure_reason_internal(): cstring
   {.importc: "stbi_failure_reason", noDecl.}
 
 
-## TODO document
-## TODO make this work!
-#proc stbiFailureReason*(): string =
-#  var
-#    reason:cstring = stbi_failure_reason
-#    str: string = $reason
-#  return str
+## Get an error message for why a read might have failed.  This is not a
+## threadsafe function.
+proc stbiFailureReason*(): string =
+  return $stbi_failure_reason_internal()
 
 
 
@@ -44,7 +42,6 @@ proc stbi_failure_reason(): cstring
 # 8 bits per channel
 # ==================
 
-# Internal functions
 proc stbi_load(
   filename: cstring;
   x, y, channels_in_file: var cint;
