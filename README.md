@@ -71,4 +71,6 @@ TODO:
  - [ ] Figure out how to handle including the header files
    - Embedd the source in the .nim files?
    - Tell the user they need to do a `--cincludes:.`?
+ - [ ] A very simple "How to use" section
+   - [ ] including the header files
 
