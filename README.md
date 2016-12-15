@@ -60,7 +60,7 @@ TODO:
    - [ ] flip function
    - [X] 16 bit functions
    - [ ] float functions
-   - [ ] hdr functions
+   - [X] hdr functions
  - [ ] Provide some examples of each (How-To section)
    - [ ] Image read example
    - [ ] Image write example

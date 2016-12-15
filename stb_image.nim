@@ -288,7 +288,9 @@ proc stbi_is_hdr_from_memory(buffer: ptr cuchar; len: cint): cint
 proc stbi_is_hdr(filename: cstring): cint
   {.importc: "stbi_is_hdr", noDecl.}
 
-proc stbi_is_hdr_from_file(f: File): cint
+# NOTE: because of identifiers work in Nim, I need to add that extra "_internal"
+#       there.
+proc stbi_is_hdr_from_file_internal(f: File): cint
   {.importc: "stbi_is_hdr_from_file", noDecl.}
 
 
@@ -313,24 +315,19 @@ proc stbiLDRToHDRScale*(scale: float) =
 
 
 # TODO document
-proc stbiIsHDRFromMemory(buffer: seq[uint8]): bool =
-  # TODO finish
-  # Returns 0 for false, 1 for true
-  discard
+proc stbiIsHDRFromMemory*(buffer: seq[uint8]): bool =
+  var castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
+  return (stbi_is_hdr_from_memory(castedBuffer, buffer.len.cint) == 1)
 
 
 # TODO document
-proc stbiIsHDR(filename: string): bool =
-  # TODO finish
-  # Returns 0 for false, 1 for true
-  discard
+proc stbiIsHDR*(filename: string): bool =
+  return (stbi_is_hdr(filename.cstring) == 1)
   
 
 # TODO document
-proc stbiIsHDRFromFile(f: File): bool =
-  # TODO finish
-  # Returns 0 for false, 1 for true
-  discard
+proc stbiIsHDRFromFile*(f: File): bool =
+  return (stbi_is_hdr_from_file_internal(f) == 1)
 
 
 # TODO the info functions
