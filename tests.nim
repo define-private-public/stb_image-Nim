@@ -142,6 +142,18 @@ suite "Unit Tests for stb_image wrapper.":
     check(pixels[1] == 168)
 
 
+#  NOTE: not able to find a suitable 16 bit image to test against
+#  test "stbiLoad16":
+#    check(false)
+
+
+#  NOTE: not able to find a suitable 16 bit image to test against
+#  test "stbiLoadFromFile16":
+#    check(false)
+
+
+
+
 suite "Unit tests for stbi_image_write wrapper":
   test "stbiWriteBMP":
     # data

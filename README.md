@@ -83,7 +83,8 @@ some very simple test images I could use, please provide them.  Here is the list
 of functions that are untested.
 
 From `stb_image.h`:
- -
+ - `stbiLoad16()`
+ - `stbiLoadFromFile16()`
 
 From `stb_image_write.h`:
  - `stbWriteHDR()`
