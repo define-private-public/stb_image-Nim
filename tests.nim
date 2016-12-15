@@ -268,7 +268,8 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
+  # Note, I haven't been able to find a simple HDR image to test against, so
+  # that is why there isn't a test for it here.
 #  test "stbiWriteHDR":
-#    # TODO this needs to be implemented
 #    check(false)
 

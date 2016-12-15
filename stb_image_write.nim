@@ -45,8 +45,12 @@ proc stbi_write_tga(
 ): cint
   {.importc: "stbi_write_tga", noDecl.}
 
-# TODO this one after we've got some HDR test files
-#int stbi_write_hdr(char const *filename, int w, int h, int comp, const float *data);
+proc stbi_write_hdr(
+  filename: cstring;
+  w, h, comp: cint;
+  data: ptr cfloat
+): cint
+  {.importc: "stbi_write_hdr", noDecl.}
 
 
 ## This proc will let you write out data to a PNG file.  `w` and `h` are the
@@ -84,6 +88,23 @@ proc stbiWriteTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: 
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   return stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
+
+
+## This proc will let you write out data to a BMP file.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
+## same as `w * h * comp`.  This returns a non-zero value upon success.
+##
+## From the header file:
+## ----
+## HDR expects linear float data. Since the format is always 32-bit rgb(e)
+## data, alpha (if provided) is discarded, and for monochrome data it is
+## replicated across all three channels.
+## --
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+proc stbiWriteHDR*(filename: string; w, h, comp: int; data: seq[float32]): int =
+  return stbi_write_hdr(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 
 # For the moment being, the callback write functions are going to be skipped

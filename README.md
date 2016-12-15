@@ -62,15 +62,30 @@ TODO:
    - [ ] 16 bit functions
    - [ ] float functions
    - [ ] hdr functions
- - [ ] wrap `stb_image_write.h`
-   - [ ] wrap the hdr/float function & test it
  - [ ] Provide some examples of each
    - [ ] Image read example
    - [ ] Image write example
-   - [ ] Image resize example
  - [ ] Figure out how to handle including the header files
    - Embedd the source in the .nim files?
    - Tell the user they need to do a `--cincludes:.`?
  - [ ] A very simple "How to use" section
    - [ ] including the header files
+ - [ ] Test on OS X
+ - [ ] Test on Windows
+
+
+Untested Functions
+------------------
+
+All functions should have tests for them, but I wasn't able to find some test
+images (namely for the HDR) functions.  So they do have bindings for
+completeness, but they haven't been proven to work.  If you do happent to have
+some very simple test images I could use, please provide them.  Here is the list
+of functions that are untested.
+
+From `stb_image.h`:
+ -
+
+From `stb_image_write.h`:
+ - `stbWriteHDR()`
 
