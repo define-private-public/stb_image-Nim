@@ -58,12 +58,12 @@ TODO:
    - [ ] premultiply function
    - [ ] iphone function
    - [ ] flip function
-   - [ ] 16 bit functions
+   - [X] 16 bit functions
    - [ ] float functions
    - [ ] hdr functions
- - [ ] Provide some examples of each
+ - [ ] Provide some examples of each (How-To section)
    - [ ] Image read example
-   - [X] Image write example
+   - [ ] Image write example
  - [ ] Figure out how to handle including the header files
    - Embedd the source in the .nim files?
    - Tell the user they need to do a `--cincludes:.`?
@@ -89,6 +89,9 @@ From `stb_image.h`:
  - `stbiHDRToLDRScale()`
  - `stbiLDRToHDRGamma()`
  - `stbiLDRToHDRScale()`
+ - `stbiIsHDRFromMemory()`
+ - `stbiIsHDR()`
+ - `stbiIsHDRFromFile()`
 
 From `stb_image_write.h`:
  - `stbWriteHDR()`

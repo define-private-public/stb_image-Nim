@@ -279,6 +279,18 @@ proc stbi_ldr_to_hdr_gamma(gamma: cfloat)
 proc stbi_ldr_to_hdr_scale(scale: cfloat)
   {.importc: "stbi_ldr_to_hdr_scale", noDecl.}
 
+# The callback functions are going to be skipped (see the README.md)
+#int stbi_is_hdr_from_callbacks(stbi_io_callbacks const *clbk, void *user);
+
+proc stbi_is_hdr_from_memory(buffer: ptr cuchar; len: cint): cint
+  {.importc: "stbi_is_hdr_from_memory", noDecl.}
+
+proc stbi_is_hdr(filename: cstring): cint
+  {.importc: "stbi_is_hdr", noDecl.}
+
+proc stbi_is_hdr_from_file(f: File): cint
+  {.importc: "stbi_is_hdr_from_file", noDecl.}
+
 
 # TODO document
 proc stbiHDRToLDRGamma*(gamma: float) =
@@ -300,12 +312,25 @@ proc stbiLDRToHDRScale*(scale: float) =
   stbi_ldr_to_hdr_scale(scale.cfloat)
 
 
-# The callback functions are going to be skipped (see the README.md)
-#int stbi_is_hdr_from_callbacks(stbi_io_callbacks const *clbk, void *user);
+# TODO document
+proc stbiIsHDRFromMemory(buffer: seq[uint8]): bool =
+  # TODO finish
+  # Returns 0 for false, 1 for true
+  discard
 
-#int stbi_is_hdr_from_memory(stbi_uc const *buffer, int len);
-#int stbi_is_hdr(char const *filename);
-#int stbi_is_hdr_from_file(FILE *f);
+
+# TODO document
+proc stbiIsHDR(filename: string): bool =
+  # TODO finish
+  # Returns 0 for false, 1 for true
+  discard
+  
+
+# TODO document
+proc stbiIsHDRFromFile(f: File): bool =
+  # TODO finish
+  # Returns 0 for false, 1 for true
+  discard
 
 
 # TODO the info functions
@@ -321,9 +346,11 @@ proc stbiLDRToHDRScale*(scale: float) =
 # TODO premultiply functions
 #void stbi_set_unpremultiply_on_load(int flag_true_if_should_unpremultiply);
 
+
 # TODO iphone
 ## indicate whether we should process iphone images back to canonical format,
 #void stbi_convert_iphone_png_to_rgb(int flag_true_if_should_convert);
+
 
 # TODO flip
 ##flip the image vertically, so the first pixel in the output array is the bottom left
