@@ -85,6 +85,10 @@ of functions that are untested.
 From `stb_image.h`:
  - `stbiLoad16()`
  - `stbiLoadFromFile16()`
+ - `stbiHDRToLDRGamma()`
+ - `stbiHDRToLDRScale()`
+ - `stbiLDRToHDRGamma()`
+ - `stbiLDRToHDRScale()`
 
 From `stb_image_write.h`:
  - `stbWriteHDR()`

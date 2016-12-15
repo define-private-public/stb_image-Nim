@@ -267,11 +267,38 @@ proc stbiLoadFromFile16(f: File; x, y, channels_in_file: var int; desired_channe
 # HDR functions
 # =============
 
-#void stbi_hdr_to_ldr_gamma(float gamma);
-#void stbi_hdr_to_ldr_scale(float scale);
+proc stbi_hdr_to_ldr_gamma(gamma: cfloat)
+  {.importc: "stbi_hdr_to_ldr_gamma", noDecl.}
 
-#void stbi_ldr_to_hdr_gamma(float gamma);
-#void stbi_ldr_to_hdr_scale(float scale);
+proc stbi_hdr_to_ldr_scale(scale: cfloat)
+  {.importc: "stbi_hdr_to_ldr_scale", noDecl.}
+
+proc stbi_ldr_to_hdr_gamma(gamma: cfloat)
+  {.importc: "stbi_ldr_to_hdr_gamma", noDecl.}
+
+proc stbi_ldr_to_hdr_scale(scale: cfloat)
+  {.importc: "stbi_ldr_to_hdr_scale", noDecl.}
+
+
+# TODO document
+proc stbiHDRToLDRGamma*(gamma: float) =
+  stbi_hdr_to_ldr_gamma(gamma.cfloat)
+
+
+# TODO document
+proc stbiHDRToLDRScale*(scale: float) =
+  stbi_hdr_to_ldr_scale(scale.cfloat)
+
+
+# TODO document
+proc stbiLDRToHDRGamma*(gamma: float) =
+  stbi_ldr_to_hdr_gamma(gamma.cfloat)
+
+
+# TODO document
+proc stbiLDRToHDRScale*(scale: float) =
+  stbi_ldr_to_hdr_scale(scale.cfloat)
+
 
 # The callback functions are going to be skipped (see the README.md)
 #int stbi_is_hdr_from_callbacks(stbi_io_callbacks const *clbk, void *user);
