@@ -55,9 +55,9 @@ TODO:
  - [ ] wrap `stb_image.h`
    - [x] Make a list of functions/exposables
    - [ ] info functions
-   - [ ] premultiply function
-   - [ ] iphone function
-   - [ ] flip function
+   - [x] premultiply function
+   - [x] iphone function
+   - [x] flip function
    - [X] 16 bit functions
    - [ ] float functions
    - [X] hdr functions
