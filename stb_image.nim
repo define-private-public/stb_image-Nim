@@ -146,7 +146,7 @@ proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; de
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
 ##
-## This should also close the file handle too.
+## This will also close the file handle too.
 proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
   var
     width: cint
@@ -192,7 +192,15 @@ proc stbi_load_from_file_16(
   {.importc: "stbi_load_from_file_16", noDecl.}
 
 
-# TODO document
+## This takes in a filename and will return a sequence (of unsigned shorts) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+##
+## This is used for files where the channels for the pixel data are encoded as
+## 16 bit integers (e.g. some Photoshop files).
 proc stbiLoad16*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
   var
     width: cint
@@ -223,8 +231,18 @@ proc stbiLoad16*(filename: string; x, y, channels_in_file: var int; desired_chan
   return pixelData
 
 
-# TODO document
-proc stbiLoadFromFile16(f: File; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
+## This takes in a File and will return a sequence (of unsigned shorts) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+##
+## This will also close the file handle too.
+##
+## This is used for files where the channels for the pixel data are encoded as
+## 16 bit integers (e.g. some Photoshop files).
+proc stbiLoadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
   var
     width: cint
     height: cint
@@ -295,38 +313,38 @@ proc stbi_is_hdr_from_file_internal(f: File): cint
   {.importc: "stbi_is_hdr_from_file", noDecl.}
 
 
-# TODO document
+## Please see the "HDR image support" section in the `stb_image.h` header file
 proc stbiHDRToLDRGamma*(gamma: float) =
   stbi_hdr_to_ldr_gamma(gamma.cfloat)
 
 
-# TODO document
+## Please see the "HDR image support" section in the `stb_image.h` header file
 proc stbiHDRToLDRScale*(scale: float) =
   stbi_hdr_to_ldr_scale(scale.cfloat)
 
 
-# TODO document
+## Please see the "HDR image support" section in the `stb_image.h` header file
 proc stbiLDRToHDRGamma*(gamma: float) =
   stbi_ldr_to_hdr_gamma(gamma.cfloat)
 
 
-# TODO document
+## Please see the "HDR image support" section in the `stb_image.h` header file
 proc stbiLDRToHDRScale*(scale: float) =
   stbi_ldr_to_hdr_scale(scale.cfloat)
 
 
-# TODO document
+## Checks to see if an image is an HDR image, from memory (as a string of bytes)
 proc stbiIsHDRFromMemory*(buffer: seq[uint8]): bool =
   var castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
   return (stbi_is_hdr_from_memory(castedBuffer, buffer.len.cint) == 1)
 
 
-# TODO document
+## Checks to see if an image, with the given filename, is an HDR image.
 proc stbiIsHDR*(filename: string): bool =
   return (stbi_is_hdr(filename.cstring) == 1)
   
 
-# TODO document
+## Checks to see if an image is an HDR image, from a File pointer.
 proc stbiIsHDRFromFile*(f: File): bool =
   return (stbi_is_hdr_from_file_internal(f) == 1)
 
