@@ -55,15 +55,6 @@ TODO:
  - [ ] drop the `stbi` part from each function (and lowercase the first character),
        see how it work (along with the write wrapper)
  - [ ] See about returning refs to sequences instead of seqs themselves
- - [ ] wrap `stb_image.h`
-   - [X] Make a list of functions/exposables
-   - [X] info functions
-   - [X] premultiply function
-   - [X] iphone function
-   - [X] flip function
-   - [X] 16 bit functions
-   - [ ] float functions
-   - [X] hdr functions
  - [ ] Provide some examples of each (How-To section)
    - [ ] Image read example
    - [ ] Image write example
