@@ -1,3 +1,7 @@
+{.emit: """
+
+#define STB_IMAGE_IMPLEMENTATION
+
 /* stb_image - v2.13 - public domain image loader - http://nothings.org/stb_image.h
                                      no warranty implied; use at your own risk
 
@@ -7097,3 +7101,5 @@ STBIDEF int stbi_info_from_callbacks(stbi_io_callbacks const *c, void *user, int
       0.50  (2006-11-19)
               first released version
 */
+
+""".}

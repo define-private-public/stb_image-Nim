@@ -10,13 +10,7 @@ export stb_image_components.Grey
 export stb_image_components.GreyAlpha
 export stb_image_components.RGB
 export stb_image_components.RGBA
-
-
-# Required
-{.emit: """
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-""".}
+import stb_image_header
 
 
 # NOTE: this function is here for completness, but it's not exposed in the

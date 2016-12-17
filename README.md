@@ -1,20 +1,16 @@
 Nim stb_image Wrapper
 =====================
 
-Please note before using this wrapper is that it is still in development.
-Though eventually it should be complete.
-
 This is a Nim wrapper of the stb_image single header file libraries
-(`stb_image.h` and `stb_image_write.h`).  It is still a work in progress, so
-all functions/features might not be fully exposed yet; do hold tight.
-
+(`stb_image.h` and `stb_image_write.h`).
 
 Official repo page can be found here:
 https://gitlab.com/define-private-public/stb_image-Nim
 
 All other sites should be considered mirrors.
 
-The used header files are included in this repo but you may provide your own.
+The used header files are included in this repo (they end in the name
+`_header.nim`) but you may provide your own.
 The versions that are used are:
 
  - `stb_image.h`: v2.13

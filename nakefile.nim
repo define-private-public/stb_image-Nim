@@ -6,12 +6,11 @@ const
 
   Tests = "tests"
   BinaryName = "tests"
-  SearchPath = "--cincludes:."    # Needed to find the header files
 
 
 # Build the unit tests
 task "tests", "build unit tests for the library":
-  if shell(nimExe, "c", SearchPath, Tests):
+  if shell(nimExe, "c", Tests):
     echo "Tests Built."
 
 
