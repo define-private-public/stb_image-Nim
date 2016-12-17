@@ -52,6 +52,7 @@ Other Notes
 -----------
 
 TODO:
+ - [ ] See about returning refs to sequences instead of seqs themselves
  - [ ] wrap `stb_image.h`
    - [x] Make a list of functions/exposables
    - [ ] info functions
