@@ -43,7 +43,7 @@ requests.
 License
 -------
 
-In the nature of Sean Barret (a.k.a. "stb") putting his libraries in public
+In the nature of Sean Barret (author of stb) putting his libraries in public
 domain, so is this code.  Specifically it falls under the "Unlicense."  Please
 check the file `LICENSE` for details.
 
