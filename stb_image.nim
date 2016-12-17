@@ -272,15 +272,35 @@ proc stbiLoadFromFile16*(f: File; x, y, channels_in_file: var int; desired_chann
 # Float channel interface
 # =======================
 
-# TODO float channel interface
-
+# TODO wrap
 #float *stbi_loadf(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
+proc stbi_loadf(
+  filename: cstring;
+  x, y, channels_in_file: var int;
+  desired_channels: int
+): ptr cfloat
+  {.importc: "stbi_loadf", noDecl.}
+
+# TODO wrap
 #float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
+proc stbi_loadf_from_memory(
+  buffer: ptr cuchar;
+  x, y, channels_in_file: var int;
+  desired_channels: int
+): ptr cfloat
+  {.importc: "stbi_loadf_from_memory", noDecl.}
 
 # The callback functions are going to be skipped (see the README.md)
 #float *stbi_loadf_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
 
+# TODO wrap
 #float *stbi_loadf_from_file(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
+proc stbi_loadf_from_file(
+  f: File;
+  x, y, channels_in_file: var int;
+  desired_channels: int
+): ptr cfloat
+  {.importc: "stbi_loadf_from_file", noDecl.}
 
 
 

@@ -1,6 +1,6 @@
 [Package]
 name        = "stb_image"
-version     = "0.6"
+version     = "0.7"
 author      = "Benjamin N. Summerton <define-private-public>"
 description = "A wrapper for stb_image (including stb_image_write)."
 license     = "Unlicense (Public Domain)"

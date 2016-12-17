@@ -52,6 +52,8 @@ Other Notes
 -----------
 
 TODO:
+ - [ ] drop the `stbi` part from each function (and lowercase the first character),
+       see how it work (along with the write wrapper)
  - [ ] See about returning refs to sequences instead of seqs themselves
  - [ ] wrap `stb_image.h`
    - [X] Make a list of functions/exposables
@@ -86,6 +88,9 @@ of functions that are untested.
 From `stb_image.h`:
  - `stbiLoad16()`
  - `stbiLoadFromFile16()`
+ - `stbiLoadF()`
+ - `stbiLoadFFromMemory()`
+ - `stbiLoadFFromFile()`
  - `stbiHDRToLDRGamma()`
  - `stbiHDRToLDRScale()`
  - `stbiLDRToHDRGamma()`
