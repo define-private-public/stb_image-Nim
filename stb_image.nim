@@ -18,17 +18,14 @@ import stb_image_header
 proc stbi_image_free(retval_from_stbi_load: ptr)
   {.importc: "stbi_image_free", noDecl.}
 
-
-# NOTE: because of identifiers work in Nim, I need to add that extra "_internal"
-#       there.
-proc stbi_failure_reason_internal(): cstring
+proc stbi_failure_reason(): cstring
   {.importc: "stbi_failure_reason", noDecl.}
 
 
 ## Get an error message for why a read might have failed.  This is not a
 ## threadsafe function.
 proc failureReason*(): string =
-  return $stbi_failure_reason_internal()
+  return $stbi_failure_reason()
 
 
 
@@ -412,9 +409,7 @@ proc stbi_is_hdr_from_memory(buffer: ptr cuchar; len: cint): cint
 proc stbi_is_hdr(filename: cstring): cint
   {.importc: "stbi_is_hdr", noDecl.}
 
-# NOTE: because of identifiers work in Nim, I need to add that extra "_internal"
-#       there.
-proc stbi_is_hdr_from_file_internal(f: File): cint
+proc stbi_is_hdr_from_file(f: File): cint
   {.importc: "stbi_is_hdr_from_file", noDecl.}
 
 
@@ -451,7 +446,7 @@ proc isHDR*(filename: string): bool =
 
 ## Checks to see if an image is an HDR image, from a File pointer.
 proc isHDRFromFile*(f: File): bool =
-  return (stbi_is_hdr_from_file_internal(f) == 1)
+  return (stbi_is_hdr_from_file(f) == 1)
 
 
 
