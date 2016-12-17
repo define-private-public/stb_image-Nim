@@ -50,13 +50,12 @@ Other Notes
 TODO:
  - [ ] drop the `stbi` part from each function (and lowercase the first character),
        see how it work (along with the write wrapper)
+   - [ ] To simplify the codebase, then you can drop the `_internal` part from
+         the non-exposed functions
  - [ ] See about returning refs to sequences instead of seqs themselves
  - [ ] Provide some examples of each (How-To section)
    - [ ] Image read example
    - [ ] Image write example
- - [ ] Figure out how to handle including the header files
-   - Embedd the source in the .nim files?
-   - Tell the user they need to do a `--cincludes:.`?
  - [ ] Test on OS X
  - [ ] Test on Windows
 
