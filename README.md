@@ -54,11 +54,11 @@ Other Notes
 TODO:
  - [ ] See about returning refs to sequences instead of seqs themselves
  - [ ] wrap `stb_image.h`
-   - [x] Make a list of functions/exposables
-   - [ ] info functions
-   - [x] premultiply function
-   - [x] iphone function
-   - [x] flip function
+   - [X] Make a list of functions/exposables
+   - [X] info functions
+   - [X] premultiply function
+   - [X] iphone function
+   - [X] flip function
    - [X] 16 bit functions
    - [ ] float functions
    - [X] hdr functions

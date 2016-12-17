@@ -271,7 +271,9 @@ proc stbiLoadFromFile16*(f: File; x, y, channels_in_file: var int; desired_chann
 # =======================
 # Float channel interface
 # =======================
+
 # TODO float channel interface
+
 #float *stbi_loadf(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
 #float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
 
@@ -348,14 +350,12 @@ proc stbiIsHDR*(filename: string): bool =
 proc stbiIsHDRFromFile*(f: File): bool =
   return (stbi_is_hdr_from_file_internal(f) == 1)
 
+
+
 # ==============
 # Info Functions
 # ==============
 
-## get image dimensions & components without fully decoding
-
-#int stbi_info_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp);
-# TODO add wrapper
 proc stbi_info_from_memory(
   buffer: ptr cuchar;
   len: cint;
@@ -377,6 +377,25 @@ proc stbi_info_from_file(
   x, y, comp: var cint
 ): cint
   {.importc: "stbi_info_from_file", noDecl.}
+
+
+# TODO should there be an overload that has a string instead?
+## Querys a buffer to see if that data is a loadable image and get it's
+## dimensions.  Returns true if stb_image can load this image, false otherwise.
+proc stbiInfoFromMemory*(buffer: seq[uint8]; x, y, comp: var int): bool =
+  var
+    # Cast the buffer to another data type
+    castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
+    width: cint
+    height: cint
+    channels: cint
+    r = stbi_info_from_memory(castedBuffer, buffer.len.cint, width, height, channels)
+
+  # Set the data and return
+  x = width.int
+  y = height.int
+  comp = channels.int
+  return (r == 1)
 
 
 ## Querys a filename to see if that file is a loadable image and get it's
@@ -417,7 +436,6 @@ proc stbiInfoFromFile*(f: File; x, y, comp: var int): bool =
 # ===============
 # Extra Functions
 # ===============
-
 
 proc stbi_set_unpremultiply_on_load(flag_true_if_should_unpremultiply: cint)
   {.importc: "stbi_set_unpremultiply_on_load", noDecl.}

@@ -322,6 +322,19 @@ suite "Unit tests for stbi_image_write wrapper":
 
 
 suite "info functions":
+  test "stbiInfoFromMemory":
+    # Data
+    var
+      width: int
+      height: int
+      channels: int
+
+    check(stbiInfoFromMemory(testImage3, width, height, channels))
+    check(width == 1)
+    check(height == 2)
+    check(channels == Grey)
+
+
   test "stbiInfo":
     # Data
     var
