@@ -92,6 +92,7 @@ From `stb_image.h`:
  - `stbiIsHDRFromMemory()`
  - `stbiIsHDR()`
  - `stbiIsHDRFromFile()`
+ - `stbiConvertIPhoneRGBToPNG()`
 
 From `stb_image_write.h`:
  - `stbWriteHDR()`

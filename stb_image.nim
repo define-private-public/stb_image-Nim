@@ -340,17 +340,35 @@ proc stbiIsHDRFromFile*(f: File): bool =
 
 
 
-# TODO premultiply functions
-#void stbi_set_unpremultiply_on_load(int flag_true_if_should_unpremultiply);
+# ===============
+# Extra Functions
+# ===============
 
 
-# TODO iphone
-## indicate whether we should process iphone images back to canonical format,
-#void stbi_convert_iphone_png_to_rgb(int flag_true_if_should_convert);
+proc stbi_set_unpremultiply_on_load(flag_true_if_should_unpremultiply: cint)
+  {.importc: "stbi_set_unpremultiply_on_load", noDecl.}
 
+proc stbi_convert_iphone_png_to_rgb(flag_true_if_should_convert: cint)
+  {.importc: "stbi_convert_iphone_png_to_rgb", noDecl.}
 
 proc stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint)
   {.importc: "stbi_set_flip_vertically_on_load", noDecl.}
+
+
+## From the header file: "For image formats that explicitly notate that they
+## have premultiplied alpha, we just return the colors as stored in the file.
+## set this flag to force unpremultiplication. results are undefined if the
+## unpremultiply overflow.  This function acts globally, so if you use it once I
+## recommend calling it again right after loading what you want.
+proc stbiSetUnpremultiplyOnLoad*(unpremultiply: bool) =
+  stbi_set_unpremultiply_on_load(if unpremultiply: 1 else: 0)
+  
+
+## From the header file: "indicate whether we should process iphone images back
+## to canonical format."  This function acts globally, so if you use it once I
+## recommend calling it again right after loading what you want.
+proc stbiConvertIPhonePNGToRGB*(convert: bool) =
+  stbi_convert_iphone_png_to_rgb(if convert: 1 else: 0)
 
 
 ## From the header file: "flip the image vertically, so the first pixels in the
@@ -360,13 +378,18 @@ proc stbiSetFlipVerticallyOnLoad*(flip: bool) =
   stbi_set_flip_vertically_on_load(if flip: 1 else: 0)
 
 
+
+# =====================
+# ZLIB Client Functions
+# =====================
+
 # The ZLIB client functions are out of the scope of this wrapper, but if someone
 # wants them added in (or provides a pull request).  I'll consider adding it.
-#
+
 #char *stbi_zlib_decode_malloc_guesssize(const char *buffer, int len, int initial_size, int *outlen);
 #char *stbi_zlib_decode_malloc_guesssize_headerflag(const char *buffer, int len, int initial_size, int *outlen, int parse_header);
 #char *stbi_zlib_decode_malloc(const char *buffer, int len, int *outlen);
 #int   stbi_zlib_decode_buffer(char *obuffer, int olen, const char *ibuffer, int ilen);
 #char *stbi_zlib_decode_noheader_malloc(const char *buffer, int len, int *outlen);
 #int   stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char *ibuffer, int ilen);
-#
+

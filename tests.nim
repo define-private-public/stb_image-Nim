@@ -152,37 +152,37 @@ suite "Unit Tests for stb_image wrapper":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiHDRToLDRGamma":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiHDRToLDRScale":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiLDRToHDRGamma":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiLDRToHDRScale":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiIsHDRFromMemory":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiIsHDR":
 #    check(false)
 #
 #
-#  NOTE: not able to find a suitable HDR image to test agaisnt
+#  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiIsHDRFromFile":
 #    check(false)
 
@@ -320,7 +320,16 @@ suite "Unit tests for stbi_image_write wrapper":
 #    check(false)
 
 
+
 suite "extra functions (from stb_image.h)":
+#  # NOTE: I have no idea how to test this function, but I would like to
+#  test "stbiSetUnpremultiplyOnLoad":
+#    check(false)
+
+#  # NOTE: I have no idea how to test this function, but I would like to
+#  test "stbiConvertIPhonePNGToRGB":
+#    check(false)
+
   test "stbiSetFlipVerticallyOnLoad":
     # Flip upside down
     stbiSetFlipVerticallyOnLoad(true)
