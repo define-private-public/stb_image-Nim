@@ -69,7 +69,7 @@ proc stbi_load_from_file(
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc stbiLoad*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
+proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
   var
     width: cint
     height: cint
