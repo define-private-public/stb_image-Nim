@@ -349,9 +349,15 @@ proc stbiIsHDRFromFile*(f: File): bool =
 #void stbi_convert_iphone_png_to_rgb(int flag_true_if_should_convert);
 
 
-# TODO flip
-##flip the image vertically, so the first pixel in the output array is the bottom left
-#void stbi_set_flip_vertically_on_load(int flag_true_if_should_flip);
+proc stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint)
+  {.importc: "stbi_set_flip_vertically_on_load", noDecl.}
+
+
+## From the header file: "flip the image vertically, so the first pixels in the
+## output array is the bottom left".  This function acts globally, so if you use
+## it once, I recommend calling it again right after loading what you want.
+proc stbiSetFlipVerticallyOnLoad*(flip: bool) =
+  stbi_set_flip_vertically_on_load(if flip: 1 else: 0)
 
 
 # The ZLIB client functions are out of the scope of this wrapper, but if someone
