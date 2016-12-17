@@ -348,14 +348,39 @@ proc stbiIsHDR*(filename: string): bool =
 proc stbiIsHDRFromFile*(f: File): bool =
   return (stbi_is_hdr_from_file_internal(f) == 1)
 
+# ==============
+# Info Functions
+# ==============
 
-# TODO the info functions
 ## get image dimensions & components without fully decoding
+
 #int stbi_info_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp);
+# TODO add wrapper
+proc stbi_info_from_memory(
+  buffer: ptr cuchar;
+  len: cint;
+  x, y, comp: var cint
+): cint
+  {.importc: "stbi_info_from_memory", noDecl.}
+
+# NOTE: I am skipping callback functions unless there is a demand for them
 #int stbi_info_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *comp);
-#
+
 #int stbi_info(char const *filename, int *x, int *y, int *comp);
-#int stbi_info_from_fileFILE *f, int *x, int *y, int *comp);
+# TODO add wrapper
+proc stbi_info(
+  filename: cstring;
+  x, y, comp: var cint
+): cint
+  {.importc: "stbi_info", noDecl.}
+
+#int stbi_info_from_file(FILE *f, int *x, int *y, int *comp);
+# TODO add wrapper
+proc stbi_info_from_file(
+  f: File;
+  x, y, comp: var cint
+): cint
+  {.importc: "stbi_info_from_file", noDecl.}
 
 
 
