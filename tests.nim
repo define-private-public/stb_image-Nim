@@ -321,6 +321,21 @@ suite "Unit tests for stbi_image_write wrapper":
 
 
 
+suite "info functions":
+  test "stbiInfo":
+    # Data
+    var
+      width: int
+      height: int
+      channels: int
+
+    check(stbiInfo(testImage1, width, height, channels))
+    check(width == 2)
+    check(height == 2)
+    check(channels == RGBA)
+
+
+
 suite "extra functions (from stb_image.h)":
 #  # NOTE: I have no idea how to test this function, but I would like to
 #  test "stbiSetUnpremultiplyOnLoad":

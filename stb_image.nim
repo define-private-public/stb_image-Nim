@@ -384,6 +384,23 @@ proc stbi_info_from_file(
 
 
 
+## Querys a filename to see if that file is a loadable image and get it's
+## dimensions.  Returns true of stb_image can load this image, false otherwise.
+proc stbiInfo*(filename: string; x, y, comp: var int): bool =
+  var
+    width: cint
+    height: cint
+    channels: cint
+    r = stbi_info(filename.cstring, width, height, channels)
+  
+  # Set the data & return
+  x = width.int
+  y = height.int
+  comp = channels.int
+  return (r == 1)
+
+
+
 # ===============
 # Extra Functions
 # ===============
