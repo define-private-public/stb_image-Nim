@@ -1,7 +1,7 @@
 import unittest
 import os
 import stb_image
-import stb_image_write
+import stb_image_write as stbi
 
 
 const
@@ -220,7 +220,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # Non-zero is returned on success
-    check(stbiWriteBMP(filename, width, height, channels, pixels) != 0)
+    check(stbi.writeBMP(filename, width, height, channels, pixels) != 0)
 
     # Verify the image with the one in "testdata/"
     var
@@ -252,7 +252,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addYA(0x00, 0x33)
 
     # Non-zero is returned on success
-    check(stbiWritePNG(filename, width, height, channels, pixels) != 0)
+    check(stbi.writePNG(filename, width, height, channels, pixels) != 0)
 
     # Verify image is the same in testdata/
     var
@@ -282,7 +282,7 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Non-zero is returned on success
     # Writing with RLE by default
-    check(stbiWriteTGA(filename, width, height, channels, pixels) != 0)
+    check(stbi.writeTGA(filename, width, height, channels, pixels) != 0)
 
     # Verify image is the same in testdata/
     var
@@ -316,7 +316,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGBA(0x00, 0x99, 0xFF, 0xFF)
 
     # Non-zero is returned on success
-    check(stbiWriteTGA(filename, width, height, channels, pixels, false) != 0)
+    check(stbi.writeTGA(filename, width, height, channels, pixels, false) != 0)
 
     # Verify image is the same in testdata/
     var

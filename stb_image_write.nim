@@ -11,6 +11,7 @@ export stb_image_components.RGB
 export stb_image_components.RGBA
 import stb_image_write_header
 
+
 # Used for set if the TGA function should use run length encoding
 var stbi_write_tga_with_rle {.importc: "stbi_write_tga_with_rle".}: cint
 
@@ -54,7 +55,7 @@ proc stbi_write_hdr(
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default the stride is set to zero.
-proc stbiWritePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): int =
+proc writePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): int =
   return stbi_write_png(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes).int
 
 
@@ -64,7 +65,7 @@ proc stbiWritePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_i
 ## same as `w * h * comp`.  This returns a non-zero value upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
+proc writeBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
   return stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 
@@ -77,7 +78,7 @@ proc stbiWriteBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
 ##
 ## By default this function will save the TGA with run-length encoding, but this
 ## can be turned off by setting `useRLE` to `false`.
-proc stbiWriteTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool = true): int =
+proc writeTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool = true): int =
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   return stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
@@ -96,7 +97,7 @@ proc stbiWriteTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: 
 ## --
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc stbiWriteHDR*(filename: string; w, h, comp: int; data: seq[float32]): int =
+proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): int =
   return stbi_write_hdr(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
 
 
