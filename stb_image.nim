@@ -366,16 +366,12 @@ proc stbi_info_from_memory(
 # NOTE: I am skipping callback functions unless there is a demand for them
 #int stbi_info_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *comp);
 
-#int stbi_info(char const *filename, int *x, int *y, int *comp);
-# TODO add wrapper
 proc stbi_info(
   filename: cstring;
   x, y, comp: var cint
 ): cint
   {.importc: "stbi_info", noDecl.}
 
-#int stbi_info_from_file(FILE *f, int *x, int *y, int *comp);
-# TODO add wrapper
 proc stbi_info_from_file(
   f: File;
   x, y, comp: var cint
@@ -383,15 +379,32 @@ proc stbi_info_from_file(
   {.importc: "stbi_info_from_file", noDecl.}
 
 
-
 ## Querys a filename to see if that file is a loadable image and get it's
-## dimensions.  Returns true of stb_image can load this image, false otherwise.
+## dimensions.  Returns true if stb_image can load this image, false otherwise.
 proc stbiInfo*(filename: string; x, y, comp: var int): bool =
   var
     width: cint
     height: cint
     channels: cint
     r = stbi_info(filename.cstring, width, height, channels)
+  
+  # Set the data & return
+  x = width.int
+  y = height.int
+  comp = channels.int
+  return (r == 1)
+
+
+## Querys a File pointer to see if that file is a loadable image and get it's
+## dimensions.  Returns true if stb_image can load this image, false otherwise.
+##
+## This will also close the file handle.
+proc stbiInfoFromFile*(f: File; x, y, comp: var int): bool =
+  var
+    width: cint
+    height: cint
+    channels: cint
+    r = stbi_info_from_file(f, width, height, channels)
   
   # Set the data & return
   x = width.int

@@ -335,6 +335,23 @@ suite "info functions":
     check(channels == RGBA)
 
 
+  test "stbiInfoFromFile":
+    # Data
+    var
+      width: int
+      height: int
+      channels: int
+      fileObj: File
+
+    # Open the file object
+    check(open(fileObj, testImage2))
+
+    check(stbiInfoFromFile(fileObj, width, height, channels))
+    check(width == 2)
+    check(height == 1)
+    check(channels == RGB)
+
+
 
 suite "extra functions (from stb_image.h)":
 #  # NOTE: I have no idea how to test this function, but I would like to
