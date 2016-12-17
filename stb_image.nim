@@ -57,6 +57,10 @@ proc stbi_load_from_memory(
 ): ptr cuchar
   {.importc: "stbi_load_from_memory", noDecl.}
 
+# Right now I'm not planning on using the callback functions, but if someone
+# requests it (or provides a pull request), I'll consider adding them in.
+#stbi_uc *stbi_load_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
+
 proc stbi_load_from_file(
   f: File;
   x, y, channels_in_file: var cint;
@@ -131,12 +135,6 @@ proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; de
   stbi_image_free(data)
 
   return pixelData
-
-
-# Right now I'm not planning on using the callback functions, but if someone
-# requests it (or provides a pull request), I'll consider adding them in.
-#stbi_uc *stbi_load_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
-
 
 
 ## This takes in a File and will return a sequence (of unsigned bytes) that
@@ -272,35 +270,131 @@ proc stbiLoadFromFile16*(f: File; x, y, channels_in_file: var int; desired_chann
 # Float channel interface
 # =======================
 
-# TODO wrap
-#float *stbi_loadf(char const *filename, int *x, int *y, int *channels_in_file, int desired_channels);
 proc stbi_loadf(
   filename: cstring;
-  x, y, channels_in_file: var int;
-  desired_channels: int
+  x, y, channels_in_file: var cint;
+  desired_channels: cint
 ): ptr cfloat
   {.importc: "stbi_loadf", noDecl.}
 
-# TODO wrap
-#float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *channels_in_file, int desired_channels);
 proc stbi_loadf_from_memory(
   buffer: ptr cuchar;
-  x, y, channels_in_file: var int;
-  desired_channels: int
+  len: cint;
+  x, y, channels_in_file: var cint;
+  desired_channels: cint
 ): ptr cfloat
   {.importc: "stbi_loadf_from_memory", noDecl.}
 
 # The callback functions are going to be skipped (see the README.md)
 #float *stbi_loadf_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
 
-# TODO wrap
-#float *stbi_loadf_from_file(FILE *f, int *x, int *y, int *channels_in_file, int desired_channels);
 proc stbi_loadf_from_file(
   f: File;
-  x, y, channels_in_file: var int;
-  desired_channels: int
+  x, y, channels_in_file: var cint;
+  desired_channels: cint
 ): ptr cfloat
   {.importc: "stbi_loadf_from_file", noDecl.}
+
+
+## This takes in a filename and will return a sequence (of 32 bit floats) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+proc stbiLoadF*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
+  var
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_loadf(filename.cstring, width, height, components, desired_channels.cint)
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[float32]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  return pixelData
+
+
+# TODO should there be an overload that has a string instead?
+## This takes in a sequences of bytes (of an image file)
+## and will return a sequence (of 32 bit floats) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+proc stbiLoadFFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
+  var
+    # Cast the buffer to another data type
+    castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
+
+    # Return values
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_loadf_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[float32]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  return pixelData
+
+
+## This takes in a File and will return a sequence (of 32 bit floats) that
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+##
+## This will also close the file handle too.
+proc stbiLoadFFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[float32] =
+  var
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_loadf_from_file(f, width, height, components, desired_channels.cint)
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[float32]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  return pixelData
 
 
 

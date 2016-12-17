@@ -152,6 +152,21 @@ suite "Unit Tests for stb_image wrapper":
 #    check(false)
 #
 #
+#  NOTE: not able to find a suitable floating point image to test against
+#  test "stbiLoadF":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable floating point image to test against
+#  test "stbiLoadFFromMemory":
+#    check(false)
+#
+#
+#  NOTE: not able to find a suitable floating point image to test against
+#  test "stbiLoadFFromFile":
+#    check(false)
+#
+#
 #  NOTE: not able to find a suitable HDR image to test against
 #  test "stbiHDRToLDRGamma":
 #    check(false)
