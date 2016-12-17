@@ -27,7 +27,7 @@ proc stbi_failure_reason_internal(): cstring
 
 ## Get an error message for why a read might have failed.  This is not a
 ## threadsafe function.
-proc stbiFailureReason*(): string =
+proc failureReason*(): string =
   return $stbi_failure_reason_internal()
 
 
@@ -102,7 +102,7 @@ proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: 
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
+proc loadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
@@ -139,7 +139,7 @@ proc stbiLoadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; de
 ## "Default").
 ##
 ## This will also close the file handle too.
-proc stbiLoadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
+proc loadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
   var
     width: cint
     height: cint
@@ -193,7 +193,7 @@ proc stbi_load_from_file_16(
 ##
 ## This is used for files where the channels for the pixel data are encoded as
 ## 16 bit integers (e.g. some Photoshop files).
-proc stbiLoad16*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
+proc load16*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
   var
     width: cint
     height: cint
@@ -206,11 +206,6 @@ proc stbiLoad16*(filename: string; x, y, channels_in_file: var int; desired_chan
   x = width.int
   y = height.int
   channels_in_file = components.int
-
-  echo x
-  echo y
-  echo channels_in_file
-  echo stbiFailureReason()
 
   # Copy pixel data
   var pixelData: seq[uint16]
@@ -234,7 +229,7 @@ proc stbiLoad16*(filename: string; x, y, channels_in_file: var int; desired_chan
 ##
 ## This is used for files where the channels for the pixel data are encoded as
 ## 16 bit integers (e.g. some Photoshop files).
-proc stbiLoadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
+proc loadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
   var
     width: cint
     height: cint
@@ -296,7 +291,7 @@ proc stbi_loadf_from_file(
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc stbiLoadF*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
+proc loadF*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
   var
     width: cint
     height: cint
@@ -329,7 +324,7 @@ proc stbiLoadF*(filename: string; x, y, channels_in_file: var int; desired_chann
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc stbiLoadFFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
+proc loadFFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
@@ -366,7 +361,7 @@ proc stbiLoadFFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; d
 ## "Default").
 ##
 ## This will also close the file handle too.
-proc stbiLoadFFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[float32] =
+proc loadFFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[float32] =
   var
     width: cint
     height: cint
@@ -424,38 +419,38 @@ proc stbi_is_hdr_from_file_internal(f: File): cint
 
 
 ## Please see the "HDR image support" section in the `stb_image.h` header file
-proc stbiHDRToLDRGamma*(gamma: float) =
+proc HDRToLDRGamma*(gamma: float) =
   stbi_hdr_to_ldr_gamma(gamma.cfloat)
 
 
 ## Please see the "HDR image support" section in the `stb_image.h` header file
-proc stbiHDRToLDRScale*(scale: float) =
+proc HDRToLDRScale*(scale: float) =
   stbi_hdr_to_ldr_scale(scale.cfloat)
 
 
 ## Please see the "HDR image support" section in the `stb_image.h` header file
-proc stbiLDRToHDRGamma*(gamma: float) =
+proc LDRToHDRGamma*(gamma: float) =
   stbi_ldr_to_hdr_gamma(gamma.cfloat)
 
 
 ## Please see the "HDR image support" section in the `stb_image.h` header file
-proc stbiLDRToHDRScale*(scale: float) =
+proc LDRToHDRScale*(scale: float) =
   stbi_ldr_to_hdr_scale(scale.cfloat)
 
 
 ## Checks to see if an image is an HDR image, from memory (as a string of bytes)
-proc stbiIsHDRFromMemory*(buffer: seq[uint8]): bool =
+proc isHDRFromMemory*(buffer: seq[uint8]): bool =
   var castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
   return (stbi_is_hdr_from_memory(castedBuffer, buffer.len.cint) == 1)
 
 
 ## Checks to see if an image, with the given filename, is an HDR image.
-proc stbiIsHDR*(filename: string): bool =
+proc isHDR*(filename: string): bool =
   return (stbi_is_hdr(filename.cstring) == 1)
   
 
 ## Checks to see if an image is an HDR image, from a File pointer.
-proc stbiIsHDRFromFile*(f: File): bool =
+proc isHDRFromFile*(f: File): bool =
   return (stbi_is_hdr_from_file_internal(f) == 1)
 
 
@@ -490,7 +485,7 @@ proc stbi_info_from_file(
 # TODO should there be an overload that has a string instead?
 ## Querys a buffer to see if that data is a loadable image and get it's
 ## dimensions.  Returns true if stb_image can load this image, false otherwise.
-proc stbiInfoFromMemory*(buffer: seq[uint8]; x, y, comp: var int): bool =
+proc infoFromMemory*(buffer: seq[uint8]; x, y, comp: var int): bool =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
@@ -508,7 +503,7 @@ proc stbiInfoFromMemory*(buffer: seq[uint8]; x, y, comp: var int): bool =
 
 ## Querys a filename to see if that file is a loadable image and get it's
 ## dimensions.  Returns true if stb_image can load this image, false otherwise.
-proc stbiInfo*(filename: string; x, y, comp: var int): bool =
+proc info*(filename: string; x, y, comp: var int): bool =
   var
     width: cint
     height: cint
@@ -526,7 +521,7 @@ proc stbiInfo*(filename: string; x, y, comp: var int): bool =
 ## dimensions.  Returns true if stb_image can load this image, false otherwise.
 ##
 ## This will also close the file handle.
-proc stbiInfoFromFile*(f: File; x, y, comp: var int): bool =
+proc infoFromFile*(f: File; x, y, comp: var int): bool =
   var
     width: cint
     height: cint
@@ -560,21 +555,21 @@ proc stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint)
 ## set this flag to force unpremultiplication. results are undefined if the
 ## unpremultiply overflow.  This function acts globally, so if you use it once I
 ## recommend calling it again right after loading what you want.
-proc stbiSetUnpremultiplyOnLoad*(unpremultiply: bool) =
+proc setUnpremultiplyOnLoad*(unpremultiply: bool) =
   stbi_set_unpremultiply_on_load(if unpremultiply: 1 else: 0)
   
 
 ## From the header file: "indicate whether we should process iphone images back
 ## to canonical format."  This function acts globally, so if you use it once I
 ## recommend calling it again right after loading what you want.
-proc stbiConvertIPhonePNGToRGB*(convert: bool) =
+proc convertIPhonePNGToRGB*(convert: bool) =
   stbi_convert_iphone_png_to_rgb(if convert: 1 else: 0)
 
 
 ## From the header file: "flip the image vertically, so the first pixels in the
 ## output array is the bottom left".  This function acts globally, so if you use
 ## it once, I recommend calling it again right after loading what you want.
-proc stbiSetFlipVerticallyOnLoad*(flip: bool) =
+proc setFlipVerticallyOnLoad*(flip: bool) =
   stbi_set_flip_vertically_on_load(if flip: 1 else: 0)
 
 

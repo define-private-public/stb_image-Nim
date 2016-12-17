@@ -44,7 +44,7 @@ proc addYA(pixelData: var seq[uint8]; mono, alpha: uint8) =
 
 
 suite "Unit Tests for stb_image wrapper":
-  test "stbiLoad":
+  test "stbi.load":
     # Data
     var
       width: int
@@ -86,7 +86,7 @@ suite "Unit Tests for stb_image wrapper":
     check(pixels[12 + 3] == 0xFF) # A
 
 
-  test "stbiLoadFromFile":
+  test "stbi.loadFromFile":
     # Data
     var
       fileObj: File
@@ -99,7 +99,7 @@ suite "Unit Tests for stb_image wrapper":
     check(open(fileObj, testImage2))
 
     # Load the image
-    pixels = stbiLoadFromFile(fileObj, width, height, channels, Default)
+    pixels = stbi.loadFromFile(fileObj, width, height, channels, Default)
 
     check(width == 2)
     check(height == 1)
@@ -118,7 +118,7 @@ suite "Unit Tests for stb_image wrapper":
     check(pixels[3 + 2] == 0x00)
 
 
-  test "stbiLoadFromMemory":
+  test "stbi.loadFromMemory":
     # Data
     var
       width: int
@@ -127,7 +127,7 @@ suite "Unit Tests for stb_image wrapper":
       pixels: seq[uint8]
 
     # Load the image
-    pixels = stbiLoadFromMemory(testImage3, width, height, channels, Grey)
+    pixels = stbi.loadFromMemory(testImage3, width, height, channels, Grey)
 
     check(width == 1)
     check(height == 2)
@@ -143,68 +143,68 @@ suite "Unit Tests for stb_image wrapper":
 
 
 #  NOTE: not able to find a suitable 16 bit image to test against
-#  test "stbiLoad16":
+#  test "stbi.load16":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable 16 bit image to test against
-#  test "stbiLoadFromFile16":
+#  test "stbi.loadFromFile16":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable floating point image to test against
-#  test "stbiLoadF":
+#  test "stbi.loadF":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable floating point image to test against
-#  test "stbiLoadFFromMemory":
+#  test "stbi.loadFFromMemory":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable floating point image to test against
-#  test "stbiLoadFFromFile":
+#  test "stbi.loadFFromFile":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiHDRToLDRGamma":
+#  test "stbi.HDRToLDRGamma":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiHDRToLDRScale":
+#  test "stbi.HDRToLDRScale":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiLDRToHDRGamma":
+#  test "stbi.LDRToHDRGamma":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiLDRToHDRScale":
+#  test "stbi.LDRToHDRScale":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiIsHDRFromMemory":
+#  test "stbi.isHDRFromMemory":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiIsHDR":
+#  test "stbi.isHDR":
 #    check(false)
 #
 #
 #  NOTE: not able to find a suitable HDR image to test against
-#  test "stbiIsHDRFromFile":
+#  test "stbi.isHDRFromFile":
 #    check(false)
 
 
 
 suite "Unit tests for stbi_image_write wrapper":
-  test "stbiWriteBMP":
+  test "stbiw.writeBMP":
     # data
     var
       width = 2
@@ -233,7 +233,7 @@ suite "Unit tests for stbi_image_write wrapper":
     # remove the image
     removeFile(filename)
 
-  test "stbiWritePNG":
+  test "stbiw.writePNG":
     # data
     var
       width = 3
@@ -266,7 +266,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiWriteTGA [RLE]":
+  test "stbiw.writeTGA [RLE]":
     var
       width = 5
       height = 2
@@ -296,7 +296,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiWriteTGA [non-RLE]":
+  test "stbiw.writeTGA [non-RLE]":
     # Data
     var
       width = 2
@@ -329,41 +329,41 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
-  # Note, I haven't been able to find a simple HDR image to test against, so
-  # that is why there isn't a test for it here.
-#  test "stbiWriteHDR":
+#  Note, I haven't been able to find a simple HDR image to test against, so
+#  that is why there isn't a test for it here.
+#  test "stbiw.writeHDR":
 #    check(false)
 
 
 
 suite "info functions":
-  test "stbiInfoFromMemory":
+  test "stbi.infoFromMemory":
     # Data
     var
       width: int
       height: int
       channels: int
 
-    check(stbiInfoFromMemory(testImage3, width, height, channels))
+    check(stbi.infoFromMemory(testImage3, width, height, channels))
     check(width == 1)
     check(height == 2)
     check(channels == Grey)
 
 
-  test "stbiInfo":
+  test "stbi.info":
     # Data
     var
       width: int
       height: int
       channels: int
 
-    check(stbiInfo(testImage1, width, height, channels))
+    check(stbi.info(testImage1, width, height, channels))
     check(width == 2)
     check(height == 2)
     check(channels == RGBA)
 
 
-  test "stbiInfoFromFile":
+  test "stbi.infoFromFile":
     # Data
     var
       width: int
@@ -374,7 +374,7 @@ suite "info functions":
     # Open the file object
     check(open(fileObj, testImage2))
 
-    check(stbiInfoFromFile(fileObj, width, height, channels))
+    check(stbi.infoFromFile(fileObj, width, height, channels))
     check(width == 2)
     check(height == 1)
     check(channels == RGB)
@@ -383,18 +383,19 @@ suite "info functions":
 
 suite "extra functions (from stb_image.h)":
 #  # NOTE: I have no idea how to test this function, but I would like to
-#  test "stbiSetUnpremultiplyOnLoad":
+#  test "stbi.setUnpremultiplyOnLoad":
 #    check(false)
 
 #  # NOTE: I have no idea how to test this function, but I would like to
-#  test "stbiConvertIPhonePNGToRGB":
+#  test "stbi.convertIPhonePNGToRGB":
 #    check(false)
 
-  test "stbiSetFlipVerticallyOnLoad":
-    # Flip upside down
-    stbiSetFlipVerticallyOnLoad(true)
 
-    # NOTE: This is all coped from the "stbiLoad" test at the top
+  test "stbi.setFlipVerticallyOnLoad":
+    # Flip upside down
+    stbi.setFlipVerticallyOnLoad(true)
+
+    # NOTE: This is all coped from the "stbi.load" test at the top
 
     # Data
     var
@@ -438,5 +439,5 @@ suite "extra functions (from stb_image.h)":
     check(pixels[12 + 3] == 0x7F) # A
 
     # Reset
-    stbiSetFlipVerticallyOnLoad(false)
+    stbi.setFlipVerticallyOnLoad(false)
 

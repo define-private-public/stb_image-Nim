@@ -48,7 +48,7 @@ Other Notes
 -----------
 
 TODO:
- - [ ] drop the `stbi` part from each function (and lowercase the first character),
+ - [x] drop the `stbi` part from each function (and lowercase the first character),
        see how it work (along with the write wrapper)
    - [ ] To simplify the codebase, then you can drop the `_internal` part from
          the non-exposed functions
@@ -70,20 +70,22 @@ some very simple test images I could use, please provide them.  Here is the list
 of functions that are untested.
 
 From `stb_image.h`:
- - `stbiLoad16()`
- - `stbiLoadFromFile16()`
- - `stbiLoadF()`
- - `stbiLoadFFromMemory()`
- - `stbiLoadFFromFile()`
- - `stbiHDRToLDRGamma()`
- - `stbiHDRToLDRScale()`
- - `stbiLDRToHDRGamma()`
- - `stbiLDRToHDRScale()`
- - `stbiIsHDRFromMemory()`
- - `stbiIsHDR()`
- - `stbiIsHDRFromFile()`
+ - `load16()`
+ - `loadFromFile16()`
+ - `loadF()`
+ - `loadFFromMemory()`
+ - `loadFFromFile()`
+ - `HDRToLDRGamma()`
+ - `HDRToLDRScale()`
+ - `LDRToHDRGamma()`
+ - `LDRToHDRScale()`
+ - `isHDRFromMemory()`
+ - `isHDR()`
+ - `isHDRFromFile()`
+ - `setUnpremultiplyOnLoad()`
  - `stbiConvertIPhoneRGBToPNG()`
 
+
 From `stb_image_write.h`:
- - `stbWriteHDR()`
+ - `writeHDR()`
 
