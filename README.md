@@ -47,7 +47,63 @@ check the file `LICENSE` for details.
 How To Use
 ----------
 
-TODO fill in
+I've tried to write this to be as close as possible to the orignal C API, so if
+you're already familiar with it, there should be no hassle.  If you don't all of
+the functions are documented in `stb_image.nim` and `stb_image_write.nim`.
+
+Import what you want to use.  I recommend adding the `as` semantic:
+
+```nim
+import stb_image as stbi
+import stb_image_write as stbiw
+```
+
+An original C call would look like this:
+
+```c
+int x,y,n;
+unsigned char *data = stbi_load("kevin_bacon.jpeg", &x, &y, &n, STBI_default);
+// Do what you want...
+stbi_image_free(data)
+```
+
+But becomes this:
+
+```nim
+var
+  x: int
+  y: int
+  n: int
+  data: seq[uint8]
+
+data = stbi.load("kevin_bacon.jpeg", x, y, n, stbi.Default)
+# No need to do any GC yourself, as Nim takes care of that for you!
+```
+
+Functions that had names `like_this` have been turned `intoThis`.  That `stbi_`
+portion has also been dropped.
+
+If you want to write pixels, it's like what you see here, but in reverse:
+
+```nim
+# Stuff some pixels
+var data: seq[uint8] = @[]
+data.add(0x00)
+data.add(0x80)
+data.add(0xFF)
+
+# save it (as monochrome)
+stbiw.writeBMP("three.bmp", 3, 1, stbiw.Y, data)
+```
+
+Some of the functions (or variables) that effect the library globally are still
+there (e.g. `setFlipVerticallyOnLoad()` in `stb_image`), but some other has been
+moved to functions calls as to not act in a global manor (e.g. the `useRLE`
+parmater for `writeTGA()` in `stb_image_write`).
+
+I also recommend reading through the documentation at the top of the original
+header files too, as they give you a bit more of a grasp of how things work and
+the limitations of `stb_image`.
 
 
 Future Plans
@@ -98,13 +154,16 @@ Future Plans
    have the same functionality so I would be removing those orignal bindings.
 
    I'd like to get some comments on this before moving forward with it.
+
  - I really would like add unit tests for the functions listed in the `Untested
    Functions` section to verify they work, but I'm in need of some very simple
    test images.
+
  - Add wrappers/bindings for the `stb_image_resize.h` library.  It's part of the
    STB toolkit (and falls under it's "image," section), but it wasn't related to
    image IO so I decided to leave it out.  It also looked like quite a bit of
    work to add in.  If someone wants to submit a pull request, I'll review it.
+
  - Add wrappers/bindings for the ZLIB client in `stb_image.h`.  It's already
    there for the PNG support, but it not in the scope of image IO.  It would be
    an extra handy addition for this, but I'd rather someone else write the
@@ -115,10 +174,11 @@ Other Notes
 -----------
 
 TODO:
- - [ ] See about returning refs to sequences instead of seqs themselves
- - [ ] Provide some examples of each (How-To section)
-   - [ ] Image read example
-   - [ ] Image write example
+ - [x] Provide some examples of each (How-To section)
+   - [x] Image read example
+   - [x] Image write example
+ - [ ] fix the write functions to return bools instead of ints (should be
+   discardable)
  - [ ] Test on OS X (before v1.0)
  - [ ] Test on Windows (before v1.0)
 
