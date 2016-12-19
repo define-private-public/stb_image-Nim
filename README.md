@@ -44,20 +44,83 @@ domain, so is this code.  Specifically it falls under the "Unlicense."  Please
 check the file `LICENSE` for details.
 
 
+How To Use
+----------
+
+TODO fill in
+
+
+Future Plans
+------------
+
+ - Return a data structure that descrives an image instead of a sequence of
+   bytes/shorts/floats from the functions.  This may be a much more natural way
+   for the programmer to get an image and make a little more sense than
+   returning results in both the "return," statement and "var," parameters.
+   Such a system might have a data structure like this:
+
+   ```nim
+   type
+     # `T` should only be uint8, uint16, or float32
+     STBImage[T]* = ref object of RootObj
+       width*: int
+       height*: int
+       channels*: int # One of the values from `stb_image_components.nim`
+       pixelData*: seq[T]
+   ```
+
+   And the Nim-Friendly functions would change from this:
+
+   ```nim
+   # Data
+   var
+     width: int
+     height: int
+     channels: int
+     pixels: seq[uint8]
+
+   # Load the image
+   pixels = stbi.load("kevin_bacon.jpeg", width, height, channels, stbi.Default)
+   ```
+
+   Over to this:
+
+   ```nim
+   var image = stbi.load("keven_bacon.jpeg", stbi.Default)
+   ```
+
+   It may also solve an issue with the pixel data being copied (unecessarly)
+   with the current wrappers.  See this thread in the Nim Forum for details:
+   http://forum.nim-lang.org/t/2665
+
+   The only thing I don't like about this is that it would break the familiarity
+   with the original C API.  I don't want to maintain multiple functions that
+   have the same functionality so I would be removing those orignal bindings.
+
+   I'd like to get some comments on this before moving forward with it.
+ - I really would like add unit tests for the functions listed in the `Untested
+   Functions` section to verify they work, but I'm in need of some very simple
+   test images.
+ - Add wrappers/bindings for the `stb_image_resize.h` library.  It's part of the
+   STB toolkit (and falls under it's "image," section), but it wasn't related to
+   image IO so I decided to leave it out.  It also looked like quite a bit of
+   work to add in.  If someone wants to submit a pull request, I'll review it.
+ - Add wrappers/bindings for the ZLIB client in `stb_image.h`.  It's already
+   there for the PNG support, but it not in the scope of image IO.  It would be
+   an extra handy addition for this, but I'd rather someone else write the
+   wrapper procs for it.
+
+
 Other Notes
 -----------
 
 TODO:
- - [x] drop the `stbi` part from each function (and lowercase the first character),
-       see how it work (along with the write wrapper)
-   - [x] To simplify the codebase, then you can drop the `_internal` part from
-         the non-exposed functions
  - [ ] See about returning refs to sequences instead of seqs themselves
  - [ ] Provide some examples of each (How-To section)
    - [ ] Image read example
    - [ ] Image write example
- - [ ] Test on OS X
- - [ ] Test on Windows
+ - [ ] Test on OS X (before v1.0)
+ - [ ] Test on Windows (before v1.0)
 
 
 Untested Functions

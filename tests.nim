@@ -53,12 +53,12 @@ suite "Unit Tests for stb_image wrapper":
       pixels: seq[uint8]
 
     # Load the image
-    pixels = stbi.load(testImage1, width, height, channels, Default)
+    pixels = stbi.load(testImage1, width, height, channels, stbi.Default)
 
     check(width == 2)
     check(height == 2)
-    check(channels == RGBA)
-    check(pixels.len == (width * height * RGBA))
+    check(channels == stbi.RGBA)
+    check(pixels.len == (width * height * stbi.RGBA))
 
     # Test the pixel data
     # 1 == 25% white
@@ -99,12 +99,12 @@ suite "Unit Tests for stb_image wrapper":
     check(open(fileObj, testImage2))
 
     # Load the image
-    pixels = stbi.loadFromFile(fileObj, width, height, channels, Default)
+    pixels = stbi.loadFromFile(fileObj, width, height, channels, stbi.Default)
 
     check(width == 2)
     check(height == 1)
-    check(channels == RGB)
-    check(pixels.len == (width * height * RGB))
+    check(channels == stbi.RGB)
+    check(pixels.len == (width * height * stbi.RGB))
 
     # Test the pixel data
     # 1 == white
@@ -127,12 +127,12 @@ suite "Unit Tests for stb_image wrapper":
       pixels: seq[uint8]
 
     # Load the image
-    pixels = stbi.loadFromMemory(testImage3, width, height, channels, Grey)
+    pixels = stbi.loadFromMemory(testImage3, width, height, channels, stbi.Grey)
 
     check(width == 1)
     check(height == 2)
-    check(channels == Grey)
-    check(pixels.len == (width * height * Grey))
+    check(channels == stbi.Grey)
+    check(pixels.len == (width * height * stbi.Grey))
 
     # Test the pixel data
     # 1 == darker grey
@@ -209,7 +209,7 @@ suite "Unit tests for stbi_image_write wrapper":
     var
       width = 2
       height = 2
-      channels = RGB
+      channels = stbi.RGB
       pixels: seq[uint8] = @[]
       filename = "save1.bmp"
 
@@ -238,7 +238,7 @@ suite "Unit tests for stbi_image_write wrapper":
     var
       width = 3
       height = 2
-      channels = YA
+      channels = stbiw.YA
       pixels: seq[uint8] = @[]
       filename = "save2.png"
 
@@ -270,7 +270,7 @@ suite "Unit tests for stbi_image_write wrapper":
     var
       width = 5
       height = 2
-      channels = RGBA
+      channels = stbi.RGBA
       pixels: seq[uint8] = @[]
       filename = "save3.tga"
 
@@ -301,7 +301,7 @@ suite "Unit tests for stbi_image_write wrapper":
     var
       width = 2
       height = 3
-      channels = RGBA
+      channels = stbi.RGBA
       pixels: seq[uint8] = @[]
       filename = "save4.tga"
 
@@ -347,7 +347,7 @@ suite "info functions":
     check(stbi.infoFromMemory(testImage3, width, height, channels))
     check(width == 1)
     check(height == 2)
-    check(channels == Grey)
+    check(channels == stbi.Grey)
 
 
   test "stbi.info":
@@ -360,7 +360,7 @@ suite "info functions":
     check(stbi.info(testImage1, width, height, channels))
     check(width == 2)
     check(height == 2)
-    check(channels == RGBA)
+    check(channels == stbi.RGBA)
 
 
   test "stbi.infoFromFile":
@@ -377,7 +377,7 @@ suite "info functions":
     check(stbi.infoFromFile(fileObj, width, height, channels))
     check(width == 2)
     check(height == 1)
-    check(channels == RGB)
+    check(channels == stbi.RGB)
 
 
 
@@ -405,12 +405,12 @@ suite "extra functions (from stb_image.h)":
       pixels: seq[uint8]
 
     # Load the image
-    pixels = stbi.load(testImage1, width, height, channels, Default)
+    pixels = stbi.load(testImage1, width, height, channels, stbi.Default)
 
     check(width == 2)
     check(height == 2)
-    check(channels == RGBA)
-    check(pixels.len == (width * height * RGBA))
+    check(channels == stbi.RGBA)
+    check(pixels.len == (width * height * stbi.RGBA))
 
     # Test the pixel data
 
