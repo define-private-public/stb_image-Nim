@@ -153,6 +153,10 @@ Future Plans
    with the original C API.  I don't want to maintain multiple functions that
    have the same functionality so I would be removing those orignal bindings.
 
+   Trying to figure out how to make the `STBImage` type play nice with the
+   write functions might be a little more work too (e.g. validating there is
+   enough data and correct parameters).
+
    I'd like to get some comments on this before moving forward with it.
 
  - I really would like add unit tests for the functions listed in the `Untested
