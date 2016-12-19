@@ -50,44 +50,44 @@ proc stbi_write_hdr(
 ## This proc will let you write out data to a PNG file.  `w` and `h` are the
 ## size of the image you want.  `comp` is how many components make up a single
 ## pixel (.e.g "RGBA," "RGB", "YA").  The entries in `data` should match be the
-## same as `w * h * comp`.  This returns a non-zero value upon success.
+## same as `w * h * comp`.  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default the stride is set to zero.
-proc writePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): int =
-  return stbi_write_png(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes).int
+proc writePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): bool {.discardable.} =
+  return (stbi_write_png(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes) == 1)
 
 
 ## This proc will let you write out data to a BMP file.  `w` and `h` are the
 ## size of the image you want.  `comp` is how many components make up a single
 ## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
-## same as `w * h * comp`.  This returns a non-zero value upon success.
+## same as `w * h * comp`.  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeBMP*(filename: string; w, h, comp: int; data: seq[uint8]): int =
-  return stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
+proc writeBMP*(filename: string; w, h, comp: int; data: seq[uint8]): bool {.discardable.} =
+  return (stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
 ## This proc will let you write out data to a TGA file.  `w` and `h` are the
 ## size of the image you want.  `comp` is how many components make up a single
 ## pixel (.e.g "RGBA," "RGBA", "YA").  The entries in `data` should match be the
-## same as `w * h * comp`.  This returns a non-zero value upon success.
+## same as `w * h * comp`.  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default this function will save the TGA with run-length encoding, but this
 ## can be turned off by setting `useRLE` to `false`.
-proc writeTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool = true): int =
+proc writeTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool = true): bool {.discardable.} =
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
-  return stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
+  return (stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
 ## This proc will let you write out data to a BMP file.  `w` and `h` are the
 ## size of the image you want.  `comp` is how many components make up a single
 ## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
-## same as `w * h * comp`.  This returns a non-zero value upon success.
+## same as `w * h * comp`.  This returns a true upon success.
 ##
 ## From the header file:
 ## ----
@@ -97,8 +97,8 @@ proc writeTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool
 ## --
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): int =
-  return stbi_write_hdr(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr).int
+proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.discardable.} =
+  return (stbi_write_hdr(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
 # For the moment being, the callback write functions are going to be skipped

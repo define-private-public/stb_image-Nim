@@ -99,7 +99,7 @@ stbiw.writeBMP("three.bmp", 3, 1, stbiw.Y, data)
 Some of the functions (or variables) that effect the library globally are still
 there (e.g. `setFlipVerticallyOnLoad()` in `stb_image`), but some other has been
 moved to functions calls as to not act in a global manor (e.g. the `useRLE`
-parmater for `writeTGA()` in `stb_image_write`).
+parameter for `writeTGA()` in `stb_image_write`).
 
 I also recommend reading through the documentation at the top of the original
 header files too, as they give you a bit more of a grasp of how things work and
@@ -177,7 +177,7 @@ TODO:
  - [x] Provide some examples of each (How-To section)
    - [x] Image read example
    - [x] Image write example
- - [ ] fix the write functions to return bools instead of ints (should be
+ - [x] fix the write functions to return bools instead of ints (should be
    discardable)
  - [ ] Test on OS X (before v1.0)
  - [ ] Test on Windows (before v1.0)

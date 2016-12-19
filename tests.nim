@@ -220,7 +220,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # Non-zero is returned on success
-    check(stbiw.writeBMP(filename, width, height, channels, pixels) != 0)
+    check(stbiw.writeBMP(filename, width, height, channels, pixels))
 
     # Verify the image with the one in "testdata/"
     var
@@ -252,7 +252,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addYA(0x00, 0x33)
 
     # Non-zero is returned on success
-    check(stbiw.writePNG(filename, width, height, channels, pixels) != 0)
+    check(stbiw.writePNG(filename, width, height, channels, pixels))
 
     # Verify image is the same in testdata/
     var
@@ -282,7 +282,7 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Non-zero is returned on success
     # Writing with RLE by default
-    check(stbiw.writeTGA(filename, width, height, channels, pixels) != 0)
+    check(stbiw.writeTGA(filename, width, height, channels, pixels))
 
     # Verify image is the same in testdata/
     var
@@ -316,7 +316,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGBA(0x00, 0x99, 0xFF, 0xFF)
 
     # Non-zero is returned on success
-    check(stbiw.writeTGA(filename, width, height, channels, pixels, false) != 0)
+    check(stbiw.writeTGA(filename, width, height, channels, pixels, false))
 
     # Verify image is the same in testdata/
     var
