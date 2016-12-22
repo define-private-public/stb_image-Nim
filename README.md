@@ -142,7 +142,7 @@ Future Plans
    Over to this:
 
    ```nim
-   var image = stbi.load("keven_bacon.jpeg", stbi.Default)
+   var image = stbi.load("kevin_bacon.jpeg", stbi.Default)
    ```
 
    It may also solve an issue with the pixel data being copied (unecessarly)
@@ -178,11 +178,6 @@ Other Notes
 -----------
 
 TODO:
- - [x] Provide some examples of each (How-To section)
-   - [x] Image read example
-   - [x] Image write example
- - [x] fix the write functions to return bools instead of ints (should be
-   discardable)
  - [ ] Test on OS X (before v1.0)
  - [ ] Test on Windows (before v1.0)
 
