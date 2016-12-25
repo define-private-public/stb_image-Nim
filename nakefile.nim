@@ -4,7 +4,7 @@ import nake
 const
   NimCache = "nimcache/"
 
-  Tests = "tests"
+  Tests = "tests.nim"
   BinaryName = "tests"
 
 
