@@ -7,7 +7,8 @@ This is a Nim wrapper of the stb_image single header file libraries
 Official repo page can be found here:
 https://gitlab.com/define-private-public/stb_image-Nim
 
-All other sites should be considered mirrors.
+All other sites should be considered mirrors, though if you log an issue on
+GitHub, I'll probably address it.
 
 The used header files are included in this repo (they end in the name
 `_header.nim`) but you may provide your own.
@@ -172,14 +173,6 @@ Future Plans
    there for the PNG support, but it not in the scope of image IO.  It would be
    an extra handy addition for this, but I'd rather someone else write the
    wrapper procs for it.
-
-
-Other Notes
------------
-
-TODO:
- - [ ] Test on OS X (before v1.0)
- - [ ] Test on Windows (before v1.0)
 
 
 Untested Functions
