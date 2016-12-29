@@ -9,7 +9,7 @@ export stb_image_components.Y
 export stb_image_components.YA
 export stb_image_components.RGB
 export stb_image_components.RGBA
-import stb_image_write_header
+include stb_image_write_header
 
 
 # Used for set if the TGA function should use run length encoding
