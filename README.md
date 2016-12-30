@@ -62,10 +62,14 @@ import stb_image_write as stbiw
 An original C call would look like this:
 
 ```c
-int x,y,n;
-unsigned char *data = stbi_load("kevin_bacon.jpeg", &x, &y, &n, STBI_default);
+// Get the image data
+int width, height, numChannels;
+unsigned char *data = stbi_load("kevin_bacon.jpeg", &width, &height, &numChannels, STBI_default);
+
 // Do what you want...
-stbi_image_free(data)
+
+// Cleanup
+stbi_image_free(data);
 ```
 
 But becomes this:
