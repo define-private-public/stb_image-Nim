@@ -62,9 +62,11 @@ import stb_image_write as stbiw
 An original C call would look like this:
 
 ```c
+#include "stb_image.h"
+
 // Get the image data
-int width, height, numChannels;
-unsigned char *data = stbi_load("kevin_bacon.jpeg", &width, &height, &numChannels, STBI_default);
+int width, height, channels;
+unsigned char *data = stbi_load("kevin_bacon.jpeg", &width, &height, &channels, STBI_default);
 
 // Do what you want...
 
@@ -75,13 +77,13 @@ stbi_image_free(data);
 But becomes this:
 
 ```nim
+import stb_image as stbi
+
 var
-  x: int
-  y: int
-  n: int
+  width, height, channels: int
   data: seq[uint8]
 
-data = stbi.load("kevin_bacon.jpeg", x, y, n, stbi.Default)
+data = stbi.load("kevin_bacon.png", width, height, channels, stbi.Default)
 # No need to do any GC yourself, as Nim takes care of that for you!
 ```
 
@@ -135,9 +137,7 @@ Future Plans
    ```nim
    # Data
    var
-     width: int
-     height: int
-     channels: int
+     width, height, channels: int,
      pixels: seq[uint8]
 
    # Load the image

@@ -1,3 +1,6 @@
+when defined(Posix) and not defined(haiku):
+  {.passl: "-lm".}
+
 {.emit: """
 
 #define STB_IMAGE_IMPLEMENTATION
