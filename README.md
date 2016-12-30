@@ -93,6 +93,8 @@ portion has also been dropped.
 If you want to write pixels, it's like what you see here, but in reverse:
 
 ```nim
+import stb_image as stbiw
+
 # Stuff some pixels
 var data: seq[uint8] = @[]
 data.add(0x00)
