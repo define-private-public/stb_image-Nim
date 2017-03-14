@@ -1,4 +1,4 @@
-# File:         stbi_image_components.nim
+# File:         stbi_image/components.nim
 # Author:       Benjamin N. Summerton (define-private-public)
 # License:      Unlicense (Public Domain)
 # Description:  These are Nim friendly variables for the component parameters.

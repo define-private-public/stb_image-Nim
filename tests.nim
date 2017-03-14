@@ -1,7 +1,7 @@
 import unittest
 import os
-import stb_image as stbi
-import stb_image_write as stbiw
+import stb_image/read as stbi
+import stb_image/write as stbiw
 
 
 const

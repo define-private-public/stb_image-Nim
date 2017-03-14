@@ -1,16 +1,16 @@
-# File:         stb_image.nim
+# File:         stb_image/read.nim
 # Author:       Benjamin N. Summerton (define-private-public)
 # License:      Unlicense (Public Domain)
-# Description:  A nim wrapper for stb_image.h.
+# Description:  A nim wrapper for stb_image.h.  The reading ops
 
 
-import stb_image_components
-export stb_image_components.Default
-export stb_image_components.Grey
-export stb_image_components.GreyAlpha
-export stb_image_components.RGB
-export stb_image_components.RGBA
-include stb_image_header
+import components
+export components.Default
+export components.Grey
+export components.GreyAlpha
+export components.RGB
+export components.RGBA
+include read_header
 
 
 # NOTE: this function is here for completness, but it's not exposed in the

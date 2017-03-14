@@ -1,15 +1,15 @@
-# File:         stb_image_write.nim
+# File:         stb_image/write.nim
 # Author:       Benjamin N. Summerton (define-private-public)
 # License:      Unlicense (Public Domain)
 # Description:  A nim wrapper for stb_image_write.h.
 
 
-import stb_image_components
-export stb_image_components.Y
-export stb_image_components.YA
-export stb_image_components.RGB
-export stb_image_components.RGBA
-include stb_image_write_header
+import components
+export components.Y
+export components.YA
+export components.RGB
+export components.RGBA
+include write_header
 
 
 # Used for set if the TGA function should use run length encoding

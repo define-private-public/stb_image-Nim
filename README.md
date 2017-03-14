@@ -50,13 +50,13 @@ How To Use
 
 I've tried to write this to be as close as possible to the orignal C API, so if
 you're already familiar with it, there should be no hassle.  If you don't all of
-the functions are documented in `stb_image.nim` and `stb_image_write.nim`.
+the functions are documented in `stb_image/read.nim` and `stb_image/write.nim`.
 
 Import what you want to use.  I recommend adding the `as` semantic:
 
 ```nim
-import stb_image as stbi
-import stb_image_write as stbiw
+import stb_image/read as stbi
+import stb_image/write as stbiw
 ```
 
 An original C call would look like this:
@@ -77,7 +77,7 @@ stbi_image_free(data);
 But becomes this:
 
 ```nim
-import stb_image as stbi
+import stb_image/read as stbi
 
 var
   width, height, channels: int
@@ -93,7 +93,7 @@ portion has also been dropped.
 If you want to write pixels, it's like what you see here, but in reverse:
 
 ```nim
-import stb_image as stbiw
+import stb_image/write as stbiw
 
 # Stuff some pixels
 var data: seq[uint8] = @[]
@@ -108,7 +108,7 @@ stbiw.writeBMP("three.bmp", 3, 1, stbiw.Y, data)
 Some of the functions (or variables) that effect the library globally are still
 there (e.g. `setFlipVerticallyOnLoad()` in `stb_image`), but some other has been
 moved to functions calls as to not act in a global manor (e.g. the `useRLE`
-parameter for `writeTGA()` in `stb_image_write`).
+parameter for `writeTGA()` in `stb_image/write`).
 
 I also recommend reading through the documentation at the top of the original
 header files too, as they give you a bit more of a grasp of how things work and
@@ -130,7 +130,7 @@ Future Plans
      STBImage[T]* = ref object of RootObj
        width*: int
        height*: int
-       channels*: int # One of the values from `stb_image_components.nim`
+       channels*: int # One of the values from `stb_image/components.nim`
        pixelData*: seq[T]
    ```
 
