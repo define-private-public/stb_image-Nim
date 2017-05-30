@@ -13,6 +13,11 @@ export components.RGBA
 include read_header
 
 
+# Custom exception, only for image reading errors
+type
+  STBIException* = object of Exception
+
+
 # NOTE: this function is here for completness, but it's not exposed in the
 #       nim-friendly API, since seq[uint8] are GC'd
 proc stbi_image_free(retval_from_stbi_load: ptr)
@@ -75,6 +80,10 @@ proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: 
   # Read
   let data = stbi_load(filename.cstring, width, height, components, desired_channels.cint)
 
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
+
   # Set the returns
   x = width.int
   y = height.int
@@ -112,6 +121,10 @@ proc loadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desire
   # Read
   let data = stbi_load_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
 
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
+
   # Set the returns
   x = width.int
   y = height.int
@@ -144,6 +157,10 @@ proc loadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: i
 
   # Read
   let data = stbi_load_from_file(f, width, height, components, desired_channels.cint)
+
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
 
   # Set the returns
   x = width.int
@@ -199,6 +216,10 @@ proc load16*(filename: string; x, y, channels_in_file: var int; desired_channels
   # Read
   let data = stbi_load_16(filename.cstring, width, height, components, desired_channels.cint)
 
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
+
   # Set the returns
   x = width.int
   y = height.int
@@ -234,6 +255,10 @@ proc loadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels:
 
   # Read
   let data = stbi_load_from_file(f, width, height, components, desired_channels.cint)
+
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
 
   # Set the returns
   x = width.int
@@ -297,6 +322,10 @@ proc loadF*(filename: string; x, y, channels_in_file: var int; desired_channels:
   # Read
   let data = stbi_loadf(filename.cstring, width, height, components, desired_channels.cint)
 
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
+
   # Set the returns
   x = width.int
   y = height.int
@@ -334,6 +363,10 @@ proc loadFFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desir
   # Read
   let data = stbi_loadf_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
 
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
+
   # Set the returns
   x = width.int
   y = height.int
@@ -366,6 +399,10 @@ proc loadFFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: 
 
   # Read
   let data = stbi_loadf_from_file(f, width, height, components, desired_channels.cint)
+
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
 
   # Set the returns
   x = width.int

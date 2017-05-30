@@ -44,6 +44,28 @@ proc addYA(pixelData: var seq[uint8]; mono, alpha: uint8) =
 
 
 suite "Unit Tests for stb_image wrapper":
+  test "stbi.STBIException":
+    # Test an STBIException being thrown
+    # Data
+    var
+      width: int
+      height: int
+      channels: int
+      pixels: seq[uint8]
+
+    # Load a non existant image
+    try:
+      pixels = stbi.load("testdata/kevin_bacon.jpeg", width, height, channels, stbi.Default)
+      # This should never
+      check(false)
+    except STBIException:
+      # This should hit
+      check(true)
+    except:
+      # We should only get an STBIException, so check(false) here too
+      check(false)
+
+
   test "stbi.load":
     # Data
     var

@@ -14,8 +14,8 @@ The used header files are included in this repo (they end in the name
 `_header.nim`) but you may provide your own.
 The versions that are used are:
 
- - `stb_image.h`: v2.13
- - `stb_image_write.h`: v1.02
+ - `stb_image.h`: v2.15
+ - `stb_image_write.h`: v1.05
 
 They can be found here: https://github.com/nothings/stb
 
@@ -113,6 +113,11 @@ parameter for `writeTGA()` in `stb_image/write`).
 I also recommend reading through the documentation at the top of the original
 header files too, as they give you a bit more of a grasp of how things work and
 the limitations of `stb_image`.
+
+All of the functions that can do image reading (which are, well, only found in
+`stb_image/read.nim`) will throw an `STBIException` if there was an error
+retriving the image data.  The `.message` field of the exception will contain
+some slight information into what went wrong.
 
 
 Future Plans
