@@ -18,6 +18,8 @@ const
   testSave2 = "testdata/save2.png"
   testSave3 = "testdata/save3.tga"
   testSave4 = "testdata/save4.tga"
+  testSave5 = "testdata/save5.jpeg"
+  testSave6 = "testdata/save6.jpeg"
 
 
 # This is a little handy proc so I don't have to type so much
@@ -350,6 +352,67 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Remove the image
     removeFile(filename)
+
+
+  test "stbiw.writeJPG [quality=10]":
+    # data
+    var
+      width = 2
+      height = 2
+      channels = stbi.RGB
+      pixels: seq[uint8] = @[]
+      filename = "save5.jpeg"
+
+    # Set the pixel data
+    pixels.addRGB(0xFF, 0x00, 0x00)   # Red
+    pixels.addRGB(0x00, 0xFF, 0x00)   # Green
+    pixels.addRGB(0x00, 0x00, 0xFF)   # Blue
+    pixels.addRGB(0x00, 0x00, 0x00)   # Black
+
+    # Non-zero is returned on success
+    check(stbiw.writeJPG(filename, width, height, channels, pixels, 10))
+
+    # Verify the image with the one in "testdata/"
+    var
+      testPixels = readFile(testSave5)
+      ourPixels = readFile(filename)
+
+    # check for equivilancy
+    check(testPixels == ourPixels)
+
+    # remove the image
+    removeFile(filename)
+
+  test "stbiw.writeJPG [quality=100]":
+    # data
+    var
+      width = 2
+      height = 2
+      channels = stbi.RGB
+      pixels: seq[uint8] = @[]
+      filename = "save6.jpeg"
+
+    # Set the pixel data
+    pixels.addRGB(0xFF, 0x00, 0x00)   # Red
+    pixels.addRGB(0x00, 0xFF, 0x00)   # Green
+    pixels.addRGB(0x00, 0x00, 0xFF)   # Blue
+    pixels.addRGB(0x00, 0x00, 0x00)   # Black
+
+    # Non-zero is returned on success
+    check(stbiw.writeJPG(filename, width, height, channels, pixels, 100))
+
+
+    # Verify the image with the one in "testdata/"
+    var
+      testPixels = readFile(testSave6)
+      ourPixels = readFile(filename)
+
+    # check for equivilancy
+    check(testPixels == ourPixels)
+
+    # remove the image
+    removeFile(filename)
+
 
 #  Note, I haven't been able to find a simple HDR image to test against, so
 #  that is why there isn't a test for it here.
