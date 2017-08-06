@@ -14,7 +14,7 @@ The used header files are included in this repo (they end in the name
 `_header.nim`) but you may provide your own.
 The versions that are used are:
 
- - `stb_image.h`: v2.15
+ - `stb_image.h`: v2.16
  - `stb_image_write.h`: v1.05
 
 They can be found here: https://github.com/nothings/stb
@@ -198,6 +198,7 @@ of functions that are untested.
 From `stb_image.h`:
  - `load16()`
  - `loadFromFile16()`
+ - `load16FromMemory()`
  - `loadF()`
  - `loadFFromMemory()`
  - `loadFFromFile()`

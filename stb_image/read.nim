@@ -10,7 +10,13 @@ export components.Grey
 export components.GreyAlpha
 export components.RGB
 export components.RGBA
-include read_header
+
+# Include the header
+{.compile: "stb_image/read.c".}
+
+# Need to link the math library
+when defined(Posix) and not defined(haiku):
+  {.passl: "-lm".}
 
 
 # Custom exception, only for image reading errors
@@ -197,6 +203,14 @@ proc stbi_load_from_file_16(
 ): ptr cushort
   {.importc: "stbi_load_from_file_16", noDecl.}
 
+proc stbi_load_16_from_memory(
+  buffer: ptr cuchar;
+  len: cint;
+  x, y, channels_in_file: var cint;
+  desired_channels: cint
+): ptr cushort
+  {.importc: "stbi_load_16_from_memory", noDecl.}
+
 
 ## This takes in a filename and will return a sequence (of unsigned shorts) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -255,6 +269,47 @@ proc loadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels:
 
   # Read
   let data = stbi_load_from_file(f, width, height, components, desired_channels.cint)
+
+  # Check for a bad read
+  if data == nil:
+    raise newException(STBIException, failureReason())
+
+  # Set the returns
+  x = width.int
+  y = height.int
+  channels_in_file = components.int
+
+  # Copy pixel data
+  var pixelData: seq[uint16]
+  newSeq(pixelData, x * y * channels_in_file)
+  copyMem(pixelData[0].addr, data, pixelData.len)
+
+  # Free loaded image data
+  stbi_image_free(data)
+
+  return pixelData
+
+
+## This takes in a sequences of unsigned short (of an image file)
+## is the pixel data. `x`, `y` are the dimensions of the image, and
+## `channels_in_file` is the format (e.g. "RGBA," "GreyAlpha," etc.).
+## `desired_channels` will attempt to change it to with format you would like
+## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
+## "Default").
+##
+## This is used for files where the channels for the pixel data are encoded as
+## 16 bit integers (e.g. some Photoshop files).
+proc load16FromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
+  var
+    # Cast the buffer to another data type
+    castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
+
+    width: cint
+    height: cint
+    components: cint
+
+  # Read
+  let data = stbi_load_16_from_memory(castedBuffer, buffer.len.cint, width, height, components, desired_channels.cint)
 
   # Check for a bad read
   if data == nil:
