@@ -15,7 +15,7 @@ The used header files are included in this repo (they end in the name
 The versions that are used are:
 
  - `stb_image.h`: v2.16
- - `stb_image_write.h`: v1.05
+ - `stb_image_write.h`: v1.07
 
 They can be found here: https://github.com/nothings/stb
 

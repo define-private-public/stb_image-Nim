@@ -9,7 +9,12 @@ export components.Y
 export components.YA
 export components.RGB
 export components.RGBA
-include write_header
+
+# Include the header
+{.compile: "stb_image/write.c".}
+
+when defined(Posix) and not defined(haiku):
+  {.passl: "-lm".}
 
 
 # Used for set if the TGA function should use run length encoding
@@ -45,6 +50,14 @@ proc stbi_write_hdr(
   data: ptr cfloat
 ): cint
   {.importc: "stbi_write_hdr", noDecl.}
+
+proc stbi_write_jpg(
+  filename: cstring;
+  w, h, comp: cint;
+  data: pointer;
+  quality: cint;
+): cint
+  {.importc: "stbi_write_jpg", noDecl.}
 
 
 ## This proc will let you write out data to a PNG file.  `w` and `h` are the
@@ -101,6 +114,19 @@ proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.di
   return (stbi_write_hdr(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
+## This proc will let you write out data to a JPEG file.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGB", "YA").  `quality` is how well the quality of the saved 
+## JPEG image should be.  It should be a value between [1, 100].  1 for the
+## lowest quality and 100 for the highest.  Higher quality will result in larger
+## file sizes.  The entries in `data` should match be the same as `w * h * comp`
+## .  This returns a true upon success.
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+proc writeJPG*(filename: string; w, h, comp: int; data: seq[uint8]; quality: int): bool {.discardable.} =
+  return (stbi_write_jpg(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) == 1)
+
+
 # For the moment being, the callback write functions are going to be skipped
 # unless there is a request for them.
 #
@@ -109,4 +135,5 @@ proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.di
 #int stbi_write_bmp_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data);
 #int stbi_write_tga_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data);
 #int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const float *data);
+#int stbi_write_jpg_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const float *data);
 
