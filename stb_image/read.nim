@@ -26,11 +26,11 @@ type
 
 # NOTE: this function is here for completness, but it's not exposed in the
 #       nim-friendly API, since seq[uint8] are GC'd
-proc stbi_image_free(retval_from_stbi_load: ptr)
-  {.importc: "stbi_image_free", noDecl.}
+proc stbi_image_free(retval_from_stbi_load: pointer)
+  {.importc: "stbi_image_free".}
 
 proc stbi_failure_reason(): cstring
-  {.importc: "stbi_failure_reason", noDecl.}
+  {.importc: "stbi_failure_reason".}
 
 
 ## Get an error message for why a read might have failed.  This is not a
@@ -49,7 +49,7 @@ proc stbi_load(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cuchar
-  {.importc: "stbi_load", noDecl.}
+  {.importc: "stbi_load".}
 
 proc stbi_load_from_memory(
   buffer: ptr cuchar;
@@ -57,7 +57,7 @@ proc stbi_load_from_memory(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cuchar
-  {.importc: "stbi_load_from_memory", noDecl.}
+  {.importc: "stbi_load_from_memory".}
 
 # Right now I'm not planning on using the callback functions, but if someone
 # requests it (or provides a pull request), I'll consider adding them in.
@@ -68,7 +68,7 @@ proc stbi_load_from_file(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cuchar
-  {.importc: "stbi_load_from_file", noDecl.}
+  {.importc: "stbi_load_from_file".}
 
 
 ## This takes in a filename and will return a sequence (of unsigned bytes) that
@@ -194,14 +194,14 @@ proc stbi_load_16(
   x, y, channels_in_file: var cint,
   desired_channels: cint
 ): ptr cushort
-  {.importc: "stbi_load_16", noDecl.}
+  {.importc: "stbi_load_16".}
 
 proc stbi_load_from_file_16(
   f: File;
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cushort
-  {.importc: "stbi_load_from_file_16", noDecl.}
+  {.importc: "stbi_load_from_file_16".}
 
 proc stbi_load_16_from_memory(
   buffer: ptr cuchar;
@@ -209,7 +209,7 @@ proc stbi_load_16_from_memory(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cushort
-  {.importc: "stbi_load_16_from_memory", noDecl.}
+  {.importc: "stbi_load_16_from_memory".}
 
 
 ## This takes in a filename and will return a sequence (of unsigned shorts) that
@@ -341,7 +341,7 @@ proc stbi_loadf(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cfloat
-  {.importc: "stbi_loadf", noDecl.}
+  {.importc: "stbi_loadf".}
 
 proc stbi_loadf_from_memory(
   buffer: ptr cuchar;
@@ -349,7 +349,7 @@ proc stbi_loadf_from_memory(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cfloat
-  {.importc: "stbi_loadf_from_memory", noDecl.}
+  {.importc: "stbi_loadf_from_memory".}
 
 # The callback functions are going to be skipped (see the README.md)
 #float *stbi_loadf_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *channels_in_file, int desired_channels);
@@ -359,7 +359,7 @@ proc stbi_loadf_from_file(
   x, y, channels_in_file: var cint;
   desired_channels: cint
 ): ptr cfloat
-  {.importc: "stbi_loadf_from_file", noDecl.}
+  {.importc: "stbi_loadf_from_file".}
 
 
 ## This takes in a filename and will return a sequence (of 32 bit floats) that
@@ -481,28 +481,28 @@ proc loadFFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: 
 # =============
 
 proc stbi_hdr_to_ldr_gamma(gamma: cfloat)
-  {.importc: "stbi_hdr_to_ldr_gamma", noDecl.}
+  {.importc: "stbi_hdr_to_ldr_gamma".}
 
 proc stbi_hdr_to_ldr_scale(scale: cfloat)
-  {.importc: "stbi_hdr_to_ldr_scale", noDecl.}
+  {.importc: "stbi_hdr_to_ldr_scale".}
 
 proc stbi_ldr_to_hdr_gamma(gamma: cfloat)
-  {.importc: "stbi_ldr_to_hdr_gamma", noDecl.}
+  {.importc: "stbi_ldr_to_hdr_gamma".}
 
 proc stbi_ldr_to_hdr_scale(scale: cfloat)
-  {.importc: "stbi_ldr_to_hdr_scale", noDecl.}
+  {.importc: "stbi_ldr_to_hdr_scale".}
 
 # The callback functions are going to be skipped (see the README.md)
 #int stbi_is_hdr_from_callbacks(stbi_io_callbacks const *clbk, void *user);
 
 proc stbi_is_hdr_from_memory(buffer: ptr cuchar; len: cint): cint
-  {.importc: "stbi_is_hdr_from_memory", noDecl.}
+  {.importc: "stbi_is_hdr_from_memory".}
 
 proc stbi_is_hdr(filename: cstring): cint
-  {.importc: "stbi_is_hdr", noDecl.}
+  {.importc: "stbi_is_hdr".}
 
 proc stbi_is_hdr_from_file(f: File): cint
-  {.importc: "stbi_is_hdr_from_file", noDecl.}
+  {.importc: "stbi_is_hdr_from_file".}
 
 
 ## Please see the "HDR image support" section in the `stb_image.h` header file
@@ -551,7 +551,7 @@ proc stbi_info_from_memory(
   len: cint;
   x, y, comp: var cint
 ): cint
-  {.importc: "stbi_info_from_memory", noDecl.}
+  {.importc: "stbi_info_from_memory".}
 
 # NOTE: I am skipping callback functions unless there is a demand for them
 #int stbi_info_from_callbacks(stbi_io_callbacks const *clbk, void *user, int *x, int *y, int *comp);
@@ -560,13 +560,13 @@ proc stbi_info(
   filename: cstring;
   x, y, comp: var cint
 ): cint
-  {.importc: "stbi_info", noDecl.}
+  {.importc: "stbi_info".}
 
 proc stbi_info_from_file(
   f: File;
   x, y, comp: var cint
 ): cint
-  {.importc: "stbi_info_from_file", noDecl.}
+  {.importc: "stbi_info_from_file".}
 
 
 # TODO should there be an overload that has a string instead?
@@ -628,13 +628,13 @@ proc infoFromFile*(f: File; x, y, comp: var int): bool =
 # ===============
 
 proc stbi_set_unpremultiply_on_load(flag_true_if_should_unpremultiply: cint)
-  {.importc: "stbi_set_unpremultiply_on_load", noDecl.}
+  {.importc: "stbi_set_unpremultiply_on_load".}
 
 proc stbi_convert_iphone_png_to_rgb(flag_true_if_should_convert: cint)
-  {.importc: "stbi_convert_iphone_png_to_rgb", noDecl.}
+  {.importc: "stbi_convert_iphone_png_to_rgb".}
 
 proc stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint)
-  {.importc: "stbi_set_flip_vertically_on_load", noDecl.}
+  {.importc: "stbi_set_flip_vertically_on_load".}
 
 
 ## From the header file: "For image formats that explicitly notate that they

@@ -28,28 +28,28 @@ proc stbi_write_png(
   data: pointer,
   stride_in_bytes: int
 ): cint
-  {.importc: "stbi_write_png", noDecl.}
+  {.importc: "stbi_write_png".}
 
 proc stbi_write_bmp(
   filename: cstring;
   w, h, comp: cint;
   data: pointer
 ): cint
-  {.importc: "stbi_write_bmp", noDecl.}
+  {.importc: "stbi_write_bmp".}
 
 proc stbi_write_tga(
   filename: cstring;
   w, h, comp: cint;
   data: pointer
 ): cint
-  {.importc: "stbi_write_tga", noDecl.}
+  {.importc: "stbi_write_tga".}
 
 proc stbi_write_hdr(
   filename: cstring;
   w, h, comp: cint;
   data: ptr cfloat
 ): cint
-  {.importc: "stbi_write_hdr", noDecl.}
+  {.importc: "stbi_write_hdr".}
 
 proc stbi_write_jpg(
   filename: cstring;
@@ -57,7 +57,7 @@ proc stbi_write_jpg(
   data: pointer;
   quality: cint;
 ): cint
-  {.importc: "stbi_write_jpg", noDecl.}
+  {.importc: "stbi_write_jpg".}
 
 
 ## This proc will let you write out data to a PNG file.  `w` and `h` are the
