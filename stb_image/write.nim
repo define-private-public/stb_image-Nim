@@ -71,7 +71,7 @@ proc stbi_write_jpg(
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default the stride is set to zero.
-proc writePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): bool {.discardable.} =
+proc writePNG*(filename: string; w, h, comp: int; data: openarray[uint8]; stride_in_bytes: int = 0): bool {.discardable.} =
   return (stbi_write_png(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes) == 1)
 
 
@@ -81,7 +81,7 @@ proc writePNG*(filename: string; w, h, comp: int; data: seq[uint8]; stride_in_by
 ## same as `w * h * comp`.  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeBMP*(filename: string; w, h, comp: int; data: seq[uint8]): bool {.discardable.} =
+proc writeBMP*(filename: string; w, h, comp: int; data: openarray[uint8]): bool {.discardable.} =
   return (stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
@@ -94,7 +94,7 @@ proc writeBMP*(filename: string; w, h, comp: int; data: seq[uint8]): bool {.disc
 ##
 ## By default this function will save the TGA with run-length encoding, but this
 ## can be turned off by setting `useRLE` to `false`.
-proc writeTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool = true): bool {.discardable.} =
+proc writeTGA*(filename: string; w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): bool {.discardable.} =
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   return (stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
@@ -113,7 +113,7 @@ proc writeTGA*(filename: string; w, h, comp: int; data: seq[uint8]; useRLE: bool
 ## --
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.discardable.} =
+proc writeHDR*(filename: string; w, h, comp: int; data: openarray[float32]): bool {.discardable.} =
   return (stbi_write_hdr(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
@@ -126,7 +126,7 @@ proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.di
 ## .  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeJPG*(filename: string; w, h, comp: int; data: seq[uint8]; quality: int): bool {.discardable.} =
+proc writeJPG*(filename: string; w, h, comp: int; data: openarray[uint8]; quality: int): bool {.discardable.} =
   return (stbi_write_jpg(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) == 1)
 
 
@@ -193,7 +193,7 @@ proc streamWriteData(context, data: pointer, size: cint) {.cdecl.} =
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default the stride is set to zero.
-proc memoryWritePNG*(w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): string =
+proc memoryWritePNG*(w, h, comp: int; data: openarray[uint8]; stride_in_bytes: int = 0): string =
   var buffer = newStringStream()
 
   if stbi_write_png_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes.cint) != 1:
@@ -210,7 +210,7 @@ proc memoryWritePNG*(w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0
 ## Returns a binary string contaning the BMP data.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc memoryWriteBMP*(w, h, comp: int; data: seq[uint8]): string =
+proc memoryWriteBMP*(w, h, comp: int; data: openarray[uint8]): string =
   var buffer = newStringStream()
 
   if stbi_write_bmp_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
@@ -229,7 +229,7 @@ proc memoryWriteBMP*(w, h, comp: int; data: seq[uint8]): string =
 ##
 ## By default this function will save the TGA with run-length encoding, but this
 ## can be turned off by setting `useRLE` to `false`.
-proc memoryWriteTGA*(w, h, comp: int; data: seq[uint8]; useRLE: bool = true): string =
+proc memoryWriteTGA*(w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): string =
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   var buffer = newStringStream()
@@ -255,7 +255,7 @@ proc memoryWriteTGA*(w, h, comp: int; data: seq[uint8]; useRLE: bool = true): st
 ## --
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc memoryWriteHDR*(w, h, comp: int; data: seq[uint8]): string =
+proc memoryWriteHDR*(w, h, comp: int; data: openarray[uint8]): string =
   var buffer = newStringStream()
 
   if stbi_write_hdr_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
@@ -275,7 +275,7 @@ proc memoryWriteHDR*(w, h, comp: int; data: seq[uint8]): string =
 ## Returns a binary string contaning the JPG data.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc memoryWriteJPG*(w, h, comp: int; data: seq[uint8]; quality: int): string =
+proc memoryWriteJPG*(w, h, comp: int; data: openarray[uint8]; quality: int): string =
   var buffer = newStringStream()
 
   if stbi_write_jpg_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) != 1:
