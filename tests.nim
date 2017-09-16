@@ -256,12 +256,30 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # remove the image
     removeFile(filename)
+  
+  
+  test "stbiw.memoryWriteBMP":
+    # data
+    var
+      width = 2
+      height = 2
+      channels = stbi.RGB
+      pixels: seq[uint8] = @[]
+      filename = "save1.bmp"
+      testPixels = readFile(testSave1)
+
+    # Set the pixel data
+    pixels.addRGB(0xFF, 0x00, 0x00)   # Red
+    pixels.addRGB(0x00, 0xFF, 0x00)   # Green
+    pixels.addRGB(0x00, 0x00, 0xFF)   # Blue
+    pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # save and load from memory
     let memoryPixels = stbiw.memoryWriteBMP(width, height, channels, pixels)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
+
 
   test "stbiw.writePNG":
     # data
@@ -294,6 +312,25 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Remove the image
     removeFile(filename)
+
+
+  test "stbiw.memoryWritePNG":
+    # data
+    var
+      width = 3
+      height = 2
+      channels = stbiw.YA
+      pixels: seq[uint8] = @[]
+      testPixels = readFile(testSave2)
+
+    # Set the pixel data
+    pixels.addYA(0xFF, 0x33)    # White
+    pixels.addYA(0xFF, 0x66)
+    pixels.addYA(0xFF, 0x99)
+
+    pixels.addYA(0x00, 0x99)    # Black
+    pixels.addYA(0x00, 0x66)
+    pixels.addYA(0x00, 0x33)
 
     # save and load from memory
     let memoryPixels = stbiw.memoryWritePNG(width, height, channels, pixels)
@@ -330,6 +367,21 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Remove the image
     removeFile(filename)
+
+
+  test "stbiw.memoryWriteTGA [RLE]":
+    var
+      width = 5
+      height = 2
+      channels = stbi.RGBA
+      pixels: seq[uint8] = @[]
+      testPixels = readFile(testSave3)
+
+    # Set the pixel data
+    for i in countup(1, 5):
+      pixels.addRGBA(0x00, 0x00, 0x00, 0x80)
+    for i in countup(1, 5):
+      pixels.addRGBA(0xFF, 0xFF, 0xFF, 0x80)
 
     # save and load from memory
     let memoryPixels = stbiw.memoryWriteTGA(width, height, channels, pixels)
@@ -371,6 +423,26 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
+
+  test "stbiw.memoryWriteTGA [non-RLE]":
+    # Data
+    var
+      width = 2
+      height = 3
+      channels = stbi.RGBA
+      pixels: seq[uint8] = @[]
+      testPixels = readFile(testSave4)
+
+    # Set the pixel data
+    pixels.addRGBA(0xFF, 0x66, 0x00, 0x80)
+    pixels.addRGBA(0xFF, 0x99, 0x00, 0xFF)
+
+    pixels.addRGBA(0x66, 0x00, 0xFF, 0x80)
+    pixels.addRGBA(0x99, 0x00, 0xFF, 0xFF)
+
+    pixels.addRGBA(0x00, 0x66, 0xFF, 0x80)
+    pixels.addRGBA(0x00, 0x99, 0xFF, 0xFF)
+
     # save and load from memory
     let memoryPixels = stbiw.memoryWriteTGA(width, height, channels, pixels, false)
 
@@ -407,11 +479,28 @@ suite "Unit tests for stbi_image_write wrapper":
     # remove the image
     removeFile(filename)
 
+
+  test "stbiw.memoryWriteJPG [quality=10]":
+    # data
+    var
+      width = 2
+      height = 2
+      channels = stbi.RGB
+      pixels: seq[uint8] = @[]
+      testPixels = readFile(testSave5)
+
+    # Set the pixel data
+    pixels.addRGB(0xFF, 0x00, 0x00)   # Red
+    pixels.addRGB(0x00, 0xFF, 0x00)   # Green
+    pixels.addRGB(0x00, 0x00, 0xFF)   # Blue
+    pixels.addRGB(0x00, 0x00, 0x00)   # Black
+
     # save and load from memory
     let memoryPixels = stbiw.memoryWriteJPG(width, height, channels, pixels, 10)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
+
 
   test "stbiw.writeJPG [quality=100]":
     # data
@@ -441,6 +530,22 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # remove the image
     removeFile(filename)
+
+
+  test "stbiw.memoryWriteJPG [quality=100]":
+    # data
+    var
+      width = 2
+      height = 2
+      channels = stbi.RGB
+      pixels: seq[uint8] = @[]
+      testPixels = readFile(testSave6)
+
+    # Set the pixel data
+    pixels.addRGB(0xFF, 0x00, 0x00)   # Red
+    pixels.addRGB(0x00, 0xFF, 0x00)   # Green
+    pixels.addRGB(0x00, 0x00, 0xFF)   # Blue
+    pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # save and load from memory
     let memoryPixels = stbiw.memoryWriteJPG(width, height, channels, pixels, 100)
