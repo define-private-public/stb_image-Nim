@@ -129,8 +129,14 @@ proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.di
 proc writeJPG*(filename: string; w, h, comp: int; data: seq[uint8]; quality: int): bool {.discardable.} =
   return (stbi_write_jpg(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) == 1)
 
+
+
+# Callback prototype for the `*_func` writing functions
+type writeCallback* = proc (context, data: pointer, size: cint) {.cdecl.}
+
+
 proc stbi_write_png_to_func(
-  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  fn: writeCallback,
   context: pointer,
   w, h, comp: cint,
   data: pointer,
@@ -139,7 +145,7 @@ proc stbi_write_png_to_func(
   {.importc: "stbi_write_png_to_func".}
 
 proc stbi_write_bmp_to_func(
-  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  fn: writeCallback,
   context: pointer,
   w, h, comp: cint,
   data: pointer
@@ -147,7 +153,7 @@ proc stbi_write_bmp_to_func(
   {.importc: "stbi_write_bmp_to_func".}
 
 proc stbi_write_tga_to_func(
-  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  fn: writeCallback,
   context: pointer,
   w, h, comp: cint,
   data: pointer
@@ -155,7 +161,7 @@ proc stbi_write_tga_to_func(
   {.importc: "stbi_write_tga_to_func".}
 
 proc stbi_write_hdr_to_func(
-  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  fn: writeCallback,
   context: pointer,
   w, h, comp: cint,
   data: pointer
@@ -163,7 +169,7 @@ proc stbi_write_hdr_to_func(
   {.importc: "stbi_write_hdr_to_func".}
 
 proc stbi_write_jpg_to_func(
-  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  fn: writeCallback,
   context: pointer,
   w, h, comp: cint,
   data: pointer,
@@ -171,10 +177,12 @@ proc stbi_write_jpg_to_func(
 ): cint
   {.importc: "stbi_write_jpg_to_func".}
 
+
 proc streamWriteData(context, data: pointer, size: cint) {.cdecl.} =
   if size > 0:
     let stream = cast[ptr StringStream](context)
     stream[].writeData(data, size)
+
 
 ## This proc will let you write out PNG data to memory.  `w` and `h` are the
 ## size of the image you want.  `comp` is how many components make up a single
@@ -187,8 +195,10 @@ proc streamWriteData(context, data: pointer, size: cint) {.cdecl.} =
 ## By default the stride is set to zero.
 proc memoryWritePNG*(w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): string =
   var buffer = newStringStream()
+
   if stbi_write_png_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes.cint) != 1:
     raise newException(IOError, "Failed to write PNG to memory")
+
   return buffer.data
 
 
@@ -202,8 +212,10 @@ proc memoryWritePNG*(w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 proc memoryWriteBMP*(w, h, comp: int; data: seq[uint8]): string =
   var buffer = newStringStream()
+
   if stbi_write_bmp_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
     raise newException(IOError, "Failed to write BMP to memory")
+
   return buffer.data
 
 ## This proc will let you write out TGA data to memory.  `w` and `h` are the
@@ -221,8 +233,10 @@ proc memoryWriteTGA*(w, h, comp: int; data: seq[uint8]; useRLE: bool = true): st
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   var buffer = newStringStream()
+
   if stbi_write_tga_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
     raise newException(IOError, "Failed to write TGA to memory")
+
   return buffer.data
 
 
@@ -243,8 +257,10 @@ proc memoryWriteTGA*(w, h, comp: int; data: seq[uint8]; useRLE: bool = true): st
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 proc memoryWriteHDR*(w, h, comp: int; data: seq[uint8]): string =
   var buffer = newStringStream()
+
   if stbi_write_hdr_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
     raise newException(IOError, "Failed to write HDR to memory")
+
   return buffer.data
 
 
@@ -261,6 +277,9 @@ proc memoryWriteHDR*(w, h, comp: int; data: seq[uint8]): string =
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 proc memoryWriteJPG*(w, h, comp: int; data: seq[uint8]; quality: int): string =
   var buffer = newStringStream()
+
   if stbi_write_jpg_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) != 1:
     raise newException(IOError, "Failed to write JPG to memory")
+
   return buffer.data
+
