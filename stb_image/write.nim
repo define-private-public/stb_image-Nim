@@ -4,6 +4,9 @@
 # Description:  A nim wrapper for stb_image_write.h.
 
 
+import streams
+import sequtils
+
 import components
 export components.Y
 export components.YA
@@ -126,14 +129,138 @@ proc writeHDR*(filename: string; w, h, comp: int; data: seq[float32]): bool {.di
 proc writeJPG*(filename: string; w, h, comp: int; data: seq[uint8]; quality: int): bool {.discardable.} =
   return (stbi_write_jpg(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) == 1)
 
+proc stbi_write_png_to_func(
+  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  context: pointer,
+  w, h, comp: cint,
+  data: pointer,
+  stride_in_bytes: cint
+): cint
+  {.importc: "stbi_write_png_to_func".}
 
-# For the moment being, the callback write functions are going to be skipped
-# unless there is a request for them.
-#
-#typedef void stbi_write_func(void *context, void *data, int size);
-#int stbi_write_png_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data, int stride_in_bytes);
-#int stbi_write_bmp_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data);
-#int stbi_write_tga_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const void  *data);
-#int stbi_write_hdr_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const float *data);
-#int stbi_write_jpg_to_func(stbi_write_func *func, void *context, int w, int h, int comp, const float *data);
+proc stbi_write_bmp_to_func(
+  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  context: pointer,
+  w, h, comp: cint,
+  data: pointer
+): cint
+  {.importc: "stbi_write_bmp_to_func".}
 
+proc stbi_write_tga_to_func(
+  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  context: pointer,
+  w, h, comp: cint,
+  data: pointer
+): cint
+  {.importc: "stbi_write_tga_to_func".}
+
+proc stbi_write_hdr_to_func(
+  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  context: pointer,
+  w, h, comp: cint,
+  data: pointer
+): cint
+  {.importc: "stbi_write_hdr_to_func".}
+
+proc stbi_write_jpg_to_func(
+  fn: proc (context, data: pointer, size: cint) {.cdecl.},
+  context: pointer,
+  w, h, comp: cint,
+  data: pointer,
+  quality: cint
+): cint
+  {.importc: "stbi_write_jpg_to_func".}
+
+proc streamWriteData(context, data: pointer, size: cint) {.cdecl.} =
+  if size > 0:
+    let stream = cast[ptr StringStream](context)
+    stream[].writeData(data, size)
+
+## This proc will let you write out PNG data to memory.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGBA," "RGB", "YA").  The entries in `data` should match be the
+## same as `w * h * comp`.  This raises an IOError exception on failure.
+## Returns a binary string contaning the PNG data.
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+##
+## By default the stride is set to zero.
+proc memoryWritePNG*(w, h, comp: int; data: seq[uint8]; stride_in_bytes: int = 0): string =
+  var buffer = newStringStream()
+  if stbi_write_png_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes.cint) != 1:
+    raise newException(IOError, "Failed to write PNG to memory")
+  return buffer.data
+
+
+## This proc will let you write out BMP data to memory.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
+## same as `w * h * comp`.  This raises an IOError exception on failure.
+##
+## Returns a binary string contaning the BMP data.
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+proc memoryWriteBMP*(w, h, comp: int; data: seq[uint8]): string =
+  var buffer = newStringStream()
+  if stbi_write_bmp_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
+    raise newException(IOError, "Failed to write BMP to memory")
+  return buffer.data
+
+## This proc will let you write out TGA data to memory.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGBA," "RGBA", "YA").  The entries in `data` should match be the
+## same as `w * h * comp`.  This raises an IOError exception on failure.
+##
+## Returns a binary string contaning the TGA data.
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+##
+## By default this function will save the TGA with run-length encoding, but this
+## can be turned off by setting `useRLE` to `false`.
+proc memoryWriteTGA*(w, h, comp: int; data: seq[uint8]; useRLE: bool = true): string =
+  # Set RLE option
+  stbi_write_tga_with_rle = if useRLE: 1 else: 0
+  var buffer = newStringStream()
+  if stbi_write_tga_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
+    raise newException(IOError, "Failed to write TGA to memory")
+  return buffer.data
+
+
+## This proc will let you write out HDR data to memory.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
+## same as `w * h * comp`.  This raises an IOError exception on failure.
+##
+## Returns a binary string contaning the HDR data.
+##
+## From the header file:
+## ----
+## HDR expects linear float data. Since the format is always 32-bit rgb(e)
+## data, alpha (if provided) is discarded, and for monochrome data it is
+## replicated across all three channels.
+## --
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+proc memoryWriteHDR*(w, h, comp: int; data: seq[uint8]): string =
+  var buffer = newStringStream()
+  if stbi_write_hdr_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
+    raise newException(IOError, "Failed to write HDR to memory")
+  return buffer.data
+
+
+## This proc will let you write out JPG data to memory.  `w` and `h` are the
+## size of the image you want.  `comp` is how many components make up a single
+## pixel (.e.g "RGB", "YA").  `quality` is how well the quality of the saved 
+## JPEG image should be.  It should be a value between [1, 100].  1 for the
+## lowest quality and 100 for the highest.  Higher quality will result in larger
+## file sizes.  The entries in `data` should match be the same as `w * h * comp`
+## .  This raises an IOError exception on failure.
+##
+## Returns a binary string contaning the JPG data.
+##
+## Please see the documentation in the `stbi_image_write.h` file for more info.
+proc memoryWriteJPG*(w, h, comp: int; data: seq[uint8]; quality: int): string =
+  var buffer = newStringStream()
+  if stbi_write_jpg_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) != 1:
+    raise newException(IOError, "Failed to write JPG to memory")
+  return buffer.data

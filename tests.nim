@@ -2,7 +2,7 @@ import unittest
 import os
 import stb_image/read as stbi
 import stb_image/write as stbiw
-
+import sequtils
 
 const
   testImage1 = "testdata/image1.png"
@@ -257,6 +257,12 @@ suite "Unit tests for stbi_image_write wrapper":
     # remove the image
     removeFile(filename)
 
+    # save and load from memory
+    let memoryPixels = stbiw.memoryWriteBMP(width, height, channels, pixels)
+
+    # check for equivilancy
+    check(testPixels == memoryPixels)
+
   test "stbiw.writePNG":
     # data
     var
@@ -289,6 +295,12 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
+    # save and load from memory
+    let memoryPixels = stbiw.memoryWritePNG(width, height, channels, pixels)
+
+    # check for equivilancy
+    check(testPixels == memoryPixels)
+
 
   test "stbiw.writeTGA [RLE]":
     var
@@ -318,6 +330,12 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Remove the image
     removeFile(filename)
+
+    # save and load from memory
+    let memoryPixels = stbiw.memoryWriteTGA(width, height, channels, pixels)
+
+    # check for equivilancy
+    check(testPixels == memoryPixels)
 
 
   test "stbiw.writeTGA [non-RLE]":
@@ -353,6 +371,12 @@ suite "Unit tests for stbi_image_write wrapper":
     # Remove the image
     removeFile(filename)
 
+    # save and load from memory
+    let memoryPixels = stbiw.memoryWriteTGA(width, height, channels, pixels, false)
+
+    # check for equivilancy
+    check(testPixels == memoryPixels)
+
 
   test "stbiw.writeJPG [quality=10]":
     # data
@@ -383,6 +407,12 @@ suite "Unit tests for stbi_image_write wrapper":
     # remove the image
     removeFile(filename)
 
+    # save and load from memory
+    let memoryPixels = stbiw.memoryWriteJPG(width, height, channels, pixels, 10)
+
+    # check for equivilancy
+    check(testPixels == memoryPixels)
+
   test "stbiw.writeJPG [quality=100]":
     # data
     var
@@ -401,7 +431,6 @@ suite "Unit tests for stbi_image_write wrapper":
     # Non-zero is returned on success
     check(stbiw.writeJPG(filename, width, height, channels, pixels, 100))
 
-
     # Verify the image with the one in "testdata/"
     var
       testPixels = readFile(testSave6)
@@ -412,6 +441,12 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # remove the image
     removeFile(filename)
+
+    # save and load from memory
+    let memoryPixels = stbiw.memoryWriteJPG(width, height, channels, pixels, 100)
+
+    # check for equivilancy
+    check(testPixels == memoryPixels)
 
 
 #  Note, I haven't been able to find a simple HDR image to test against, so
