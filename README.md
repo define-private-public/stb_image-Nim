@@ -28,10 +28,10 @@ the API).
 Callback Functions, ZLIB client, & stbi_image_resize
 ----------------------------------------------------
 
-Originally I was going to include these in the wrapper, but I decided to drop
-support for them.  I wasn't sure how to go about wrapping the callback
-functions.  As for `stbi_image_resize`, I felt that the scope of this wrapper
-should be focused on image loading and saving, not processing.
+Only the callback funtions for `stbi_image_write` are implemented.  I'd like to
+thank Eduardo Bart (@edubart) for help on this.  The ZLIB client is not exposed.
+As for `stbi_image_resize`, I felt that the scope of this wrapper should be
+focused on image loading and saving, not processing.
 
 Though if someone would like these included in the wrapper I am open to pull
 requests.
@@ -215,4 +215,10 @@ From `stb_image.h`:
 
 From `stb_image_write.h`:
  - `writeHDR()`
+
+
+Thanks
+------
+ - Eduardo Bart (@edubart), for help with a segfault issue and write callback
+   functions.
 
