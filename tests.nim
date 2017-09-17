@@ -258,7 +258,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
   
   
-  test "stbiw.memoryWriteBMP":
+  test "stbiw.writeBMP [memory]":
     # data
     var
       width = 2
@@ -275,7 +275,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # save and load from memory
-    let memoryPixels = stbiw.memoryWriteBMP(width, height, channels, pixels)
+    let memoryPixels = stbiw.writeBMP(width, height, channels, pixels)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
@@ -314,7 +314,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiw.memoryWritePNG":
+  test "stbiw.writePNG [memory]":
     # data
     var
       width = 3
@@ -333,7 +333,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addYA(0x00, 0x33)
 
     # save and load from memory
-    let memoryPixels = stbiw.memoryWritePNG(width, height, channels, pixels)
+    let memoryPixels = stbiw.writePNG(width, height, channels, pixels)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
@@ -369,7 +369,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiw.memoryWriteTGA [RLE]":
+  test "stbiw.writeTGA [memory, RLE]":
     var
       width = 5
       height = 2
@@ -384,7 +384,7 @@ suite "Unit tests for stbi_image_write wrapper":
       pixels.addRGBA(0xFF, 0xFF, 0xFF, 0x80)
 
     # save and load from memory
-    let memoryPixels = stbiw.memoryWriteTGA(width, height, channels, pixels)
+    let memoryPixels = stbiw.writeTGA(width, height, channels, pixels)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
@@ -424,7 +424,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiw.memoryWriteTGA [non-RLE]":
+  test "stbiw.writeTGA [memory, non-RLE]":
     # Data
     var
       width = 2
@@ -444,7 +444,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGBA(0x00, 0x99, 0xFF, 0xFF)
 
     # save and load from memory
-    let memoryPixels = stbiw.memoryWriteTGA(width, height, channels, pixels, false)
+    let memoryPixels = stbiw.writeTGA(width, height, channels, pixels, false)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
@@ -480,7 +480,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiw.memoryWriteJPG [quality=10]":
+  test "stbiw.writeJPG [memory, quality=10]":
     # data
     var
       width = 2
@@ -496,7 +496,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # save and load from memory
-    let memoryPixels = stbiw.memoryWriteJPG(width, height, channels, pixels, 10)
+    let memoryPixels = stbiw.writeJPG(width, height, channels, pixels, 10)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
@@ -532,7 +532,7 @@ suite "Unit tests for stbi_image_write wrapper":
     removeFile(filename)
 
 
-  test "stbiw.memoryWriteJPG [quality=100]":
+  test "stbiw.writeJPG [memory, quality=100]":
     # data
     var
       width = 2
@@ -548,7 +548,7 @@ suite "Unit tests for stbi_image_write wrapper":
     pixels.addRGB(0x00, 0x00, 0x00)   # Black
 
     # save and load from memory
-    let memoryPixels = stbiw.memoryWriteJPG(width, height, channels, pixels, 100)
+    let memoryPixels = stbiw.writeJPG(width, height, channels, pixels, 100)
 
     # check for equivilancy
     check(testPixels == memoryPixels)
