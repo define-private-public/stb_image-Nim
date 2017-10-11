@@ -7,7 +7,7 @@ import sequtils
 const
   testImage1 = "testdata/image1.png"
   testImage2 = "testdata/image2.bmp"
-  testImage3: seq[uint8] = @[
+  testImage3: seq[byte] = @[
     0x50'u8, 0x35'u8, 0x0a'u8, 0x23'u8, 0x20'u8, 0x43'u8, 0x52'u8, 0x45'u8, 0x41'u8, 0x54'u8, 0x4f'u8, 0x52'u8, 0x3a'u8, 0x20'u8, 0x47'u8, 0x49'u8,
     0x4d'u8, 0x50'u8, 0x20'u8, 0x50'u8, 0x4e'u8, 0x4d'u8, 0x20'u8, 0x46'u8, 0x69'u8, 0x6c'u8, 0x74'u8, 0x65'u8, 0x72'u8, 0x20'u8, 0x56'u8, 0x65'u8,
     0x72'u8, 0x73'u8, 0x69'u8, 0x6f'u8, 0x6e'u8, 0x20'u8, 0x31'u8, 0x2e'u8, 0x31'u8, 0x0a'u8, 0x31'u8, 0x20'u8, 0x32'u8, 0x0a'u8, 0x32'u8, 0x35'u8,
@@ -23,14 +23,14 @@ const
 
 
 # This is a little handy proc so I don't have to type so much
-proc addRGB(pixelData: var seq[uint8]; r, g, b: uint8) =
+proc addRGB(pixelData: var seq[byte]; r, g, b: byte) =
   pixelData.add(r)
   pixelData.add(g)
   pixelData.add(b)
 
 
 # Another handy proc for less typing
-proc addRGBA(pixelData: var seq[uint8]; r, g, b, a: uint8) =
+proc addRGBA(pixelData: var seq[byte]; r, g, b, a: byte) =
   pixelData.add(r)
   pixelData.add(g)
   pixelData.add(b)
@@ -38,7 +38,7 @@ proc addRGBA(pixelData: var seq[uint8]; r, g, b, a: uint8) =
 
 
 # Yet another handy proc for even less typing
-proc addYA(pixelData: var seq[uint8]; mono, alpha: uint8) =
+proc addYA(pixelData: var seq[byte]; mono, alpha: byte) =
   pixelData.add(mono)
   pixelData.add(alpha)
 
@@ -53,7 +53,7 @@ suite "Unit Tests for stb_image wrapper":
       width: int
       height: int
       channels: int
-      pixels: seq[uint8]
+      pixels: seq[byte]
 
     # Load a non existant image
     try:
@@ -74,7 +74,7 @@ suite "Unit Tests for stb_image wrapper":
       width: int
       height: int
       channels: int
-      pixels: seq[uint8]
+      pixels: seq[byte]
 
     # Load the image
     pixels = stbi.load(testImage1, width, height, channels, stbi.Default)
@@ -117,7 +117,7 @@ suite "Unit Tests for stb_image wrapper":
       width: int
       height: int
       channels: int
-      pixels: seq[uint8]
+      pixels: seq[byte]
 
     # Open the file object
     check(open(fileObj, testImage2))
@@ -148,7 +148,7 @@ suite "Unit Tests for stb_image wrapper":
       width: int
       height: int
       channels: int
-      pixels: seq[uint8]
+      pixels: seq[byte]
 
     # Load the image
     pixels = stbi.loadFromMemory(testImage3, width, height, channels, stbi.Grey)
@@ -234,7 +234,7 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 2
       channels = stbi.RGB
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save1.bmp"
 
     # Set the pixel data
@@ -248,8 +248,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Verify the image with the one in "testdata/"
     var
-      testPixels = readFile(testSave1)
-      ourPixels = readFile(filename)
+      testPixels = cast[seq[byte]](readFile(testSave1))
+      ourPixels = cast[seq[byte]](readFile(filename))
 
     # check for equivilancy
     check(testPixels == ourPixels)
@@ -264,9 +264,9 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 2
       channels = stbi.RGB
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save1.bmp"
-      testPixels = readFile(testSave1)
+      testPixels = cast[seq[byte]](readFile(testSave1))
 
     # Set the pixel data
     pixels.addRGB(0xFF, 0x00, 0x00)   # Red
@@ -287,7 +287,7 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 3
       height = 2
       channels = stbiw.YA
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save2.png"
 
     # Set the pixel data
@@ -304,8 +304,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Verify image is the same in testdata/
     var
-      testPixels = readFile(testSave2)
-      ourPixels = readFile(filename)
+      testPixels = cast[seq[byte]](readFile(testSave2))
+      ourPixels = cast[seq[byte]](readFile(filename))
 
     # Check for sameness
     check(testPixels == ourPixels)
@@ -320,8 +320,8 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 3
       height = 2
       channels = stbiw.YA
-      pixels: seq[uint8] = @[]
-      testPixels = readFile(testSave2)
+      pixels: seq[byte] = @[]
+      testPixels = cast[seq[byte]](readFile(testSave2))
 
     # Set the pixel data
     pixels.addYA(0xFF, 0x33)    # White
@@ -344,7 +344,7 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 5
       height = 2
       channels = stbi.RGBA
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save3.tga"
 
     # Set the pixel data
@@ -359,8 +359,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Verify image is the same in testdata/
     var
-      testPixels = readFile(testSave3)
-      ourPixels = readFile(filename)
+      testPixels = cast[seq[byte]](readFile(testSave3))
+      ourPixels = cast[seq[byte]](readFile(filename))
 
     # Check for sameness
     check(testPixels == ourPixels)
@@ -374,8 +374,8 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 5
       height = 2
       channels = stbi.RGBA
-      pixels: seq[uint8] = @[]
-      testPixels = readFile(testSave3)
+      pixels: seq[byte] = @[]
+      testPixels = cast[seq[byte]](readFile(testSave3))
 
     # Set the pixel data
     for i in countup(1, 5):
@@ -396,7 +396,7 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 3
       channels = stbi.RGBA
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save4.tga"
 
     # Set the pixel data
@@ -414,8 +414,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Verify image is the same in testdata/
     var
-      testPixels = readFile(testSave4)
-      ourPixels = readFile(filename)
+      testPixels = cast[seq[byte]](readFile(testSave4))
+      ourPixels = cast[seq[byte]](readFile(filename))
 
     # Check for sameness
     check(testPixels == ourPixels)
@@ -430,8 +430,8 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 3
       channels = stbi.RGBA
-      pixels: seq[uint8] = @[]
-      testPixels = readFile(testSave4)
+      pixels: seq[byte] = @[]
+      testPixels = cast[seq[byte]](readFile(testSave4))
 
     # Set the pixel data
     pixels.addRGBA(0xFF, 0x66, 0x00, 0x80)
@@ -456,7 +456,7 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 2
       channels = stbi.RGB
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save5.jpeg"
 
     # Set the pixel data
@@ -470,8 +470,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Verify the image with the one in "testdata/"
     var
-      testPixels = readFile(testSave5)
-      ourPixels = readFile(filename)
+      testPixels = cast[seq[byte]](readFile(testSave5))
+      ourPixels = cast[seq[byte]](readFile(filename))
 
     # check for equivilancy
     check(testPixels == ourPixels)
@@ -486,8 +486,8 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 2
       channels = stbi.RGB
-      pixels: seq[uint8] = @[]
-      testPixels = readFile(testSave5)
+      pixels: seq[byte] = @[]
+      testPixels = cast[seq[byte]](readFile(testSave5))
 
     # Set the pixel data
     pixels.addRGB(0xFF, 0x00, 0x00)   # Red
@@ -508,7 +508,7 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 2
       channels = stbi.RGB
-      pixels: seq[uint8] = @[]
+      pixels: seq[byte] = @[]
       filename = "save6.jpeg"
 
     # Set the pixel data
@@ -522,8 +522,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # Verify the image with the one in "testdata/"
     var
-      testPixels = readFile(testSave6)
-      ourPixels = readFile(filename)
+      testPixels = cast[seq[byte]](readFile(testSave6))
+      ourPixels = cast[seq[byte]](readFile(filename))
 
     # check for equivilancy
     check(testPixels == ourPixels)
@@ -538,8 +538,8 @@ suite "Unit tests for stbi_image_write wrapper":
       width = 2
       height = 2
       channels = stbi.RGB
-      pixels: seq[uint8] = @[]
-      testPixels = readFile(testSave6)
+      pixels: seq[byte] = @[]
+      testPixels = cast[seq[byte]](readFile(testSave6))
 
     # Set the pixel data
     pixels.addRGB(0xFF, 0x00, 0x00)   # Red
@@ -627,7 +627,7 @@ suite "extra functions (from stb_image.h)":
       width: int
       height: int
       channels: int
-      pixels: seq[uint8]
+      pixels: seq[byte]
 
     # Load the image
     pixels = stbi.load(testImage1, width, height, channels, stbi.Default)

@@ -71,7 +71,7 @@ proc stbi_write_jpg(
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default the stride is set to zero.
-proc writePNG*(filename: string; w, h, comp: int; data: openarray[uint8]; stride_in_bytes: int = 0): bool {.discardable.} =
+proc writePNG*(filename: string; w, h, comp: int; data: openarray[byte]; stride_in_bytes: int = 0): bool {.discardable.} =
   return (stbi_write_png(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes) == 1)
 
 
@@ -81,7 +81,7 @@ proc writePNG*(filename: string; w, h, comp: int; data: openarray[uint8]; stride
 ## same as `w * h * comp`.  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeBMP*(filename: string; w, h, comp: int; data: openarray[uint8]): bool {.discardable.} =
+proc writeBMP*(filename: string; w, h, comp: int; data: openarray[byte]): bool {.discardable.} =
   return (stbi_write_bmp(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
 
 
@@ -94,7 +94,7 @@ proc writeBMP*(filename: string; w, h, comp: int; data: openarray[uint8]): bool 
 ##
 ## By default this function will save the TGA with run-length encoding, but this
 ## can be turned off by setting `useRLE` to `false`.
-proc writeTGA*(filename: string; w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): bool {.discardable.} =
+proc writeTGA*(filename: string; w, h, comp: int; data: openarray[byte]; useRLE: bool = true): bool {.discardable.} =
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   return (stbi_write_tga(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr) == 1)
@@ -126,7 +126,7 @@ proc writeHDR*(filename: string; w, h, comp: int; data: openarray[float32]): boo
 ## .  This returns a true upon success.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeJPG*(filename: string; w, h, comp: int; data: openarray[uint8]; quality: int): bool {.discardable.} =
+proc writeJPG*(filename: string; w, h, comp: int; data: openarray[byte]; quality: int): bool {.discardable.} =
   return (stbi_write_jpg(filename.cstring, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) == 1)
 
 
@@ -188,18 +188,18 @@ proc streamWriteData(context, data: pointer, size: cint) {.cdecl.} =
 ## size of the image you want.  `comp` is how many components make up a single
 ## pixel (.e.g "RGBA," "RGB", "YA").  The entries in `data` should match be the
 ## same as `w * h * comp`.  This raises an IOError exception on failure.
-## Returns a binary string contaning the PNG data.
+## Returns a binary sequence contaning the PNG data.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default the stride is set to zero.
-proc writePNG*(w, h, comp: int; data: openarray[uint8]; stride_in_bytes: int = 0): string =
+proc writePNG*(w, h, comp: int; data: openarray[byte]; stride_in_bytes: int = 0): seq[byte] =
   var buffer = newStringStream()
 
   if stbi_write_png_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, stride_in_bytes.cint) != 1:
     raise newException(IOError, "Failed to write PNG to memory")
 
-  return buffer.data
+  return cast[seq[byte]](buffer.data)
 
 
 ## This proc will let you write out BMP data to memory.  `w` and `h` are the
@@ -207,29 +207,29 @@ proc writePNG*(w, h, comp: int; data: openarray[uint8]; stride_in_bytes: int = 0
 ## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
 ## same as `w * h * comp`.  This raises an IOError exception on failure.
 ##
-## Returns a binary string contaning the BMP data.
+## Returns a binary sequence contaning the BMP data.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeBMP*(w, h, comp: int; data: openarray[uint8]): string =
+proc writeBMP*(w, h, comp: int; data: openarray[byte]): seq[byte] =
   var buffer = newStringStream()
 
   if stbi_write_bmp_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
     raise newException(IOError, "Failed to write BMP to memory")
 
-  return buffer.data
+  return cast[seq[byte]](buffer.data)
 
 ## This proc will let you write out TGA data to memory.  `w` and `h` are the
 ## size of the image you want.  `comp` is how many components make up a single
 ## pixel (.e.g "RGBA," "RGBA", "YA").  The entries in `data` should match be the
 ## same as `w * h * comp`.  This raises an IOError exception on failure.
 ##
-## Returns a binary string contaning the TGA data.
+## Returns a binary sequence contaning the TGA data.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
 ##
 ## By default this function will save the TGA with run-length encoding, but this
 ## can be turned off by setting `useRLE` to `false`.
-proc writeTGA*(w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): string =
+proc writeTGA*(w, h, comp: int; data: openarray[byte]; useRLE: bool = true): seq[byte] =
   # Set RLE option
   stbi_write_tga_with_rle = if useRLE: 1 else: 0
   var buffer = newStringStream()
@@ -237,7 +237,7 @@ proc writeTGA*(w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): st
   if stbi_write_tga_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
     raise newException(IOError, "Failed to write TGA to memory")
 
-  return buffer.data
+  return cast[seq[byte]](buffer.data)
 
 
 ## This proc will let you write out HDR data to memory.  `w` and `h` are the
@@ -245,7 +245,7 @@ proc writeTGA*(w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): st
 ## pixel (.e.g "RGB", "YA").  The entries in `data` should match be the
 ## same as `w * h * comp`.  This raises an IOError exception on failure.
 ##
-## Returns a binary string contaning the HDR data.
+## Returns a binary sequence contaning the HDR data.
 ##
 ## From the header file:
 ## ----
@@ -255,13 +255,13 @@ proc writeTGA*(w, h, comp: int; data: openarray[uint8]; useRLE: bool = true): st
 ## --
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeHDR*(w, h, comp: int; data: openarray[uint8]): string =
+proc writeHDR*(w, h, comp: int; data: openarray[byte]): seq[byte] =
   var buffer = newStringStream()
 
   if stbi_write_hdr_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr) != 1:
     raise newException(IOError, "Failed to write HDR to memory")
 
-  return buffer.data
+  return cast[seq[byte]](buffer.data)
 
 
 ## This proc will let you write out JPG data to memory.  `w` and `h` are the
@@ -272,14 +272,14 @@ proc writeHDR*(w, h, comp: int; data: openarray[uint8]): string =
 ## file sizes.  The entries in `data` should match be the same as `w * h * comp`
 ## .  This raises an IOError exception on failure.
 ##
-## Returns a binary string contaning the JPG data.
+## Returns a binary sequence contaning the JPG data.
 ##
 ## Please see the documentation in the `stbi_image_write.h` file for more info.
-proc writeJPG*(w, h, comp: int; data: openarray[uint8]; quality: int): string =
+proc writeJPG*(w, h, comp: int; data: openarray[byte]; quality: int): seq[byte] =
   var buffer = newStringStream()
 
   if stbi_write_jpg_to_func(streamWriteData, buffer.addr, w.cint, h.cint, comp.cint, data[0].unsafeAddr, quality.cint) != 1:
     raise newException(IOError, "Failed to write JPG to memory")
 
-  return buffer.data
+  return cast[seq[byte]](buffer.data)
 

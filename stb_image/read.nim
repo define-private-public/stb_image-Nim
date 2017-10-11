@@ -25,7 +25,7 @@ type
 
 
 # NOTE: this function is here for completness, but it's not exposed in the
-#       nim-friendly API, since seq[uint8] are GC'd
+#       nim-friendly API, since seq[byte] are GC'd
 proc stbi_image_free(retval_from_stbi_load: pointer)
   {.importc: "stbi_image_free".}
 
@@ -77,7 +77,7 @@ proc stbi_load_from_file(
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
+proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: int): seq[byte] =
   var
     width: cint
     height: cint
@@ -96,7 +96,7 @@ proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: 
   channels_in_file = components.int
 
   # Copy pixel data
-  var pixelData: seq[uint8]
+  var pixelData: seq[byte]
   newSeq(pixelData, x * y * channels_in_file)
   copyMem(pixelData[0].addr, data, pixelData.len)
 
@@ -106,7 +106,6 @@ proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: 
   return pixelData
 
 
-# TODO should there be an overload that has a string instead?
 ## This takes in a sequences of bytes (of an image file)
 ## and will return a sequence (of unsigned bytes) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -114,7 +113,7 @@ proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: 
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc loadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint8] =
+proc loadFromMemory*(buffer: seq[byte]; x, y, channels_in_file: var int; desired_channels: int): seq[byte] =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
@@ -137,7 +136,7 @@ proc loadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desire
   channels_in_file = components.int
 
   # Copy pixel data
-  var pixelData: seq[uint8]
+  var pixelData: seq[byte]
   newSeq(pixelData, x * y * channels_in_file)
   copyMem(pixelData[0].addr, data, pixelData.len)
 
@@ -155,7 +154,7 @@ proc loadFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desire
 ## "Default").
 ##
 ## This will also close the file handle too.
-proc loadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[uint8] =
+proc loadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: int): seq[byte] =
   var
     width: cint
     height: cint
@@ -174,7 +173,7 @@ proc loadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: i
   channels_in_file = components.int
 
   # Copy pixel data
-  var pixelData: seq[uint8]
+  var pixelData: seq[byte]
   newSeq(pixelData, x * y * channels_in_file)
   copyMem(pixelData[0].addr, data, pixelData.len)
 
@@ -299,7 +298,7 @@ proc loadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels:
 ##
 ## This is used for files where the channels for the pixel data are encoded as
 ## 16 bit integers (e.g. some Photoshop files).
-proc load16FromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
+proc load16FromMemory*(buffer: seq[byte]; x, y, channels_in_file: var int; desired_channels: int): seq[uint16] =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
@@ -397,7 +396,6 @@ proc loadF*(filename: string; x, y, channels_in_file: var int; desired_channels:
   return pixelData
 
 
-# TODO should there be an overload that has a string instead?
 ## This takes in a sequences of bytes (of an image file)
 ## and will return a sequence (of 32 bit floats) that
 ## is the pixel data. `x`, `y` are the dimensions of the image, and
@@ -405,7 +403,7 @@ proc loadF*(filename: string; x, y, channels_in_file: var int; desired_channels:
 ## `desired_channels` will attempt to change it to with format you would like
 ## though it's not guarenteed.  Set it to `0` if you don't care (a.k.a
 ## "Default").
-proc loadFFromMemory*(buffer: seq[uint8]; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
+proc loadFFromMemory*(buffer: seq[byte]; x, y, channels_in_file: var int; desired_channels: int): seq[float32] =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
@@ -526,7 +524,7 @@ proc LDRToHDRScale*(scale: float) =
 
 
 ## Checks to see if an image is an HDR image, from memory (as a string of bytes)
-proc isHDRFromMemory*(buffer: seq[uint8]): bool =
+proc isHDRFromMemory*(buffer: seq[byte]): bool =
   var castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
   return (stbi_is_hdr_from_memory(castedBuffer, buffer.len.cint) == 1)
 
@@ -569,10 +567,9 @@ proc stbi_info_from_file(
   {.importc: "stbi_info_from_file".}
 
 
-# TODO should there be an overload that has a string instead?
 ## Querys a buffer to see if that data is a loadable image and get it's
 ## dimensions.  Returns true if stb_image can load this image, false otherwise.
-proc infoFromMemory*(buffer: seq[uint8]; x, y, comp: var int): bool =
+proc infoFromMemory*(buffer: seq[byte]; x, y, comp: var int): bool =
   var
     # Cast the buffer to another data type
     castedBuffer = cast[ptr cuchar](buffer[0].unsafeAddr)
