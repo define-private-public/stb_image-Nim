@@ -265,7 +265,6 @@ suite "Unit tests for stbi_image_write wrapper":
       height = 2
       channels = stbi.RGB
       pixels: seq[byte] = @[]
-      filename = "save1.bmp"
       testPixels = cast[seq[byte]](readFile(testSave1))
 
     # Set the pixel data
