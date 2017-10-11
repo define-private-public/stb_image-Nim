@@ -7,6 +7,6 @@ license     = "Unlicense (Public Domain)"
 # deps
 requires "nim >= 0.15.0"
 
-skipFiles = @["nakefile.nim", "tests.nim"]
+skipFiles = @["tests.nim"]
 skipDirs = @["testdata"]
 
