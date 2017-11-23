@@ -25,13 +25,21 @@ you should be able to simply exchange it out (unless something was changed in
 the API).
 
 
-Callback Functions, ZLIB client, & stbi_image_resize
+zlib client
+-----------
+For PNG support, stb_image requires a functioning zlib compressor/decompressor,
+and one is built in.  I'd like to thank RSDuck for exposing the functions with
+some Nim friend wrappers.  Se you want to see how to use it, check `tests.nim`
+for some samples.
+
+
+Callback Functions & stbi_image_resize
 ----------------------------------------------------
 
 Only the callback funtions for `stbi_image_write` are implemented.  I'd like to
-thank Eduardo Bart (@edubart) for help on this.  The ZLIB client is not exposed.
-As for `stbi_image_resize`, I felt that the scope of this wrapper should be
-focused on image loading and saving, not processing.
+thank Eduardo Bart (@edubart) for help on this.  As for `stbi_image_resize`, I
+felt that the scope of this wrapper should be focused on image loading and
+saving, not processing.
 
 Though if someone would like these included in the wrapper I am open to pull
 requests.
@@ -179,11 +187,6 @@ Future Plans
    STB toolkit (and falls under it's "image," section), but it wasn't related to
    image IO so I decided to leave it out.  It also looked like quite a bit of
    work to add in.  If someone wants to submit a pull request, I'll review it.
-
- - Add wrappers/bindings for the ZLIB client in `stb_image.h`.  It's already
-   there for the PNG support, but it not in the scope of image IO.  It would be
-   an extra handy addition for this, but I'd rather someone else write the
-   wrapper procs for it.
 
 
 Untested Functions
