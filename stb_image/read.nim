@@ -662,13 +662,49 @@ proc setFlipVerticallyOnLoad*(flip: bool) =
 # ZLIB Client Functions
 # =====================
 
-# The ZLIB client functions are out of the scope of this wrapper, but if someone
-# wants them added in (or provides a pull request).  I'll consider adding it.
+# C Wrapper procedures. Only these three are needed, all other only provide other default values
+proc stbi_zlib_decode_malloc_guesssize_headerflag(buffer: ptr cuchar, len: cint, initial_size: cint, 
+  outlen: ptr cint, parse_header: cint): ptr cuchar {.importc: "stbi_zlib_decode_malloc_guesssize_headerflag".}
 
-#char *stbi_zlib_decode_malloc_guesssize(const char *buffer, int len, int initial_size, int *outlen);
-#char *stbi_zlib_decode_malloc_guesssize_headerflag(const char *buffer, int len, int initial_size, int *outlen, int parse_header);
-#char *stbi_zlib_decode_malloc(const char *buffer, int len, int *outlen);
-#int   stbi_zlib_decode_buffer(char *obuffer, int olen, const char *ibuffer, int ilen);
-#char *stbi_zlib_decode_noheader_malloc(const char *buffer, int len, int *outlen);
-#int   stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char *ibuffer, int ilen);
+proc stbi_zlib_decode_buffer(obuffer: ptr cuchar, olen: cint, ibuffer: ptr cuchar, ilen: cint): cint
+  {.importc: "stbi_zlib_decode_buffer".}
 
+proc stbi_zlib_decode_noheader_buffer(obuffer: ptr cuchar, olen: cint, ibuffer: ptr cuchar, ilen: cint): cint
+  {.importc: "stbi_zlib_decode_noheader_buffer".}
+
+## Uncompresses ``buffer`` and returns the decompressed data. Too parse a raw inflate stream 
+## switch parseheader to ``false``.
+## It allocates a new buffer, which size is determined by ``initial_size``. If the buffer isn't sufficient 
+## it may be reallocated.
+## For faster decompression, especially if you know the output size, use ``zlibDecodeBuffer``.
+proc zlibDecodeMalloc*(buffer: openArray[byte], initial_size = 16384, parseheader = true): seq[byte] =
+  var length = cint 0
+
+  let data = stbi_zlib_decode_malloc_guesssize_headerflag(cast[ptr cuchar](unsafeAddr buffer[0]), 
+    cint buffer.len, cint initial_size, addr length, cint parseheader)
+  
+  # some error has occured
+  if data.isNil:
+    raise newException(STBIException, failureReason())
+  
+  result = newSeq[byte](int length)
+  copyMem(addr result[0], data, length)
+
+  stbi_image_free(data)
+
+## Uncompresses the data from ``input`` and puts the uncompressed data into ``output``. It doesn't allocate
+## nor resize any buffers.
+## The amount of data written to ``output`` is returned.
+## Switch ``parseheader`` to ``false`` to parse a raw deflate stream.
+proc zlibDecodeBuffer*(input: openArray[byte], output: var openArray[byte], parseheader = true): Natural =
+  let 
+    inputPtr = cast[ptr cuchar](output[0].addr)
+    outputPtr = cast[ptr cuchar](input[0].unsafeAddr)
+    bytesRead = (if not parseheader:
+      stbi_zlib_decode_noheader_buffer(inputPtr, cint output.len, outputPtr, cint input.len) else:
+      stbi_zlib_decode_buffer(inputPtr, cint output.len, outputPtr, cint input.len))
+  # some error has occured
+  if bytesRead == -1:
+      raise newException(STBIException, failureReason())
+  
+  Natural(bytesRead)
