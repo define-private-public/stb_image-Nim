@@ -14,7 +14,7 @@ The used header files are included in this repo (they end in the name
 `_header.nim`) but you may provide your own.
 The versions that are used are:
 
- - `stb_image.h`: v2.16
+ - `stb_image.h`: v2.19
  - `stb_image_write.h`: v1.07
 
 They can be found here: https://github.com/nothings/stb
@@ -187,6 +187,14 @@ Future Plans
    STB toolkit (and falls under it's "image," section), but it wasn't related to
    image IO so I decided to leave it out.  It also looked like quite a bit of
    work to add in.  If someone wants to submit a pull request, I'll review it.
+
+
+Unbound Functions
+-----------------
+
+Right now `stbi_load_gif_from_memory` isn't bound, but will be in the future.
+See: https://gitlab.com/define-private-public/stb_image-Nim/issues/6 for details
+on why this hasn't been added in yet.
 
 
 Untested Functions
