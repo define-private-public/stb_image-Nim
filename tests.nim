@@ -13,6 +13,7 @@ const
     0x72'u8, 0x73'u8, 0x69'u8, 0x6f'u8, 0x6e'u8, 0x20'u8, 0x31'u8, 0x2e'u8, 0x31'u8, 0x0a'u8, 0x31'u8, 0x20'u8, 0x32'u8, 0x0a'u8, 0x32'u8, 0x35'u8,
     0x35'u8, 0x0a'u8, 0x54'u8, 0xa8'u8
   ]
+  testImage4 = "testdata/image4.jpeg"
 
   testSave1 = "testdata/save1.bmp"
   testSave2 = "testdata/save2.png"
@@ -109,6 +110,40 @@ suite "Unit Tests for stb_image wrapper":
     check(pixels[12 + 2] == 0xFF) # B
     check(pixels[12 + 3] == 0xFF) # A
 
+  test "stbi.load [desired_channels > actual_channels]":
+    # Data
+    var
+      width: int
+      height: int
+      channels: int
+      pixels: seq[byte]
+
+    pixels = stbi.load(testImage4, width, height, channels, stbi.RGBA)
+    check(width == 2)
+    check(height == 2)
+    check(channels == stbi.RGB)
+    check(pixels.len == (width * height * stbi.RGBA))
+
+    # Test the pixel data
+    check(pixels[0 + 0] == 0x11) # R 
+    check(pixels[0 + 1] == 0x11) # G
+    check(pixels[0 + 2] == 0x11) # B
+    check(pixels[0 + 3] == 0xFF) # A
+
+    check(pixels[4 + 0] == 0x11) # R 
+    check(pixels[4 + 1] == 0x11) # G
+    check(pixels[4 + 2] == 0x11) # B
+    check(pixels[4 + 3] == 0xFF) # A
+
+    check(pixels[8 + 0] == 0x11) # R 
+    check(pixels[8 + 1] == 0x11) # G
+    check(pixels[8 + 2] == 0x11) # B
+    check(pixels[8 + 3] == 0xFF) # A
+
+    check(pixels[12 + 0] == 0x11) # R 
+    check(pixels[12 + 1] == 0x11) # G
+    check(pixels[12 + 2] == 0x11) # B
+    check(pixels[12 + 3] == 0xFF) # A
 
   test "stbi.loadFromFile":
     # Data
