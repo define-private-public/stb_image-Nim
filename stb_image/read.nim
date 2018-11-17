@@ -95,7 +95,7 @@ proc load*(filename: string; x, y, channels_in_file: var int; desired_channels: 
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[byte]
@@ -137,7 +137,7 @@ proc loadFromMemory*(buffer: seq[byte]; x, y, channels_in_file: var int; desired
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[byte]
@@ -176,7 +176,7 @@ proc loadFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: i
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[byte]
@@ -244,7 +244,7 @@ proc load16*(filename: string; x, y, channels_in_file: var int; desired_channels
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[uint16]
@@ -286,7 +286,7 @@ proc loadFromFile16*(f: File; x, y, channels_in_file: var int; desired_channels:
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[uint16]
@@ -329,7 +329,7 @@ proc load16FromMemory*(buffer: seq[byte]; x, y, channels_in_file: var int; desir
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[uint16]
@@ -397,7 +397,7 @@ proc loadF*(filename: string; x, y, channels_in_file: var int; desired_channels:
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[float32]
@@ -439,7 +439,7 @@ proc loadFFromMemory*(buffer: seq[byte]; x, y, channels_in_file: var int; desire
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[float32]
@@ -478,7 +478,7 @@ proc loadFFromFile*(f: File, x, y, channels_in_file: var int, desired_channels: 
   y = height.int
   channels_in_file = components.int
 
-  let actual_channels = if desired_channels > 0: desired_channels else: components.int 
+  let actual_channels = if desired_channels > 0: desired_channels else: components.int
 
   # Copy pixel data
   var pixelData: seq[float32]
@@ -550,7 +550,7 @@ proc isHDRFromMemory*(buffer: seq[byte]): bool =
 ## Checks to see if an image, with the given filename, is an HDR image.
 proc isHDR*(filename: string): bool =
   return (stbi_is_hdr(filename.cstring) == 1)
-  
+
 
 ## Checks to see if an image is an HDR image, from a File pointer.
 proc isHDRFromFile*(f: File): bool =
@@ -611,7 +611,7 @@ proc info*(filename: string; x, y, comp: var int): bool =
     height: cint
     channels: cint
     r = stbi_info(filename.cstring, width, height, channels)
-  
+
   # Set the data & return
   x = width.int
   y = height.int
@@ -629,7 +629,7 @@ proc infoFromFile*(f: File; x, y, comp: var int): bool =
     height: cint
     channels: cint
     r = stbi_info_from_file(f, width, height, channels)
-  
+
   # Set the data & return
   x = width.int
   y = height.int
@@ -659,7 +659,7 @@ proc stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint)
 ## recommend calling it again right after loading what you want.
 proc setUnpremultiplyOnLoad*(unpremultiply: bool) =
   stbi_set_unpremultiply_on_load(if unpremultiply: 1 else: 0)
-  
+
 
 ## From the header file: "indicate whether we should process iphone images back
 ## to canonical format."  This function acts globally, so if you use it once I
@@ -681,7 +681,7 @@ proc setFlipVerticallyOnLoad*(flip: bool) =
 # =====================
 
 # C Wrapper procedures. Only these three are needed, all other only provide other default values
-proc stbi_zlib_decode_malloc_guesssize_headerflag(buffer: ptr cuchar, len: cint, initial_size: cint, 
+proc stbi_zlib_decode_malloc_guesssize_headerflag(buffer: ptr cuchar, len: cint, initial_size: cint,
   outlen: ptr cint, parse_header: cint): ptr cuchar {.importc: "stbi_zlib_decode_malloc_guesssize_headerflag".}
 
 proc stbi_zlib_decode_buffer(obuffer: ptr cuchar, olen: cint, ibuffer: ptr cuchar, ilen: cint): cint
@@ -690,21 +690,21 @@ proc stbi_zlib_decode_buffer(obuffer: ptr cuchar, olen: cint, ibuffer: ptr cucha
 proc stbi_zlib_decode_noheader_buffer(obuffer: ptr cuchar, olen: cint, ibuffer: ptr cuchar, ilen: cint): cint
   {.importc: "stbi_zlib_decode_noheader_buffer".}
 
-## Uncompresses ``buffer`` and returns the decompressed data. Too parse a raw inflate stream 
+## Uncompresses ``buffer`` and returns the decompressed data. Too parse a raw inflate stream
 ## switch parseheader to ``false``.
-## It allocates a new buffer, which size is determined by ``initial_size``. If the buffer isn't sufficient 
+## It allocates a new buffer, which size is determined by ``initial_size``. If the buffer isn't sufficient
 ## it may be reallocated.
 ## For faster decompression, especially if you know the output size, use ``zlibDecodeBuffer``.
 proc zlibDecodeMalloc*(buffer: openArray[byte], initial_size = 16384, parseheader = true): seq[byte] =
   var length = cint 0
 
-  let data = stbi_zlib_decode_malloc_guesssize_headerflag(cast[ptr cuchar](unsafeAddr buffer[0]), 
+  let data = stbi_zlib_decode_malloc_guesssize_headerflag(cast[ptr cuchar](unsafeAddr buffer[0]),
     cint buffer.len, cint initial_size, addr length, cint parseheader)
-  
+
   # some error has occured
   if data.isNil:
     raise newException(STBIException, failureReason())
-  
+
   result = newSeq[byte](int length)
   copyMem(addr result[0], data, length)
 
@@ -715,7 +715,7 @@ proc zlibDecodeMalloc*(buffer: openArray[byte], initial_size = 16384, parseheade
 ## The amount of data written to ``output`` is returned.
 ## Switch ``parseheader`` to ``false`` to parse a raw deflate stream.
 proc zlibDecodeBuffer*(input: openArray[byte], output: var openArray[byte], parseheader = true): Natural =
-  let 
+  let
     inputPtr = cast[ptr cuchar](output[0].addr)
     outputPtr = cast[ptr cuchar](input[0].unsafeAddr)
     bytesRead = (if not parseheader:
@@ -724,5 +724,5 @@ proc zlibDecodeBuffer*(input: openArray[byte], output: var openArray[byte], pars
   # some error has occured
   if bytesRead == -1:
       raise newException(STBIException, failureReason())
-  
+
   Natural(bytesRead)

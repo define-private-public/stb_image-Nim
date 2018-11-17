@@ -87,25 +87,25 @@ suite "Unit Tests for stb_image wrapper":
 
     # Test the pixel data
     # 1 == 25% white
-    check(pixels[0 + 0] == 0xFF) # R 
+    check(pixels[0 + 0] == 0xFF) # R
     check(pixels[0 + 1] == 0xFF) # G
     check(pixels[0 + 2] == 0xFF) # B
     check(pixels[0 + 3] == 0x3F) # A
 
     # 2 == 50% yellow
-    check(pixels[4 + 0] == 0xFF) # R 
+    check(pixels[4 + 0] == 0xFF) # R
     check(pixels[4 + 1] == 0xFF) # G
     check(pixels[4 + 2] == 0x00) # B
     check(pixels[4 + 3] == 0x7F) # A
 
-    # 1 == 75% magenta 
-    check(pixels[8 + 0] == 0xFF) # R 
+    # 1 == 75% magenta
+    check(pixels[8 + 0] == 0xFF) # R
     check(pixels[8 + 1] == 0x00) # G
     check(pixels[8 + 2] == 0xFF) # B
     check(pixels[8 + 3] == 0xBF) # A
 
     # 1 == 100% cyan
-    check(pixels[12 + 0] == 0x00) # R 
+    check(pixels[12 + 0] == 0x00) # R
     check(pixels[12 + 1] == 0xFF) # G
     check(pixels[12 + 2] == 0xFF) # B
     check(pixels[12 + 3] == 0xFF) # A
@@ -125,22 +125,22 @@ suite "Unit Tests for stb_image wrapper":
     check(pixels.len == (width * height * stbi.RGBA))
 
     # Test the pixel data
-    check(pixels[0 + 0] == 0x11) # R 
+    check(pixels[0 + 0] == 0x11) # R
     check(pixels[0 + 1] == 0x11) # G
     check(pixels[0 + 2] == 0x11) # B
     check(pixels[0 + 3] == 0xFF) # A
 
-    check(pixels[4 + 0] == 0x11) # R 
+    check(pixels[4 + 0] == 0x11) # R
     check(pixels[4 + 1] == 0x11) # G
     check(pixels[4 + 2] == 0x11) # B
     check(pixels[4 + 3] == 0xFF) # A
 
-    check(pixels[8 + 0] == 0x11) # R 
+    check(pixels[8 + 0] == 0x11) # R
     check(pixels[8 + 1] == 0x11) # G
     check(pixels[8 + 2] == 0x11) # B
     check(pixels[8 + 3] == 0xFF) # A
 
-    check(pixels[12 + 0] == 0x11) # R 
+    check(pixels[12 + 0] == 0x11) # R
     check(pixels[12 + 1] == 0x11) # G
     check(pixels[12 + 2] == 0x11) # B
     check(pixels[12 + 3] == 0xFF) # A
@@ -291,8 +291,8 @@ suite "Unit tests for stbi_image_write wrapper":
 
     # remove the image
     removeFile(filename)
-  
-  
+
+
   test "stbiw.writeBMP [memory]":
     # data
     var
@@ -673,26 +673,26 @@ suite "extra functions (from stb_image.h)":
 
     # Test the pixel data
 
-    # 1 == 75% magenta 
-    check(pixels[0 + 0] == 0xFF) # R 
+    # 1 == 75% magenta
+    check(pixels[0 + 0] == 0xFF) # R
     check(pixels[0 + 1] == 0x00) # G
     check(pixels[0 + 2] == 0xFF) # B
     check(pixels[0 + 3] == 0xBF) # A
 
     # 1 == 100% cyan
-    check(pixels[4 + 0] == 0x00) # R 
+    check(pixels[4 + 0] == 0x00) # R
     check(pixels[4 + 1] == 0xFF) # G
     check(pixels[4 + 2] == 0xFF) # B
     check(pixels[4 + 3] == 0xFF) # A
 
     # 1 == 25% white
-    check(pixels[8 + 0] == 0xFF) # R 
+    check(pixels[8 + 0] == 0xFF) # R
     check(pixels[8 + 1] == 0xFF) # G
     check(pixels[8 + 2] == 0xFF) # B
     check(pixels[8 + 3] == 0x3F) # A
 
     # 2 == 50% yellow
-    check(pixels[12 + 0] == 0xFF) # R 
+    check(pixels[12 + 0] == 0xFF) # R
     check(pixels[12 + 1] == 0xFF) # G
     check(pixels[12 + 2] == 0x00) # B
     check(pixels[12 + 3] == 0x7F) # A
@@ -728,7 +728,7 @@ suite "zlib functions":
     expect STBIException:
       discard stbi.zlibDecodeMalloc(testStringCompressedNoHeader)
 
-  test "stbi.zlibDecodeBuffer [raw stream]":  
+  test "stbi.zlibDecodeBuffer [raw stream]":
     var output = newSeq[byte](testStringUncompressed.len)
     require zlibDecodeBuffer(testStringCompressedNoHeader, output, false) == testStringUncompressed.len
 
