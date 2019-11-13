@@ -14,7 +14,7 @@ The used header files are included in this repo (they end in the name
 `_header.nim`) but you may provide your own.
 The versions that are used are:
 
- - `stb_image.h`: v2.19
+ - `stb_image.h`: v2.23
  - `stb_image_write.h`: v1.07
 
 They can be found here: https://github.com/nothings/stb
