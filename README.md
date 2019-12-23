@@ -232,4 +232,5 @@ Thanks
 ------
  - Eduardo Bart (@edubart), for help with a segfault issue and write callback
    functions.
+ - King Eca (@EasiestSoft), for help with the native call types
 
