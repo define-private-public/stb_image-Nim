@@ -11,13 +11,10 @@ export components.GreyAlpha
 export components.RGB
 export components.RGBA
 
-when defined(windows):
-  when defined(vcc):
-    {.pragma: stbcall, stdcall.}
-  else:
-    {.pragma: stbcall, cdecl.}
+when defined(windows) and defined(vcc):
+  {.pragma: stbcall, stdcall.}
 else:
-    {.pragma: stbcall, cdecl.}
+  {.pragma: stbcall, cdecl.}
 
 # Include the header
 {.compile: "stb_image/read.c".}
