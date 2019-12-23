@@ -13,6 +13,14 @@ export components.YA
 export components.RGB
 export components.RGBA
 
+when defined(windows):
+  when defined(vcc):
+    {.pragma: stbcall, stdcall.}
+  else:
+    {.pragma: stbcall, cdecl.}
+else:
+    {.pragma: stbcall, cdecl.}
+
 # Include the header
 {.compile: "stb_image/write.c".}
 
@@ -31,28 +39,28 @@ proc stbi_write_png(
   data: pointer,
   stride_in_bytes: int
 ): cint
-  {.importc: "stbi_write_png".}
+  {.importc: "stbi_write_png", stbcall.}
 
 proc stbi_write_bmp(
   filename: cstring;
   w, h, comp: cint;
   data: pointer
 ): cint
-  {.importc: "stbi_write_bmp".}
+  {.importc: "stbi_write_bmp", stbcall.}
 
 proc stbi_write_tga(
   filename: cstring;
   w, h, comp: cint;
   data: pointer
 ): cint
-  {.importc: "stbi_write_tga".}
+  {.importc: "stbi_write_tga", stbcall.}
 
 proc stbi_write_hdr(
   filename: cstring;
   w, h, comp: cint;
   data: ptr cfloat
 ): cint
-  {.importc: "stbi_write_hdr".}
+  {.importc: "stbi_write_hdr", stbcall.}
 
 proc stbi_write_jpg(
   filename: cstring;
@@ -60,7 +68,7 @@ proc stbi_write_jpg(
   data: pointer;
   quality: cint;
 ): cint
-  {.importc: "stbi_write_jpg".}
+  {.importc: "stbi_write_jpg", stbcall.}
 
 
 ## This proc will let you write out data to a PNG file.  `w` and `h` are the
@@ -142,7 +150,7 @@ proc stbi_write_png_to_func(
   data: pointer,
   stride_in_bytes: cint
 ): cint
-  {.importc: "stbi_write_png_to_func".}
+  {.importc: "stbi_write_png_to_func", stbcall.}
 
 proc stbi_write_bmp_to_func(
   fn: writeCallback,
@@ -150,7 +158,7 @@ proc stbi_write_bmp_to_func(
   w, h, comp: cint,
   data: pointer
 ): cint
-  {.importc: "stbi_write_bmp_to_func".}
+  {.importc: "stbi_write_bmp_to_func", stbcall.}
 
 proc stbi_write_tga_to_func(
   fn: writeCallback,
@@ -158,7 +166,7 @@ proc stbi_write_tga_to_func(
   w, h, comp: cint,
   data: pointer
 ): cint
-  {.importc: "stbi_write_tga_to_func".}
+  {.importc: "stbi_write_tga_to_func", stbcall.}
 
 proc stbi_write_hdr_to_func(
   fn: writeCallback,
@@ -166,7 +174,7 @@ proc stbi_write_hdr_to_func(
   w, h, comp: cint,
   data: pointer
 ): cint
-  {.importc: "stbi_write_hdr_to_func".}
+  {.importc: "stbi_write_hdr_to_func", stbcall.}
 
 proc stbi_write_jpg_to_func(
   fn: writeCallback,
@@ -175,7 +183,7 @@ proc stbi_write_jpg_to_func(
   data: pointer,
   quality: cint
 ): cint
-  {.importc: "stbi_write_jpg_to_func".}
+  {.importc: "stbi_write_jpg_to_func", stbcall.}
 
 
 proc streamWriteData(context, data: pointer, size: cint) {.cdecl.} =
